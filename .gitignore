@@ -261,3 +261,6 @@ ModelManifest.xml
 *.csv#
 /Export/passive_skill_stat_descriptions.txt
 /Export/passive_skill_aura_stat_descriptions.txt
+
+TreeData/*
+log.txt

@@ -109,12 +109,13 @@ data.unarmedWeaponData = {
 	[6] = { type = "None", AttackRate = 1.2, CritChance = 0, PhysicalMin = 2, PhysicalMax = 5 }, -- Shadow
 }
 
+--[[
 -- Uniques
 data.uniques = { }
 for _, type in pairs(itemTypes) do
 	data.uniques[type] = LoadModule("Data/Uniques/"..type)
 end
-LoadModule("Data/New")
+LoadModule("Data/New")]]
 
 -- Misc. exported data tables
 LoadModule("Data/Misc")
@@ -128,7 +129,7 @@ for _, targetVersion in ipairs(targetVersionList) do
 	local function dataModule(mod, ...)
 		return LoadModule("Data/"..targetVersion.."/"..mod, ...)
 	end
-
+	--[[
 	-- Load item modifiers
 	data[targetVersion].itemMods = {
 		Item = dataModule("ModItem"),
@@ -209,4 +210,5 @@ for _, targetVersion in ipairs(targetVersionList) do
 
 	-- Rare templates
 	data[targetVersion].rares = dataModule("Rares")
+	]]
 end

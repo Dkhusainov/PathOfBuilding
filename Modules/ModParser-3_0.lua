@@ -592,7 +592,7 @@ local mod = modLib.createMod
 local function flag(name, ...)
 	return mod(name, "FLAG", true, ...)
 end
-
+--[[
 local gemNameLookup = { }
 for name, grantedEffect in pairs(data["3_0"].skills) do
 	if not grantedEffect.hidden then
@@ -601,7 +601,7 @@ for name, grantedEffect in pairs(data["3_0"].skills) do
 		gemNameLookup[grantedEffect.name:lower()] = grantedEffect.id
 	end
 end
-
+]]
 -- List of special modifiers
 local specialModList = {
 	-- Keystones
@@ -1011,7 +1011,7 @@ local regenTypes = {
 	["energy shield"] = "EnergyShieldRegen",
 	["maximum mana and energy shield"] = { "ManaRegen", "EnergyShieldRegen" },
 }
-
+--[[
 -- Build active skill name lookup
 local skillNameList = { }
 local preSkillNameList = { }
@@ -1029,7 +1029,7 @@ for skillName, grantedEffect in pairs(data["3_0"].gems) do
 		end
 	end	
 end
-
+]]
 local function getSimpleConv(srcList, dst, type, remove, factor)
 	return function(nodeMods, out, data)
 		if nodeMods then
