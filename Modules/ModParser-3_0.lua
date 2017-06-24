@@ -1011,10 +1011,10 @@ local regenTypes = {
 	["energy shield"] = "EnergyShieldRegen",
 	["maximum mana and energy shield"] = { "ManaRegen", "EnergyShieldRegen" },
 }
---[[
 -- Build active skill name lookup
 local skillNameList = { }
-local preSkillNameList = { }
+local preSkillNameList = {}
+--[[
 for skillName, grantedEffect in pairs(data["3_0"].gems) do
 	if not grantedEffect.hidden and not grantedEffect.support then
 		skillNameList[" "..skillName:lower().." "] = { tag = { type = "SkillName", skillName = skillName } }
@@ -1213,6 +1213,7 @@ local function parseMod(line, order)
 
 	-- Check for skill name at the start of the line
 	local skillTag
+	print(preSkillNameList)
 	skillTag, line = scan(line, preSkillNameList)
 
 	-- Scan for modifier form

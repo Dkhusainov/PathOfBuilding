@@ -109,3 +109,11 @@ LoadModule("Modules/ModTools", "3_0")
 --LoadModule("Modules/ItemTools", launch)
 LoadModule("Modules/CalcTools")
 LoadModule("Modules/Calcs", "3_0")
+
+function parseMod(line)
+    return modLib.parseMod[liveTargetVersion](line)
+end
+
+function abc()
+
+end
