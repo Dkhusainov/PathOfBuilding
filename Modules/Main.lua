@@ -77,7 +77,7 @@ local classList = {
 for _, className in pairs(classList) do
 	LoadModule("Classes/"..className, launch, main)
 end
-require("Helper.lua")
+require("Helper")
 
 --[[if launch.devMode then
 	for skillName, skill in pairs(data.enchantments.Helmet) do

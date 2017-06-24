@@ -4,7 +4,7 @@ function printToFile(t)
     io.output(filezz)
     io.write("\n")
     local options = {
-        depth = 10,
+        depth = 1,
 --        process = true
     }
     local result = inspect.inspect(t, options)
