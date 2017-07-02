@@ -42,6 +42,7 @@ local fooBanditDropList = {
 local buildMode = common.New("ControlHost")
 
 function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
+	--[[
 	self.dbFileName = dbFileName
 	self.buildName = buildName
 	if dbFileName then
@@ -172,7 +173,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 			end
 			if mult > 0.01 then
 				local line = level
-				if level >= 68 then 
+				if level >= 68 then
 					line = line .. string.format(" (Tier %d)", level - 67)
 				end
 				line = line .. string.format(": %.1f%%", mult * 100)
@@ -190,7 +191,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 				main:OpenConfirmPopup("Class Change", "Changing class to "..value.label.." will reset your passive tree.\nThis can be avoided by connecting one of the "..value.label.." starting nodes to your tree.", "Continue", function()
 					self.spec:SelectClass(value.classId)
 					self.spec:AddUndoState()
-					self.buildFlag = true					
+					self.buildFlag = true
 				end)
 			end
 		end
@@ -200,10 +201,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		self.spec:AddUndoState()
 		self.buildFlag = true
 	end)
+	]]
 
 	-- List of display stats
 	-- This defines the stats in the side bar, and also which stats show in node/item comparisons
 	-- This may be user-customisable in the future
+    local self = buildMode
 	self.displayStats = {
 		{ stat = "ActiveMinionLimit", label = "Active Minion Limit", fmt = "d" },
 		{ stat = "AverageHit", label = "Average Hit", fmt = ".1f", compPercent = true },
@@ -306,14 +309,15 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 
 	self.targetVersion = defaultTargetVersion
 	self.characterLevel = 1
-	self.controls.characterLevel:SetText(tostring(self.characterLevel))
+--	self.controls.characterLevel:SetText(tostring(self.characterLevel))
 	self.banditNormal = "None"
 	self.banditCruel = "None"
 	self.banditMerciless = "None"
 	self.spectreList = { }
 
 	-- Load build file
-	self.xmlSectionList = { }
+	self.xmlSectionList = {}
+	--[[
 	if buildXML then
 		if self:LoadDB(buildXML, "Unnamed build") then
 			self:CloseBuild()
@@ -327,11 +331,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		end
 		self.modFlag = false
 	end
+    ]]
 
 	if targetVersion then
 		self.targetVersion = targetVersion
 	end
-
+    --[[
 	if buildName == "~~temp~~" then
 		-- Remove temporary build file
 		os.remove(self.dbFileName)
@@ -397,7 +402,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 			self.buildFlag = true
 		end)
 		self.controls.banditLabel = common.New("LabelControl", {"BOTTOMLEFT",self.controls.bandit,"TOPLEFT"}, 0, 0, 0, 14, "^7Bandit:")
-	end	
+	end
 	self.controls.mainSkillLabel = common.New("LabelControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 95, 300, 16, "^7Main Skill:")
 	self.controls.mainSocketGroup = common.New("DropDownControl", {"TOPLEFT",self.controls.mainSkillLabel,"BOTTOMLEFT"}, 0, 2, 300, 16, nil, function(index, value)
 		self.mainSocketGroup = index
@@ -436,24 +441,29 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		local x, y = control:GetPos()
 		return main.screenH - main.mainBarHeight - 4 - y
 	end
+	]]
+
+	self.controls.statBox = {}
+	self.controls.statBox.list = {}
 
 	-- Initialise build components
 	self.data = data[self.targetVersion]
-	self.tree = main.tree[self.targetVersion]
-	self.importTab = common.New("ImportTab", self)
-	self.notesTab = common.New("NotesTab", self)
+	self.tree = tree
+--	self.importTab = common.New("ImportTab", self)
+--	self.notesTab = common.New("NotesTab", self)
 	self.configTab = common.New("ConfigTab", self)
 	self.itemsTab = common.New("ItemsTab", self)
-	self.treeTab = common.New("TreeTab", self)
+--	self.treeTab = common.New("TreeTab", self)
 	self.skillsTab = common.New("SkillsTab", self)
 	self.calcsTab = common.New("CalcsTab", self)
+
 
 	-- Load sections from the build file
 	self.savers = {
 		["Config"] = self.configTab,
 		["Notes"] = self.notesTab,
 		["Tree"] = self.treeTab,
-		["TreeView"] = self.treeTab.viewer,
+--		["TreeView"] = self.treeTab.viewer,
 		["Items"] = self.itemsTab,
 		["Skills"] = self.skillsTab,
 		["Calcs"] = self.calcsTab,
@@ -481,7 +491,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		-- Check for old calcs tab settings
 		self.configTab:ImportCalcSettings()
 	end
-
+    --[[
 	-- Initialise class dropdown
 	for classId, class in pairs(self.tree.classes) do
 		t_insert(self.controls.classDrop.list, {
@@ -490,10 +500,10 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		})
 	end
 	table.sort(self.controls.classDrop.list, function(a, b) return a.label < b.label end)
-
+    ]]
 	-- Build calculation output tables
-	self.calcsTab:BuildOutput()
-	self:RefreshStatList()
+--	self.calcsTab:BuildOutput()
+--	self:RefreshStatList()
 	self.buildFlag = false
 
 	--[[
@@ -964,6 +974,9 @@ end
 
 -- Build list of side bar stats
 function buildMode:RefreshStatList()
+	print(wipeTable)
+	print(self.controls.statBox)
+	print(self.controls.statBox.list)
 	local statBoxList = wipeTable(self.controls.statBox.list)
 	if self.calcsTab.mainEnv.minion then
 		t_insert(statBoxList, { height = 18, "^7Minion:" })

@@ -27,15 +27,15 @@ local groupSlotDropList = {
 	{ label = "Ring 2", slotName = "Ring 2" },
 }
 
-local SkillsTabClass = common.NewClass("SkillsTab", "UndoHandler", "ControlHost", "Control", function(self, build)
-	self.UndoHandler()
-	self.ControlHost()
-	self.Control()
+local SkillsTabClass = common.NewClass("SkillsTab", function(self, build)
+--	self.UndoHandler()
+--	self.ControlHost()
+--	self.Control()
 
 	self.build = build
 
 	self.socketGroupList = { }
-
+	--[[
 	-- Socket group list
 	self.controls.groupList = common.New("SkillList", {"TOPLEFT",self,"TOPLEFT"}, 20, 24, 360, 300, self)
 	self.controls.groupTip = common.New("LabelControl", {"TOPLEFT",self.controls.groupList,"BOTTOMLEFT"}, 0, 8, 0, 14, "^7Tip: You can copy/paste socket groups using Ctrl+C and Ctrl+V.")
@@ -88,24 +88,27 @@ local SkillsTabClass = common.NewClass("SkillsTab", "UndoHandler", "ControlHost"
 		local item = self.displayGroup.sourceItem or { rarity = "NORMAL", name = "?" }
 		local itemName = colorCodes[item.rarity]..item.name.."^7"
 		local activeGem = self.displayGroup.gemList[1]
-		local label = [[^7This is a special group created for the ']]..activeGem.color..(activeGem.grantedEffect and activeGem.grantedEffect.name or activeGem.nameSpec)..[[^7' skill,
-which is being provided by ']]..itemName..[['.
-You cannot delete this group, but it will disappear if you un-equip the item.]]
+		local label = ^7This is a special group created for the '..activeGem.color..(activeGem.grantedEffect and activeGem.grantedEffect.name or activeGem.nameSpec)..^7' skill,
+which is being provided by '..itemName..'.
+You cannot delete this group, but it will disappear if you un-equip the item.
 		if not self.displayGroup.noSupports then
-			label = label .. "\n\n" .. [[You cannot add support gems to this group, but support gems in
-any other group socketed into ']]..itemName..[['
-will automatically apply to the skill.]]
+			label = label .. "\n\n" .. You cannot add support gems to this group, but support gems in
+any other group socketed into '..itemName..'
+will automatically apply to the skill.
 		end
 		return label
 	end
+	]]
 
 	-- Skill gem slots
 	self.gemSlots = { }
 	self:CreateGemSlot(1)
+	--[[
 	self.controls.gemNameHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].nameSpec,"TOPLEFT"}, 0, -2, 0, 16, "^7Gem name:")
 	self.controls.gemLevelHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].level,"TOPLEFT"}, 0, -2, 0, 16, "^7Level:")
 	self.controls.gemQualityHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].quality,"TOPLEFT"}, 0, -2, 0, 16, "^7Quality:")
 	self.controls.gemEnableHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].enabled,"TOPLEFT"}, -16, -2, 0, 16, "^7Enabled:")
+	]]
 end)
 
 function SkillsTabClass:Load(xml, fileName)
@@ -253,6 +256,7 @@ function SkillsTabClass:CreateGemSlot(index)
 	local slot = { }
 	self.gemSlots[index] = slot
 
+    --[[
 	-- Gem name specification
 	slot.nameSpec = common.New("GemSelectControl", nil, 0, 0, 300, 20, self, index, function(buf, addUndo)
 		if not self.displayGroup then
@@ -344,6 +348,7 @@ function SkillsTabClass:CreateGemSlot(index)
 		return "^1"..(self.displayGroup.gemList[index] and self.displayGroup.gemList[index].errMsg or "")
 	end)
 	self.controls["gemSlotErrMsg"..index] = slot.errMsg
+	]]
 end
 
 -- Update the gem slot controls to reflect the currently displayed socket group

@@ -1213,7 +1213,7 @@ local function parseMod(line, order)
 
 	-- Check for skill name at the start of the line
 	local skillTag
-	print(preSkillNameList)
+--	print(preSkillNameList)
 	skillTag, line = scan(line, preSkillNameList)
 
 	-- Scan for modifier form

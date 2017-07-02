@@ -39,7 +39,8 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 	MakeDir("TreeData")
 
 	ConPrintf("Loading passive tree data...")
-	local treeText
+	local treeText = LoadModule("TreeData/"..targetVersion.."/tree")
+	--[[
 	local treeFile = io.open("TreeData/"..targetVersion.."/tree.lua", "r")
 	if treeFile then
 		treeText = treeFile:read("*a")
@@ -66,8 +67,10 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 	end
 
 	self.size = m_min(self.max_x - self.min_x, self.max_y - self.min_y) * 1.1
-
+]]
 	-- Build maps of class name -> class table
+    self.classes = treeText.classes
+    self.characterData = treeText.characterData
 	self.classNameMap = { }
 	self.ascendNameMap = { }
 	for classId, class in pairs(self.classes) do
@@ -82,7 +85,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 			}
 		end
 	end
-
+	--[[
 	ConPrintf("Loading passive tree assets...")
 	for name, data in pairs(self.assets) do
 		self:LoadImage(name..".png", data[0.3835] or data[1], data)
@@ -159,43 +162,48 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 	end
 
 	local err, passives = PLoadModule("Data/"..targetVersion.."/Passives.lua")
+	]]
 
 	ConPrintf("Processing tree...")
 	self.keystoneMap = { }
-	local nodeMap = { }
+	self.nodes = { }
 	local sockets = { }
-	local orbitMult = { [0] = 0, m_pi / 3, m_pi / 6, m_pi / 6, m_pi / 20 }
-	local orbitDist = { [0] = 0, 82, 162, 335, 493 }
-	for _, node in pairs(self.nodes) do
-		node.meta = { __index = node }
-		nodeMap[node.id] = node
-		node.linkedId = { }
+--	local orbitMult = { [0] = 0, m_pi / 3, m_pi / 6, m_pi / 6, m_pi / 20 }
+--	local orbitDist = { [0] = 0, 82, 162, 335, 493 }
+	for _, nodeIn in pairs(treeText.nodes) do
+        local node = {
+            id = nodeIn.id,
+            sd = nodeIn.sd
+        }
+--		node.meta = { __index = node }
+        self.nodes[node.id] = node
+--		node.linkedId = { }
 
 		-- Determine node type
-		if node.spc[0] then
+		if nodeIn.spc[0] then
 			node.type = "classStart"
-			local class = self.classes[node.spc[0]]
+			local class = self.classes[nodeIn.spc[0]]
 			class.startNodeId = node.id
-			node.startArt = classArt[node.spc[0]]
-		elseif node.isAscendancyStart then
+--			node.startArt = classArt[node.spc[0]]
+		elseif nodeIn.isAscendancyStart then
 			node.type = "ascendClassStart"
-			local ascendClass = self.ascendNameMap[node.ascendancyName].ascendClass
+			local ascendClass = self.ascendNameMap[nodeIn.ascendancyName].ascendClass
 			ascendClass.startNodeId = node.id
-		elseif node.m then
+		elseif nodeIn.m then
 			node.type = "mastery"
-		elseif node.isJewelSocket then
+		elseif nodeIn.isJewelSocket then
 			node.type = "socket"
 			sockets[node.id] = node
-		elseif node.ks then
+		elseif nodeIn.ks then
 			node.type = "keystone"
-			self.keystoneMap[node.dn] = node
-		elseif node["not"] then
+			self.keystoneMap[nodeIn.dn] = node
+		elseif nodeIn["not"] then
 			node.type = "notable"
 		else
 			node.type = "normal"
 		end
 
-		-- Assign node artwork assets
+		--[[ Assign node artwork assets
 		node.sprites = spriteMap[node.icon]
 		node.overlay = nodeOverlay[node.type]
 		if node.overlay then
@@ -219,6 +227,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 			-- Passive data is available, override the descriptions
 			node.sd = passives[node.id]
 		end
+		]]
 
 		-- Parse node modifier lines
 		node.mods = { }
@@ -287,15 +296,16 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 				end
 			end
 		end
-		if node.passivePointsGranted > 0 then
-			node.modList:NewMod("ExtraPoints", "BASE", node.passivePointsGranted, "Tree"..node.id)
+		if nodeIn.passivePointsGranted > 0 then
+			node.modList:NewMod("ExtraPoints", "BASE", nodeIn.passivePointsGranted, "Tree"..node.id)
 		end
 		if node.type == "keystone" then
-			node.keystoneMod = modLib.createMod("Keystone", "LIST", node.dn, "Tree"..node.id)
-		end
+			node.keystoneMod = modLib.createMod("Keystone", "LIST", nodeIn.dn, "Tree"..node.id)
+        end
+        node.sd = nil
 	end
 
-	-- Precalculate the lists of nodes that are within each radius of each socket
+	--[[ Precalculate the lists of nodes that are within each radius of each socket
 	for nodeId, socket in pairs(sockets) do
 		socket.nodesInRadius = { }
 		socket.attributesInRadius = { }
@@ -316,8 +326,9 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 			end
 		end
 	end
+	]]
 
-	-- Pregenerate the polygons for the node connector lines
+	--[[ Pregenerate the polygons for the node connector lines
 	self.connectors = { }
 	for _, node in ipairs(self.nodes) do
 		for _, otherId in pairs(node.out) do
@@ -329,6 +340,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 			end
 		end
 	end
+	]]
 end)
 
 -- Checks if a given image is present and downloads it from the given URL if it isn't there

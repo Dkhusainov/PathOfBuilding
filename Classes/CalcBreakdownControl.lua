@@ -15,17 +15,19 @@ local m_cos = math.cos
 local m_pi = math.pi
 local band = bit.band
 
-local CalcBreakdownClass = common.NewClass("CalcBreakdown", "Control", "ControlHost", function(self, calcsTab)
-	self.Control()
-	self.ControlHost()
+local CalcBreakdownClass = common.NewClass("CalcBreakdownControl", function(self, calcsTab)
+--	self.Control()
+--	self.ControlHost()
 	self.calcsTab = calcsTab
 	self.shown = false
+	--[[
 	self.nodeViewer = common.New("PassiveTreeView")
 	self.rangeGuide = NewImageHandle()
 	self.rangeGuide:Load("Assets/range_guide.png")
 	self.uiOverlay = NewImageHandle()
 	self.uiOverlay:Load("Assets/game_ui_small.png")
 	self.controls.scrollBar = common.New("ScrollBarControl", {"RIGHT",self,"RIGHT"}, -2, 0, 18, 0, 80, "VERTICAL", true)
+	]]
 end)
 
 function CalcBreakdownClass:IsMouseOver()

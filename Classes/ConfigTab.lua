@@ -440,10 +440,12 @@ local varList = {
 	{ var = "EEIgnoreHitDamage", type = "check", label = "Ignore Skill Hit Damage?", ifNode = 39085, tooltip = "This option prevents EE from being reset by the hit damage of your main skill." },
 }
 
-local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost", "Control", function(self, build)
+local ConfigTabClass = common.NewClass("ConfigTab", function(self, build)
+	--[[
 	self.UndoHandler()
 	self.ControlHost()
 	self.Control()
+	]]
 
 	self.build = build
 
@@ -454,6 +456,7 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 
 	self:BuildModList()
 
+	--[[
 	local lastSection
 	for _, varData in ipairs(varList) do
 		if varData.section then
@@ -595,6 +598,7 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 	t_insert(self.sectionList[1].varControlList, 1, self.controls.gameVersion)
 
 	self.controls.scrollBar = common.New("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
+	]]
 end)
 
 function ConfigTabClass:Load(xml, fileName)

@@ -7,9 +7,9 @@ local launch, main = ...
 
 local t_insert = table.insert
 
-local CalcSectionClass = common.NewClass("CalcSection", "Control", "ControlHost", function(self, calcsTab, width, id, group, label, col, data, updateFunc)
-	self.Control(calcsTab, 0, 0, width, 0)
-	self.ControlHost()
+local CalcSectionClass = common.NewClass("CalcSectionControl", function(self, calcsTab, width, id, group, label, col, data, updateFunc)
+--	self.Control(calcsTab, 0, 0, width, 0)
+--	self.ControlHost()
 	self.calcsTab = calcsTab
 	self.id = id
 	self.group = group
@@ -31,6 +31,7 @@ local CalcSectionClass = common.NewClass("CalcSection", "Control", "ControlHost"
 			end
 		end
 	end
+	--[[
 	self.controls.toggle = common.New("ButtonControl", {"TOPRIGHT",self,"TOPRIGHT"}, -3, 3, 16, 16, function()
 		return self.collapsed and "+" or "-"
 	end, function()
@@ -43,6 +44,7 @@ local CalcSectionClass = common.NewClass("CalcSection", "Control", "ControlHost"
 	self.shown = function()
 		return self.enabled
 	end
+	]]
 end)
 
 function CalcSectionClass:IsMouseOver()

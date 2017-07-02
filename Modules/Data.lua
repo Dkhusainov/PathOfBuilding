@@ -129,23 +129,24 @@ for _, targetVersion in ipairs(targetVersionList) do
 	local function dataModule(mod, ...)
 		return LoadModule("Data/"..targetVersion.."/"..mod, ...)
 	end
-	--[[
+
 	-- Load item modifiers
 	data[targetVersion].itemMods = {
-		Item = dataModule("ModItem"),
-		Flask = dataModule("ModFlask"),
-		Jewel = dataModule("ModJewel"),
+--		Item = dataModule("ModItem"),
+--		Flask = dataModule("ModFlask"),
+--		Jewel = dataModule("ModJewel"),
 	}
-	data[targetVersion].corruptedMods = dataModule("ModCorrupted")
-	data[targetVersion].masterMods = dataModule("ModMaster")
+--	data[targetVersion].corruptedMods = dataModule("ModCorrupted")
+--	data[targetVersion].masterMods = dataModule("ModMaster")
 	data[targetVersion].enchantments = {
-		Helmet = dataModule("EnchantmentHelmet"),
-		Boots = dataModule("EnchantmentBoots"),
+--		Helmet = dataModule("EnchantmentHelmet"),
+--		Boots = dataModule("EnchantmentBoots"),
 	}
-	data[targetVersion].essences = dataModule("Essence")
+--	data[targetVersion].essences = dataModule("Essence")
 
 	-- Load skills
-	data[targetVersion].skills = { }
+	data[targetVersion].skills = {}
+	--[[
 	for _, type in pairs(skillTypes) do
 		dataModule("Skills/"..type, data[targetVersion].skills, makeSkillMod, makeFlagMod, makeSkillDataMod)
 	end
@@ -170,25 +171,28 @@ for _, targetVersion in ipairs(targetVersionList) do
 			end
 		end
 	end
-
+	]]
 	-- Build gem list
-	data[targetVersion].gems = { }
+	data[targetVersion].gems = {}
+	--[[
 	for _, grantedEffect in pairs(data[targetVersion].skills) do
 		if grantedEffect.gemTags then
 			data[targetVersion].gems[grantedEffect.name] = grantedEffect
 			grantedEffect.defaultLevel = (grantedEffect.levels[20] and 20) or (grantedEffect.levels[3][2] and 3) or 1
 		end
 	end
-
+	]]
 	-- Load minions
-	data[targetVersion].minions = { }
-	dataModule("Minions", data[targetVersion].minions, makeSkillMod)
-	data[targetVersion].spectres = { }
+	data[targetVersion].minions = {}
+--	dataModule("Minions", data[targetVersion].minions, makeSkillMod)
+	data[targetVersion].spectres = {}
+	--[[
 	dataModule("Spectres", data[targetVersion].spectres, makeSkillMod)
 	for name, spectre in pairs(data[targetVersion].spectres) do
 		spectre.limit = "ActiveSpectreLimit"
 		data[targetVersion].minions[name] = spectre
 	end
+	]]
 	local missing = { }
 	for _, minion in pairs(data[targetVersion].minions) do
 		for _, skillId in ipairs(minion.skillList) do
@@ -205,10 +209,17 @@ for _, targetVersion in ipairs(targetVersionList) do
 	-- Item bases
 	data[targetVersion].itemBases = { }
 	for _, type in pairs(itemTypes) do
-		dataModule("Bases/"..type, data[targetVersion].itemBases)
+--		dataModule("Bases/"..type, data[targetVersion].itemBases)
 	end
 
 	-- Rare templates
-	data[targetVersion].rares = dataModule("Rares")
-	]]
+--	data[targetVersion].rares = dataModule("Rares")
+
+end
+
+function data.addSkill(key, skill)
+	data[liveTargetVersion].skills[key] = skill
+end
+function data.removeSkill(key)
+	data[liveTargetVersion].skills[key] = nil
 end

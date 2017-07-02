@@ -93,27 +93,62 @@ function unpack(t)
     end
 end
 
-local launch = {
-    devMode = true
-}
+LoadModule("Helper")
 
 defaultTargetVersion = "3_0"
 liveTargetVersion = "3_0"
 targetVersionList = { "3_0" }
 
-LoadModule("Helper")
-
 LoadModule("Modules/Common")
-LoadModule("Modules/Data", launch)
-LoadModule("Modules/ModTools", "3_0")
+LoadModule("Modules/Data")
+LoadModule("Modules/ModTools", liveTargetVersion)
 --LoadModule("Modules/ItemTools", launch)
 LoadModule("Modules/CalcTools")
-LoadModule("Modules/Calcs", "3_0")
+
+local classList = {
+    "ControlHost",
+    "PassiveTree",
+    "ModDB",
+    "ModList",
+    "ConfigTab",
+    "SkillsTab",
+    "ItemsTab",
+    "CalcsTab",
+    "CalcSectionControl",
+    "CalcBreakdownControl"
+    --    "PassiveSpec"
+}
+
+for _, className in pairs(classList) do
+    LoadModule("Classes/"..className)
+end
+
+local main = {
+    showThousandsSidebar = false,
+    lastShowThousandsSidebar = false
+}
+
+tree = common.New("PassiveTree", liveTargetVersion)
+build = LoadModule("Modules/Build", nil, main)
+build.Init(nil, nil, nil, liveTargetVersion)
 
 function parseMod(line)
     return modLib.parseMod[liveTargetVersion](line)
 end
 
-function abc()
 
+function abc()
+    build.spec = {}
+    build.spec.curClassId = 0
+    build.spec.allocNodes = {}
+    local asecnadnt = tree.nodes[58833]
+--    printToFile(asecnadnt, "ascendant", 10)
+    build.spec.allocNodes[58833] = asecnadnt
+--    build.calcsTab.buildOutput(build, "MAIN")
+    build.calcsTab:BuildOutput()
+    build:RefreshStatList()
+--    printToFile(build.calcsTab, "s", 10)
+--    printToFile(build.calcsTab.mainEnv.player, "s", 10)
+--    printToFile(build.calcsTab.mainOutput, "s", 2)
+    printToFile(build.controls.statBox.list, "s", 10)
 end

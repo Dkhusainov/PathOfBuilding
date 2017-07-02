@@ -28,11 +28,13 @@ local buffModeDropList = {
 	{ label = "Effective DPS", buffMode = "EFFECTIVE" } 
 }
 
-local CalcsTabClass = common.NewClass("CalcsTab", "UndoHandler", "ControlHost", "Control", function(self, build)
+local CalcsTabClass = common.NewClass("CalcsTab", function(self, build)
+    self.controls = {}
+	--[[
 	self.UndoHandler()
 	self.ControlHost()
 	self.Control()
-
+	]]
 	self.build = build
 
 	self.calcs = calcs[build.targetVersion]
@@ -44,6 +46,7 @@ local CalcsTabClass = common.NewClass("CalcsTab", "UndoHandler", "ControlHost", 
 	self.colWidth = 230
 	self.sectionList = { }
 
+--[[
 	-- Special section for skill/mode selection
 	self:NewSection(3, "SkillSelect", 1, "View Skill Details", colorCodes.NORMAL, {
 		{ label = "Socket Group", { controlName = "mainSocketGroup", 
@@ -101,14 +104,14 @@ local CalcsTabClass = common.NewClass("CalcsTab", "UndoHandler", "ControlHost", 
 				self.input.misc_buffMode = value.buffMode 
 				self:AddUndoState()
 				self.build.buildFlag = true
-			end, [[
+			end,
 This controls the calculation of the stats shown in this tab.
 The stats in the sidebar are always shown in Effective DPS mode, regardless of this setting.
 
 Unbuffed: No auras, buffs, or other support skills or effects will apply. This is equivelant to standing in town.
 Buffed: Aura and buff skills apply. This is equivelant to standing in your hideout with auras and buffs turned on.
 In Combat: Charges and combat buffs such as Onslaught will also apply. This will show your character sheet stats in combat.
-Effective DPS: Curses and enemy properties (such as resistances and status conditions) will also apply. This estimates your true DPS.]]) 
+Effective DPS: Curses and enemy properties (such as resistances and status conditions) will also apply. This estimates your true DPS.)
 		}, },
 		{ label = "Aura and Buff Skills", flag = "buffs", textSize = 12, { format = "{output:BuffList}", { breakdown = "SkillBuffs" } }, },
 		{ label = "Combat Buffs", flag = "combat", textSize = 12, { format = "{output:CombatList}" }, },
@@ -118,15 +121,15 @@ Effective DPS: Curses and enemy properties (such as resistances and status condi
 		section.controls.showMinion.state = self.input.showMinion
 		section.controls.mode:SelByValue(self.input.misc_buffMode, "buffMode")
 	end)
-
+	]]
 	-- Add sections from the CalcSections module
 	for _, section in ipairs(sectionData[build.targetVersion]) do
 		self:NewSection(unpack(section))
 	end
 
-	self.controls.breakdown = common.New("CalcBreakdown", self)
+	self.controls.breakdown = common.New("CalcBreakdownControl", self)
 
-	self.controls.scrollBar = common.New("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
+--	self.controls.scrollBar = common.New("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 end)
 
 function CalcsTabClass:Load(xml, dbFileName)
@@ -307,7 +310,7 @@ function CalcsTabClass:Draw(viewPort, inputEvents)
 end
 
 function CalcsTabClass:NewSection(width, ...)
-	local section = common.New("CalcSection", self, width * self.colWidth + 8 * (width - 1), ...)
+	local section = common.New("CalcSectionControl", self, width * self.colWidth + 8 * (width - 1), ...)
 	section.widthCols = width
 	t_insert(self.controls, section)
 	t_insert(self.sectionList, section)
@@ -366,7 +369,7 @@ end
 
 -- Build the calculation output tables
 function CalcsTabClass:BuildOutput()
-	self.powerBuildFlag = true
+--	self.powerBuildFlag = true
 
 	--[[
 	local start = GetTime()

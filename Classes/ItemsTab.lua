@@ -24,14 +24,14 @@ local rarityDropList = {
 
 local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armour", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Flask 1", "Flask 2", "Flask 3", "Flask 4", "Flask 5" }
 
-local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", "Control", function(self, build)
-	self.UndoHandler()
-	self.ControlHost()
-	self.Control()
+local ItemsTabClass = common.NewClass("ItemsTab", function(self, build)
+--	self.UndoHandler()
+--	self.ControlHost()
+--	self.Control()
 
 	self.build = build
 	
-	self.socketViewer = common.New("PassiveTreeView")
+--	self.socketViewer = common.New("PassiveTreeView")
 
 	self.list = { }
 	self.orderList = { }
@@ -72,7 +72,8 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	-- Item slots
 	self.slots = { }
 	self.orderedSlots = { }
-	self.slotOrder = { }
+	self.slotOrder = {}
+	--[[
 	self.slotAnchor = common.New("Control", {"TOPLEFT",self,"TOPLEFT"}, 96, 24, 310, 0)
 	for index, slotName in ipairs(baseSlots) do
 		local slot = common.New("ItemSlot", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, (index - 1) * 20, self, slotName)
@@ -187,12 +188,13 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 		self:EditDisplayItemText()
 	end)
 	self.controls.displayItemTip = common.New("LabelControl", {"TOPLEFT",self.controls.craftDisplayItem,"BOTTOMLEFT"}, 0, 8, 100, 16, 
-[[^7Double-click an item from one of the lists,
+^7Double-click an item from one of the lists,
 or copy and paste an item from in game (hover over the item and Ctrl+C)
 to view or edit the item and add it to your build.
 You can Control + Click an item to equip it, or drag it onto the slot.
 This will also add it to your build if it's from the unique/template list.
-If there's 2 slots an item can go in, holding Shift will put it in the second.]])
+If there's 2 slots an item can go in, holding Shift will put it in the second.)
+
 	self.controls.sharedItemList = common.New("SharedItemList", {"TOPLEFT",self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 142, 360, 308, self)
 
 	-- Display item
@@ -314,6 +316,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.]]
 		t_insert(self.controls.rareDB.dragTargetList, slot)
 		t_insert(self.controls.sharedItemList.dragTargetList, slot)
 	end
+	]]
 end)
 
 function ItemsTabClass:Load(xml, dbFileName)
