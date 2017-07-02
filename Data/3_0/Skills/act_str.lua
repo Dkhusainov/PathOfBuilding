@@ -363,8 +363,21 @@ skills["AnimateArmour"] = {
 	description = "Animates a melee weapon or armour, attaching it to an invisible Guardian that fights by your side. Animating multiple items attaches them to the same Guardian. You cannot animate unidentified weapons.",
 	skillTypes = { [2] = true, [9] = true, [21] = true, [18] = true, [36] = true, [49] = true, },
 	minionSkillTypes = { [1] = true, [24] = true, [25] = true, [28] = true, },
-	unsupported = true,
+	minionHasItemSet = true,
+	minionUses = {
+		["Weapon 1"] = true,
+		["Weapon 2"] = true,
+		["Helmet"] = true,
+		["Body Armour"] = true,
+		["Gloves"] = true,
+		["Boots"] = true,
+	},
+	minionList = {
+		"AnimatedArmour",
+	},
 	baseFlags = {
+		spell = true,
+		minion = true,
 	},
 	baseMods = {
 		skill("castTime", 0.6), 
@@ -372,17 +385,17 @@ skills["AnimateArmour"] = {
 		--"display_minion_monster_type" = 3
 	},
 	qualityMods = {
-		mod("MovementSpeed", "INC", 2, 0, 0, nil), --"base_movement_velocity_+%" = 2
+		mod("MinionModifier", "LIST", { mod = mod("MovementSpeed", "INC", 2) }), --"base_movement_velocity_+%" = 2
 	},
 	levelMods = {
 		[1] = skill("levelRequirement", nil), 
 		[2] = skill("manaCost", nil), 
 		--[3] = "animate_item_maximum_level_requirement"
-		--[4] = "maximum_life_+%"
-		[5] = mod("PhysicalDamage", "INC", nil, ModFlag.Melee), --"melee_physical_damage_+%"
+		[4] = mod("MinionModifier", "LIST", { mod = mod("Life", "INC", nil) }), --"maximum_life_+%"
+		[5] = mod("MinionModifier", "LIST", { mod = mod("PhysicalDamage", "INC", nil, ModFlag.Melee) }), --"melee_physical_damage_+%"
 		[6] = skill("minionLevel", nil), --"display_minion_monster_level"
-		[7] = mod("PhysicalMin", "BASE", nil, 0, KeywordFlag.Attack, nil), --"attack_minimum_added_physical_damage"
-		[8] = mod("PhysicalMax", "BASE", nil, 0, KeywordFlag.Attack, nil), --"attack_maximum_added_physical_damage"
+		[7] = mod("MinionModifier", "LIST", { mod = mod("PhysicalMin", "BASE", nil, 0, KeywordFlag.Attack) }), --"attack_minimum_added_physical_damage"
+		[8] = mod("MinionModifier", "LIST", { mod = mod("PhysicalMax", "BASE", nil, 0, KeywordFlag.Attack) }), --"attack_maximum_added_physical_damage"
 	},
 	levels = {
 		[1] = { 28, 19, 33, 0, 0, 28, 22, 34, },
@@ -659,8 +672,10 @@ skills["DevouringTotem"] = {
 	description = "Summons a totem that can consume nearby corpses. If you are hurt, it will destroy a corpse to leech life to you.",
 	skillTypes = { [2] = true, [17] = true, [12] = true, [19] = true, [30] = true, },
 	skillTotemId = 7,
-	unsupported = true,
 	baseFlags = {
+		spell = true,
+		totem = true,
+		duration = true,
 	},
 	baseMods = {
 		skill("castTime", 1), 
@@ -677,8 +692,8 @@ skills["DevouringTotem"] = {
 		[1] = skill("levelRequirement", nil), 
 		[2] = skill("manaCost", nil), 
 		[3] = skill("totemLevel", nil), --"base_active_skill_totem_level"
-		--[4] = "corpse_consumption_life_to_gain"
-		--[5] = "corpse_consumption_mana_to_gain"
+		[4] = skill("lifeLeechPerUse", nil), --"corpse_consumption_life_to_gain"
+		[5] = skill("manaLeechPerUse", nil), --"corpse_consumption_mana_to_gain"
 	},
 	levels = {
 		[1] = { 4, 20, 4, 30, 9, },
@@ -2195,7 +2210,7 @@ skills["Punishment"] = {
 		[1] = skill("levelRequirement", nil), 
 		[2] = skill("manaCost", nil), 
 		[3] = skill("duration", nil), --"base_skill_effect_duration"
-		[4] = mod("Damage", "MORE", nil, ModFlag.Melee, 0, { type = "GlobalEffect", effectType = "CurseBuff" }), --"newpunishment_melee_damage_+%_final"
+		[4] = mod("PhysicalDamage", "MORE", nil, ModFlag.Melee, 0, { type = "GlobalEffect", effectType = "CurseBuff" }), --"newpunishment_melee_damage_+%_final"
 		[5] = mod("Speed", "INC", nil, ModFlag.Attack, 0, { type = "GlobalEffect", effectType = "CurseBuff" }), --"newpunishment_attack_speed_+%"
 		[6] = mod("AreaOfEffect", "INC", nil), --"base_skill_area_of_effect_+%"
 	},

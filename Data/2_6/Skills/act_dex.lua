@@ -23,8 +23,17 @@ skills["AnimateWeapon"] = {
 	description = "Animates a melee weapon to fight by your side. You cannot animate unidentified weapons.",
 	skillTypes = { [36] = true, [12] = true, [9] = true, [21] = true, [2] = true, [18] = true, [49] = true, },
 	minionSkillTypes = { [1] = true, [24] = true, [25] = true, [28] = true, [54] = true, [56] = true, },
-	unsupported = true,
+	minionHasItemSet = true,
+	minionUses = {
+		["Weapon 1"] = true,
+	},
+	minionList = {
+		"AnimatedWeapon",
+	},
 	baseFlags = {
+		spell = true,
+		minion = true,
+		duration = true,
 	},
 	baseMods = {
 		skill("castTime", 0.8), 
@@ -33,16 +42,16 @@ skills["AnimateWeapon"] = {
 		--"number_of_animated_weapons_allowed" = 50
 	},
 	qualityMods = {
-		mod("MovementSpeed", "INC", 2, 0, 0, nil), --"base_movement_velocity_+%" = 2
+		mod("MinionModifier", "LIST", { mod = mod("MovementSpeed", "INC", 2) }), --"base_movement_velocity_+%" = 2
 	},
 	levelMods = {
 		[1] = skill("levelRequirement", nil), 
 		[2] = skill("manaCost", nil), 
 		--[3] = "animate_item_maximum_level_requirement"
-		[4] = mod("Damage", "MORE", nil, ModFlag.Hit), --"active_skill_damage_+%_final"
-		[5] = mod("Speed", "INC", nil, ModFlag.Attack, 0, nil), --"attack_speed_+%"
-		[6] = mod("PhysicalMin", "BASE", nil, ModFlag.Attack, 0, nil), --"attack_minimum_added_physical_damage"
-		[7] = mod("PhysicalMax", "BASE", nil, ModFlag.Attack, 0, nil), --"attack_maximum_added_physical_damage"
+		[4] = mod("MinionModifier", "LIST", { mod = mod("Damage", "MORE", nil, ModFlag.Hit) }), --"active_skill_damage_+%_final"
+		[5] = mod("MinionModifier", "LIST", { mod = mod("Speed", "INC", nil, ModFlag.Attack) }), --"attack_speed_+%"
+		[6] = mod("MinionModifier", "LIST", { mod = mod("PhysicalMin", "BASE", nil, 0, KeywordFlag.Attack) }), --"attack_minimum_added_physical_damage"
+		[7] = mod("MinionModifier", "LIST", { mod = mod("PhysicalMax", "BASE", nil, 0, KeywordFlag.Attack) }), --"attack_maximum_added_physical_damage"
 	},
 	levels = {
 		[1] = { 4, 9, 9, 0, 0, 4, 6, },
@@ -77,6 +86,7 @@ skills["AnimateWeapon"] = {
 		[30] = { 90, 45, 100, 232, 58, 48, 72, },
 	},
 }
+
 skills["NewArcticArmour"] = {
 	name = "Arctic Armour",
 	gemTags = {
@@ -262,7 +272,6 @@ skills["BearTrap"] = {
 		--"base_skill_is_trapped" = ?
 		--"display_skill_deals_secondary_damage" = ?
 		skill("showAverage", true), --"base_skill_show_average_damage_instead_of_dps" = ?
-		skill("trapCooldown", 3), 
 	},
 	qualityMods = {
 		mod("PhysicalDamage", "INC", 1), --"physical_damage_+%" = 1
@@ -1973,7 +1982,6 @@ skills["FireTrap"] = {
 		--"is_area_damage" = ?
 		--"base_skill_is_trapped" = ?
 		skill("showAverage", true), --"base_skill_show_average_damage_instead_of_dps" = ?
-		skill("trapCooldown", 3), 
 		skill("radius", 15), 
 	},
 	qualityMods = {
@@ -2904,7 +2912,6 @@ skills["IceTrap"] = {
 		--"base_skill_is_trapped" = ?
 		skill("showAverage", true), --"base_skill_show_average_damage_instead_of_dps" = ?
 		--"is_trap" = ?
-		skill("trapCooldown", 2), 
 	},
 	qualityMods = {
 		mod("AreaOfEffect", "INC", 0.5), --"base_skill_area_of_effect_+%" = 0.5

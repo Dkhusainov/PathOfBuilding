@@ -70,6 +70,10 @@ local skills, mod, flag, skill = ...
 	fromItem = true,
 #mods
 
+--skill TouchOfGod Lightning Slam
+--flags attack area lightning
+--mods
+
 #skill MerveilWarp Illusory Warp
 #flags spell area duration movement cold
 	fromItem = true,
@@ -78,6 +82,22 @@ local skills, mod, flag, skill = ...
 #skill LightningSpell Lightning Bolt
 #flags spell area lightning
 	fromItem = true,
+#mods
+
+#skill UniqueAnimateWeapon
+#flags spell minion
+#baseMod mod("DisableWeapons", "FLAG", true, 0, 0, { type = "GlobalEffect", effectType = "Buff" })
+#baseMod mod("Condition:Onslaught", "FLAG", true, 0, 0, { type = "GlobalEffect", effectType = "Buff" })
+#baseMod skill("minionLevel", 59)
+#setMod attack_damage_+%==mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", {val}, ModFlag.Attack) })
+#setMod attack_speed_+%==mod("MinionModifier", "LIST", { mod = mod("Speed", "INC", {val}, ModFlag.Attack) })
+	fromItem = true,
+	minionList = {
+		"UniqueAnimatedWeapon",
+	},
+	minionUses = {
+		["Weapon 1"] = true,
+	},
 #mods
 
 #skill TriggeredMoltenStrike Molten Burst
