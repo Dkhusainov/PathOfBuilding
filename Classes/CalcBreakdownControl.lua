@@ -342,7 +342,7 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 		if sourceType == "Item" then
 			-- Modifier is from an item, add item name and tooltip
 			local itemId = row.mod.source:match("Item:(%d+):.+")
-			local item = build.itemsTab.list[tonumber(itemId)]
+			local item = build.itemsTab.items[tonumber(itemId)]
 			if item then
 				row.sourceName = colorCodes[item.rarity]..item.name
 				row.sourceNameTooltip = function()
@@ -362,7 +362,7 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 			end
 		elseif sourceType == "Skill" then
 			-- Extract skill name
-			row.sourceName = self.calcsTab.build.data.skills[row.mod.source:match("Skill:(.+)")].name
+			row.sourceName = build.data.skills[row.mod.source:match("Skill:(.+)")].name
 		end
 		if row.mod.flags ~= 0 or row.mod.keywordFlags ~= 0 then
 			-- Combine, sort and format modifier flags
@@ -404,7 +404,7 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 				elseif tag.type == "SkillName" then
 					desc = "Skill: "..tag.skillName
 				elseif tag.type == "SkillId" then
-					desc = "Skill: "..data.skills[tag.skillId].name
+					desc = "Skill: "..build.data.skills[tag.skillId].name
 				elseif tag.type == "SkillType" then
 					for name, type in pairs(SkillType) do
 						if type == tag.skillType then
@@ -431,7 +431,7 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 end
 
 function CalcBreakdownClass:FormatModName(modName)
-	return modName:gsub("([%l%d])(%u)","%1 %2"):gsub("(%l)(%d)","%1 %2")
+	return modName:gsub("([%l%d]:?)(%u)","%1 %2"):gsub("(%l)(%d)","%1 %2")
 end
 
 function CalcBreakdownClass:FormatModValue(value, modType)

@@ -296,3 +296,77 @@ minions["SpiderMinion"] = {
 	modList = {
 	},
 }
+minions["AnimatedWeapon"] = {
+	name = "Animated Weapon",
+	life = 4,
+	fireResist = 40,
+	coldResist = 40,
+	lightningResist = 40,
+	chaosResist = 20,
+	damage = 0,
+	damageSpread = 0,
+	attackTime = 1.5,
+	attackRange = 4,
+	skillList = {
+		"Melee",
+	},
+	modList = {
+	},
+}
+minions["AnimatedArmour"] = {
+	name = "Animated Guardian",
+	life = 4.5,
+	fireResist = 40,
+	coldResist = 40,
+	lightningResist = 40,
+	chaosResist = 20,
+	damage = 0,
+	damageSpread = 0,
+	attackTime = 1.5,
+	attackRange = 4,
+	skillList = {
+		"Melee",
+	},
+	modList = {
+		mod("Speed", "MORE", 10, ModFlag.Attack, 0, { type = "Condition", var = "DualWielding" }),
+		mod("PhysicalDamage", "MORE", 20, ModFlag.Attack, 0, { type = "Condition", var = "DualWielding" }),
+		mod("BlockChance", "BASE", 15, 0, 0, { type = "Condition", var = "DualWielding" }),
+	},
+}
+minions["IcyRagingSpirit"] = {
+	name = "Grave Spirit",
+	life = 3,
+	fireResist = 40,
+	coldResist = 40,
+	lightningResist = 40,
+	chaosResist = 20,
+	damage = 2,
+	damageSpread = 0.2,
+	attackTime = 0.855,
+	attackRange = 6,
+	skillList = {
+		"RagingSpiritMeleeAttack",
+	},
+	modList = {
+		mod("PhysicalDamageConvertToCold", "BASE", 50),
+		mod("Speed", "MORE", 40, ModFlag.Attack),
+	},
+}
+minions["UniqueAnimatedWeapon"] = {
+	name = "Dancing Dervish",
+	life = 4,
+	fireResist = 40,
+	coldResist = 40,
+	lightningResist = 40,
+	chaosResist = 20,
+	damage = 0,
+	damageSpread = 0,
+	attackTime = 1.5,
+	attackRange = 60,
+	skillList = {
+		"Melee",
+		"DancingDervishCyclone",
+	},
+	modList = {
+	},
+}

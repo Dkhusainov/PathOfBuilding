@@ -243,7 +243,7 @@ local function doActorMisc(env, actor)
 	if env.mode_combat then
 		if modDB:Sum("FLAG", nil, "Fortify") then
 			local effect = m_floor(20 * (1 + modDB:Sum("INC", nil, "FortifyEffectOnSelf", "BuffEffectOnSelf") / 100))
-			modDB:NewMod("DamageTakenWhenHit", "INC", -20, "Fortify")
+			modDB:NewMod("DamageTakenWhenHit", "INC", -effect, "Fortify")
 		end
 		if modDB:Sum("FLAG", nil, "Onslaught") then
 			local effect = m_floor(20 * (1 + modDB:Sum("INC", nil, "OnslaughtEffect", "BuffEffectOnSelf") / 100))
@@ -332,8 +332,7 @@ function calcs.perform(env)
 			env.minion.modDB:AddMod(mod)
 		end
 		if env.aegisModList then
-			env.minion.itemList["Weapon 2"] = env.player.itemList["Weapon 2"]
-			env.player.itemList["Weapon 2"] = nil
+			env.minion.itemList["Weapon 3"] = env.player.itemList["Weapon 2"]
 			env.minion.modDB:AddList(env.aegisModList)
 		end 
 		if env.player.mainSkill.skillData.minionUseBowAndQuiver then
@@ -344,9 +343,31 @@ function calcs.perform(env)
 				env.minion.modDB:AddList(env.player.itemList["Weapon 2"].modList)
 			end
 		end
+		if env.minion.itemSet or env.minion.uses then
+			for slotName, slot in pairs(env.build.itemsTab.slots) do
+				if env.minion.uses[slotName] then
+					local item
+					if env.minion.itemSet then
+						if slot.weaponSet == 1 and env.minion.itemSet.useSecondWeaponSet then
+							slotName = slotName .. " Swap"
+						end
+						item = env.build.itemsTab.items[env.minion.itemSet[slotName].selItemId]
+					else
+						item = env.player.itemList[slotName]
+					end
+					if item then
+						env.minion.itemList[slotName] = item
+						env.minion.modDB:AddList(item.modList or item.slotModList[slot.slotNum])
+					end
+				end
+			end
+		end
 		if modDB:Sum("FLAG", nil, "StrengthAddedToMinions") then
 			env.minion.modDB:NewMod("Str", "BASE", round(calcLib.val(modDB, "Str")), "Player")
 		end
+	end
+	if env.aegisModList then
+		env.player.itemList["Weapon 2"] = nil
 	end
 
 	local breakdown
@@ -771,6 +792,14 @@ function calcs.perform(env)
 		for actor in pairs(affectedByCurse) do
 			actor.modDB:AddMod(value.mod)
 		end
+	end
+
+	-- Special handling for Dancing Dervish
+	if modDB:Sum("FLAG", nil, "DisableWeapons") then
+		env.player.weaponData1 = copyTable(env.data.unarmedWeaponData[env.classId])
+		modDB.conditions["Unarmed"] = true
+	elseif env.weaponModList1 then
+		modDB:AddList(env.weaponModList1)
 	end
 
 	-- Process misc buffs/modifiers

@@ -162,6 +162,9 @@ directiveTable.skill = function(state, args, out)
 		out:write('\tgemDex = ', skillGem.Dex, ',\n')
 		out:write('\tgemInt = ', skillGem.Int, ',\n')
 	else
+		if displayName == args and not granted.IsSupport then
+			displayName = ActiveSkills[granted.ActiveSkillsKey].DisplayedName
+		end
 		out:write('\tname = "', displayName, '",\n')
 		out:write('\thidden = true,\n')
 	end
@@ -343,19 +346,21 @@ end
 directiveTable.setMod = function(state, args, out)
 	local gem = state.gem
 	local id, def = args:match("(.*)==(.*)")
-	for _, mod in ipairs(gem.mods) do
-		if mod.id == id then
-			local name, mult = def:match("(.*);mult=(.*)")
-			if name then
-				mod.def = name
-				mod.mult = tonumber(mult)
-			else
-				local name, div = def:match("(.*);div=(.*)")
+	for _, list in ipairs({gem.mods,gem.qualityMods}) do
+		for _, mod in ipairs(list) do
+			if mod.id == id then
+				local name, mult = def:match("(.*);mult=(.*)")
 				if name then
 					mod.def = name
-					mod.mult = 1 / tonumber(div)
+					mod.mult = tonumber(mult)
 				else
-					mod.def = def
+					local name, div = def:match("(.*);div=(.*)")
+					if name then
+						mod.def = name
+						mod.mult = 1 / tonumber(div)
+					else
+						mod.def = def
+					end
 				end
 			end
 		end
@@ -437,12 +442,13 @@ directiveTable.mods = function(state, args, out)
 	state.gem = nil
 end
 
-for _, name in pairs({"act_str","act_dex","act_int","other","minion","spectre","sup_str","sup_dex","sup_int"}) do
+for _, name in pairs({"act_str","act_dex","act_int","other","glove","minion","spectre","sup_str","sup_dex","sup_int"}) do
 	processTemplateFile("Skills/"..name, directiveTable)
 end
 
 os.execute("xcopy Skills\\act_*.lua ..\\Data\\3_0\\Skills\\ /Y /Q")
 os.execute("xcopy Skills\\sup_*.lua ..\\Data\\3_0\\Skills\\ /Y /Q")
 os.execute("xcopy Skills\\other.lua ..\\Data\\3_0\\Skills\\ /Y /Q")
+os.execute("xcopy Skills\\glove.lua ..\\Data\\3_0\\Skills\\ /Y /Q")
 
 print("Skill data exported.")

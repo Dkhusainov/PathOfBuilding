@@ -6,7 +6,19 @@
 local skills, mod, flag, skill = ...
 
 #skill AnimateWeapon
-	unsupported = true,
+#flags spell minion duration
+	minionHasItemSet = true,
+	minionUses = {
+		["Weapon 1"] = true,
+	},
+	minionList = {
+		"AnimatedWeapon",
+	},
+#setMod base_movement_velocity_+%==mod("MinionModifier", "LIST", { mod = mod("MovementSpeed", "INC", {val}) })
+#setMod active_skill_damage_+%_final==mod("MinionModifier", "LIST", { mod = mod("Damage", "MORE", {val}) })
+#setMod attack_speed_+%==mod("MinionModifier", "LIST", { mod = mod("Speed", "INC", {val}, ModFlag.Attack) })
+#setMod attack_minimum_added_physical_damage==mod("MinionModifier", "LIST", { mod = mod("PhysicalMin", "BASE", {val}, 0, KeywordFlag.Attack) })
+#setMod attack_maximum_added_physical_damage==mod("MinionModifier", "LIST", { mod = mod("PhysicalMax", "BASE", {val}, 0, KeywordFlag.Attack) })
 #mods
 
 #skill NewArcticArmour
@@ -32,7 +44,6 @@ local skills, mod, flag, skill = ...
 
 #skill BearTrap
 #flags cast trap duration
-#baseMod skill("trapCooldown", 3)
 #mods
 
 #skill ChargedAttack
@@ -226,7 +237,6 @@ local skills, mod, flag, skill = ...
 
 #skill FireTrap
 #flags spell trap area duration fire
-#baseMod skill("trapCooldown", 3)
 #baseMod skill("dotIsArea", true)
 #baseMod skill("radius", 15)
 #mods
@@ -307,7 +317,6 @@ local skills, mod, flag, skill = ...
 
 #skill IceTrap
 #flags spell trap area cold
-#baseMod skill("trapCooldown", 2)
 #mods
 
 #skill DoubleSlash
