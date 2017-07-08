@@ -716,6 +716,11 @@ local specialModList = {
 	["you have onslaught while on full frenzy charges"] = { flag("Condition:Phasing", { type = "Condition", var = "AtMaxFrenzyCharges" }) },
 	["your minions spread caustic cloud on death, dealing 10%% of their maximum life as chaos damage per second"] = { flag("MinionCausticCloudOnDeath") },
 	["you and your minions have (%d+)%% physical damage reduction"] = function(num) return { mod("PhysicalDamageReduction", "BASE", num), mod("MinionModifier", "LIST", { mod = mod("PhysicalDamageReduction", "BASE", num) }) } end,
+	["every %d+ seconds:"] = { },
+	["gain chilling conflux for %d seconds"] = { },
+	["gain shocking conflux for %d seconds"] = { },
+	["gain igniting conflux for %d seconds"] = { },
+	["gain chilling, shocking and igniting conflux for %d seconds"] = { },
 	-- Item local modifiers
 	["has no sockets"] = { },
 	["has 1 socket"] = { },
@@ -1151,6 +1156,7 @@ local jewelFuncs = {
 	end,
 -- Threshold jewels
 	["With at least 40 Dexterity in Radius, Frost Blades Melee Damage Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
+	["With at least 40 Dexterity in Radius, Melee Damage dealy by Frost Blades Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
 	["With at least 40 Dexterity in Radius, Frost Blades has 25% increased Projectile Speed"] = getThreshold("Dex", "ProjectileSpeed", "INC", 25, { type = "SkillName", skillName = "Frost Blades" }),
 	["With at least 40 Dexterity in Radius, Ice Shot has 25% increased Area of Effect"] = getThreshold("Dex", "AreaOfEffect", "INC", 25, { type = "SkillName", skillName = "Ice Shot" }),
 	["With at least 40 Dexterity in Radius, Ice Shot has 50% chance of Projectiles Piercing"] = getThreshold("Dex", "PierceChance", "BASE", 50, { type = "SkillName", skillName = "Ice Shot" }),

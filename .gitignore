@@ -256,7 +256,6 @@ ModelManifest.xml
 *.lnk
 /Export/.~lock.data.ods#
 /Export/data.ods
-/Export/lol.csv
 /Export/test.lua
 *.csv#
 /Export/passive_skill_stat_descriptions.txt

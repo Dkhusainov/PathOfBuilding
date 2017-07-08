@@ -203,9 +203,6 @@ local modNameList = {
 	-- Projectile modifiers
 	["projectile"] = "ProjectileCount",
 	["projectiles"] = "ProjectileCount",
-	["pierce chance"] = "PierceChance",
-	["of projectiles piercing"] = "PierceChance",
-	["of arrows piercing"] = { "PierceChance", flags = ModFlag.Bow },
 	["projectile speed"] = "ProjectileSpeed",
 	["arrow speed"] = { "ProjectileSpeed", flags = ModFlag.Bow },
 	-- Totem/trap/mine modifiers
@@ -666,8 +663,7 @@ local specialModList = {
 	-- Ascendancy notables
 	["can allocate passives from the %a+'s starting point"] = { },
 	["movement skills cost no mana"] = { mod("ManaCost", "MORE", -100, nil, 0, KeywordFlag.Movement) },
-	["projectiles have (%d+)%% additional chance to pierce targets at the start of their movement, losing this chance as the projectile travels farther"] = function(num) return { mod("PierceChance", "BASE", num, { type = "DistanceRamp", ramp = {{10,1},{120,0}} }) } end,
-	["projectile critical strike chance increased by arrow pierce chance"] = { mod("CritChance", "INC", 1, nil, ModFlag.Projectile, 0, { type = "PerStat", stat = "PierceChance", div = 1 }) },
+	["projectiles pierce all nearby targets"] = { flag("PierceAllTargets") },
 	["always poison on hit while using a flask"] = { mod("PoisonChance", "BASE", 100, { type = "Condition", var = "UsingFlask" }) },
 	["armour received from body armour is doubled"] = { flag("Unbreakable") },
 	["you have fortify"] = { flag("Condition:Fortify") },
@@ -728,6 +724,11 @@ local specialModList = {
 	["you have onslaught while on full frenzy charges"] = { flag("Condition:Phasing", { type = "Condition", var = "AtMaxFrenzyCharges" }) },
 	["your minions spread caustic cloud on death, dealing 10%% of their maximum life as chaos damage per second"] = { flag("MinionCausticCloudOnDeath") },
 	["you and your minions have (%d+)%% physical damage reduction"] = function(num) return { mod("PhysicalDamageReduction", "BASE", num), mod("MinionModifier", "LIST", { mod = mod("PhysicalDamageReduction", "BASE", num) }) } end,
+	["every %d+ seconds:"] = { },
+	["gain chilling conflux for %d seconds"] = { },
+	["gain shocking conflux for %d seconds"] = { },
+	["gain igniting conflux for %d seconds"] = { },
+	["gain chilling, shocking and igniting conflux for %d seconds"] = { },
 	-- Item local modifiers
 	["has no sockets"] = { },
 	["has 1 socket"] = { },
@@ -836,6 +837,7 @@ local specialModList = {
 	-- Minions
 	["your strength is added to your minions"] = { flag("StrengthAddedToMinions") },
 	["minions poison enemies on hit"] = { mod("MinionModifier", "LIST", { mod = mod("PoisonChance", "BASE", 100) }) },
+	["minions have (%d+)%% chance to poison enemies on hit"] = function(num) return { mod("MinionModifier", "LIST", { mod = mod("PoisonChance", "BASE", num) }) } end,
 	["(%d+)%% increased minion damage if you have hit recently"] = function(num) return { mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", num) }, { type = "Condition", var = "HitRecently" }) } end,
 	["minions deal (%d+)%% increased damage per 10 dexterity"] = function(num) return { mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", num) }, { type = "PerStat", stat = "Dex", div = 10 }) } end,
 	["(%d+)%% increased golem damage for each type of golem you have summoned"] = function(num) return {
@@ -855,11 +857,14 @@ local specialModList = {
 	["(%d+) additional arrows"] = function(num) return { mod("ProjectileCount", "BASE", num, nil, ModFlag.Attack) } end,
 	["skills fire an additional projectile"] = { mod("ProjectileCount", "BASE", 1) },
 	["spells have an additional projectile"] = { mod("ProjectileCount", "BASE", 1, nil, ModFlag.Spell) },
-	["arrows always pierce"] = { mod("PierceChance", "BASE", 100, nil, ModFlag.Attack) },
+	["projectiles pierce (%d+) targets?"] = function(num) return { mod("PierceCount", "BASE", num) } end,
+	["arrows pierce one target"] = { mod("PierceCount", "BASE", 1, nil, ModFlag.Attack) },
+	["arrows pierce (%d+) targets?"] = function(num) return { mod("PierceCount", "BASE", num, nil, ModFlag.Attack) } end,
+	["arrows always pierce"] = { flag("PierceAllTargets", nil, ModFlag.Attack) },
+	["arrows pierce all targets"] = { flag("PierceAllTargets", nil, ModFlag.Attack) },
 	["arrows that pierce cause bleeding"] = { flag("ArrowsThatPierceCauseBleeding") },
-	["projectile damage increased by arrow pierce chance"] = { mod("Damage", "INC", 1, nil, ModFlag.Projectile, 0, { type = "PerStat", stat = "PierceChance", div = 1 }) },
-	["projectile damage increased by (%d+)%% of arrow pierce chance"] = function(num) return { mod("Damage", "INC", 1, nil, ModFlag.Projectile, 0, { type = "PerStat", stat = "PierceChance", div = 100/num }) } end,
-	["projectiles pierce while phasing"] = { mod("PierceChance", "BASE", 100, { type = "Condition", var = "Phasing" }) },
+	["projectiles pierce while phasing"] = { flag("PierceAllTargets", { type = "Condition", var = "Phasing" }) },
+	["arrows deal (%d+)%% increased damage to targets they pierce"] = function(num) return { mod("Damage", "INC", num, nil, ModFlag.Attack, { type = "StatThreshold", stat = "PierceCount", threshold = 1 }) } end,
 	-- Leech
 	["cannot leech life"] = { flag("CannotLeechLife") },
 	["cannot leech mana"] = { flag("CannotLeechMana") },
@@ -1166,6 +1171,7 @@ local jewelFuncs = {
 	end,
 -- Threshold jewels
 	["With at least 40 Dexterity in Radius, Frost Blades Melee Damage Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
+	["With at least 40 Dexterity in Radius, Melee Damage dealy by Frost Blades Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
 	["With at least 40 Dexterity in Radius, Frost Blades has 25% increased Projectile Speed"] = getThreshold("Dex", "ProjectileSpeed", "INC", 25, { type = "SkillName", skillName = "Frost Blades" }),
 	["With at least 40 Dexterity in Radius, Ice Shot has 25% increased Area of Effect"] = getThreshold("Dex", "AreaOfEffect", "INC", 25, { type = "SkillName", skillName = "Ice Shot" }),
 	["With at least 40 Dexterity in Radius, Ice Shot has 50% chance of Projectiles Piercing"] = getThreshold("Dex", "PierceChance", "BASE", 50, { type = "SkillName", skillName = "Ice Shot" }),
