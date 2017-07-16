@@ -170,7 +170,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 	local sockets = { }
 --	local orbitMult = { [0] = 0, m_pi / 3, m_pi / 6, m_pi / 6, m_pi / 20 }
 --	local orbitDist = { [0] = 0, 82, 162, 335, 493 }
-	for _, nodeIn in pairs(treeText.nodes) do
+	for _, nodeIn in pairs({}) do
         local node = {
             id = nodeIn.id,
             sd = nodeIn.sd

@@ -218,10 +218,3 @@ for _, targetVersion in ipairs(targetVersionList) do
 --	data[targetVersion].rares = dataModule("Rares")
 
 end
-
-function data.addSkill(key, skill)
-	data[liveTargetVersion].skills[key] = skill
-end
-function data.removeSkill(key)
-	data[liveTargetVersion].skills[key] = nil
-end

@@ -6,6 +6,21 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+local inspect = require("inspect")
+function printToFile(t, name, depth)
+    local file = io.open("debug/"..name..depth..".txt", "w")
+    io.output(file)
+    io.write("\n")
+    local options = {
+        depth = depth,
+        --        process = true
+    }
+    local result = inspect.inspect(t, options)
+    io.write(result)
+    io.write("\n")
+    io.close(file)
+end
+
 -- all the hacks for luaj to work
 bit = bit32
 function LoadModule(name, ...)
@@ -93,12 +108,13 @@ function unpack(t)
     end
 end
 
-LoadModule("Helper")
+function GetTime() return 0 end
 
 defaultTargetVersion = "3_0"
 liveTargetVersion = "3_0"
 targetVersionList = { "3_0" }
 
+LoadModule("Api")
 LoadModule("Modules/Common")
 LoadModule("Modules/Data")
 LoadModule("Modules/ModTools", liveTargetVersion)
@@ -106,17 +122,27 @@ LoadModule("Modules/ModTools", liveTargetVersion)
 LoadModule("Modules/CalcTools")
 
 local classList = {
+    "Control",
     "ControlHost",
+    "UndoHandler",
+    "ScrollBarControl",
+    "ButtonControl",
+    "ListControl",
+    "DropDownControl",
+    "EditControl",
+    "LabelControl",
+    "CheckBoxControl",
+    "CalcSectionControl",
+    "CalcBreakdownControl",
+    "GemSelectControl",
     "PassiveTree",
     "ModDB",
     "ModList",
+    "SkillList",
     "ConfigTab",
     "SkillsTab",
     "ItemsTab",
-    "CalcsTab",
-    "CalcSectionControl",
-    "CalcBreakdownControl"
-    --    "PassiveSpec"
+    "CalcsTab"
 }
 
 for _, className in pairs(classList) do
@@ -131,11 +157,6 @@ local main = {
 tree = common.New("PassiveTree", liveTargetVersion)
 build = LoadModule("Modules/Build", nil, main)
 build.Init(nil, nil, nil, liveTargetVersion)
-
-function parseMod(line)
-    return modLib.parseMod[liveTargetVersion](line)
-end
-
 
 function abc()
     build.spec = {}

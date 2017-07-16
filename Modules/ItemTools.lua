@@ -40,7 +40,7 @@ end
 -- Clean item text by removing or replacing unsupported or redundant characters or sequences
 function itemLib.sanitiseItemText(text)
 	-- Something something unicode support something grumble
-	return text:gsub("^%s+",""):gsub("%s+$",""):gsub("\r\n","\n"):gsub("%b<>",""):gsub("–","-"):gsub("\226\128\147","-"):gsub("\226\136\146","-"):gsub("ö","o"):gsub("\195\182","o"):gsub("[\128-\255]","?")
+	return text:gsub("^%s+",""):gsub("%s+$",""):gsub("\r\n","\n"):gsub("%b<>",""):gsub("ï¿½","-"):gsub("\226\128\147","-"):gsub("\226\136\146","-"):gsub("ï¿½","o"):gsub("\195\182","o"):gsub("[\128-\255]","?")
 end
 
 function itemLib.formatModLine(modLine, dbMode)
