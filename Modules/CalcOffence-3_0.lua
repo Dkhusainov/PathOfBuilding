@@ -1161,6 +1161,11 @@ function calcs.offence(env, actor)
 		else
 			output.FreezeChanceOnCrit = 100
 		end
+		if modDB:Sum("FLAG", cfg, "CannotKnockback") then
+			output.KnockbackChanceOnCrit = 0
+		else
+			output.KnockbackChanceOnCrit = modDB:Sum("BASE", cfg, "EnemyKnockbackChance")
+		end
 		cfg.skillCond["CriticalStrike"] = false
 		if modDB:Sum("FLAG", cfg, "CannotBleed") then
 			output.BleedChanceOnHit = 0
@@ -1186,6 +1191,11 @@ function calcs.offence(env, actor)
 			if modDB:Sum("FLAG", cfg, "CritsDontAlwaysFreeze") then
 				output.FreezeChanceOnCrit = output.FreezeChanceOnHit
 			end
+		end
+		if modDB:Sum("FLAG", cfg, "CannotKnockback") then
+			output.KnockbackChanceOnHit = 0
+		else
+			output.KnockbackChanceOnHit = modDB:Sum("BASE", cfg, "EnemyKnockbackChance")
 		end
 		if skillFlags.attack and skillFlags.projectile and modDB:Sum("FLAG", cfg, "ArrowsThatPierceCauseBleeding") and globalOutput.PierceCount > 0 then
 			output.BleedChanceOnHit = 100
@@ -1388,11 +1398,12 @@ function calcs.offence(env, actor)
 					output.PoisonPhysicalMin = min
 					output.PoisonPhysicalMax = max
 					if output.ChaosPoisonChance > 0 and output.PoisonChaosMax > 0 then
-						-- Separate chance for poison; adjust Physical damage and inflict chance
+						-- Additional chance for chaos; adjust Physical damage and inflict chance
 						local chance = (pass == 1) and "PoisonChanceOnCrit" or "PoisonChanceOnHit"
-						min = min * output[chance] / output.ChaosPoisonChance
-						max = max * output[chance] / output.ChaosPoisonChance
-						output[chance] = output.ChaosPoisonChance
+						local chaosChance = m_min(100, chance + output.ChaosPoisonChance)
+						min = min * output[chance] / chaosChance
+						max = max * output[chance] / chaosChance
+						output[chance] = chaosChance
 					end
 					totalMin = totalMin + min
 					totalMax = totalMax + max
@@ -1694,6 +1705,17 @@ function calcs.offence(env, actor)
 			end
 		end
 
+		-- Calculate knockback chance/distance
+		output.KnockbackChance = m_min(100, output.KnockbackChanceOnHit * (1 - output.CritChance / 100) + output.KnockbackChanceOnCrit * output.CritChance / 100)
+		if output.KnockbackChance > 0 then
+			output.KnockbackDistance = round(4 * calcLib.mod(modDB, cfg, "EnemyKnockbackDistance"))
+			if breakdown then
+				breakdown.KnockbackDistance = {
+					radius = output.KnockbackDistance,
+				}
+			end
+		end
+
 		-- Calculate enemy stun modifiers
 		local enemyStunThresholdRed = -modDB:Sum("INC", cfg, "EnemyStunThreshold")
 		if enemyStunThresholdRed > 75 then
@@ -1719,7 +1741,6 @@ function calcs.offence(env, actor)
 				t_insert(breakdown.EnemyStunDuration, s_format("= %.2fs", output.EnemyStunDuration))
 			end
 		end
-
 	end
 
 	-- Combine secondary effect stats

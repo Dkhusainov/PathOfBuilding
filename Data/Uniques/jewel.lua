@@ -344,8 +344,9 @@ Limited to: 2
 Radius: Medium
 {variant:1}(15-20)% increased Damage against Chilled Enemies
 {variant:2}(15-20)% increased Damage with Hits against Chilled Enemies
+{variant:2}Ice Shot Pierces 5 additional Targets with 40 Dexterity in Radius
 With at least 40 Dexterity in Radius, Ice Shot has 25% increased Area of Effect
-With at least 40 Dexterity in Radius, Ice Shot has 50% chance of Projectiles Piercing
+{variant:1}With at least 40 Dexterity in Radius, Ice Shot has 50% chance of Projectiles Piercing
 ]],[[
 Overwhelming Odds
 Crimson Jewel
@@ -724,7 +725,7 @@ Variant: {2_6}Current
 Variant: 3.0.0 Beta
 Limited to: 1
 {variant:1}15% chance of Projectiles Piercing
-{variant:2}Projectiles Pierce 1 Targets
+{variant:2}Projectiles Pierce an additional Target
 10% increased Projectile Damage
 ]],[[
 Survival Instincts
