@@ -7,18 +7,24 @@
 --
 
 local inspect = require("inspect")
-function printToFile(t, name, depth)
-    local file = io.open("debug/"..name..depth..".txt", "w")
+local json = require("json")
+function printTable(t, depth)
+    local file = io.open("debug.txt", "w")
     io.output(file)
     io.write("\n")
     local options = {
-        depth = depth,
+        depth = depth or 10,
         --        process = true
     }
     local result = inspect.inspect(t, options)
+    print(result)
     io.write(result)
     io.write("\n")
     io.close(file)
+end
+
+function tableToJson(t)
+    return json.encode(t)
 end
 
 -- all the hacks for luaj to work
@@ -123,6 +129,8 @@ LoadModule("Modules/CalcTools")
 
 local classList = {
     "Control",
+    "Tooltip",
+    "TooltipHost",
     "ControlHost",
     "UndoHandler",
     "ScrollBarControl",
@@ -171,5 +179,5 @@ function abc()
 --    printToFile(build.calcsTab, "s", 10)
 --    printToFile(build.calcsTab.mainEnv.player, "s", 10)
 --    printToFile(build.calcsTab.mainOutput, "s", 2)
-    printToFile(build.controls.statBox.list, "s", 10)
+    printTable(build.controls.statBox.list)
 end

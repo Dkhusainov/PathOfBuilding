@@ -8,7 +8,9 @@
 
 -----------------Data--------------
 function addSkill(key, skill)
-    data[liveTargetVersion].skills[key] = skill
+    if not data[liveTargetVersion].skills[key] then
+        data[liveTargetVersion].skills[key] = skill
+    end
 end
 function removeSkill(key)
     data[liveTargetVersion].skills[key] = nil

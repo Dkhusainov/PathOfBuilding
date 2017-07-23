@@ -307,7 +307,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 				tooltip:Clear()
 			elseif tooltip:CheckForUpdate(modList) then
 				if value.modId or #modList == 1 then
-					local mod = self.displayItem.affixes[value.modId or modList[1]]
+					local mod = self.displayItem.affixes[value.modId or modList[1]
 					tooltip:AddLine(16, "^7Affix: "..mod.affix)
 					for _, line in ipairs(mod) do
 						tooltip:AddLine(14, "^7"..line)
@@ -317,8 +317,8 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 					end
 				else
 					tooltip:AddLine(16, "^7"..#modList.." Tiers")
-					local minMod = self.displayItem.affixes[modList[1]]
-					local maxMod = self.displayItem.affixes[modList[#modList]]
+					local minMod = self.displayItem.affixes[modList[1]
+					local maxMod = self.displayItem.affixes[modList[#modList]
 					for l, line in ipairs(minMod) do
 						local minLine = line:gsub("%((%d[%d%.]*)%-(%d[%d%.]*)%)", "%1")
 						local maxLine = maxMod[l]:gsub("%((%d[%d%.]*)%-(%d[%d%.]*)%)", "%2")
@@ -449,7 +449,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 --	self:SetActiveItemSet(1)
 
 --	self:PopulateSlots()
---	self.lastSlot = self.slots[baseSlots[#baseSlots]]
+	self.lastSlot = self.slots[baseSlots[#baseSlots]]
 end)
 
 function ItemsTabClass:Load(xml, dbFileName)
