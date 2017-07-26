@@ -166,7 +166,7 @@ tree = common.New("PassiveTree", liveTargetVersion)
 build = LoadModule("Modules/Build", nil, main)
 build.Init(nil, nil, nil, liveTargetVersion)
 
-function abc()
+function recalculate()
     build.spec = {}
     build.spec.curClassId = 0
     build.spec.allocNodes = {}
@@ -174,10 +174,11 @@ function abc()
 --    printToFile(asecnadnt, "ascendant", 10)
     build.spec.allocNodes[58833] = asecnadnt
 --    build.calcsTab.buildOutput(build, "MAIN")
+    build.buildFlag = false
     build.calcsTab:BuildOutput()
     build:RefreshStatList()
 --    printToFile(build.calcsTab, "s", 10)
 --    printToFile(build.calcsTab.mainEnv.player, "s", 10)
 --    printToFile(build.calcsTab.mainOutput, "s", 2)
-    printTable(build.controls.statBox.list)
+    return build.controls.statBox.list
 end

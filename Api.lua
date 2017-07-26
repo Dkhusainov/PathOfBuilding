@@ -15,17 +15,3 @@ end
 function removeSkill(key)
     data[liveTargetVersion].skills[key] = nil
 end
-
------------------Skills-------------
-function newSkillGroup()
-    build.skillsTab.controls.groupList.controls.new.onClick()
-end
-
-function addGemToSkillGroup(name, index)
-    build.skillsTab.gemSlots[index].nameSpec.gemChangeFunc(name, false)
-end
-
------------------Other-------------
-function parseMod(line)
-    return modLib.parseMod[liveTargetVersion](line)
-end

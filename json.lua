@@ -117,7 +117,8 @@ encode = function(val, stack)
   if f then
     return f(val, stack)
   end
-  error("unexpected type '" .. t .. "'")
+-- todo  error("unexpected type '" .. t .. "'")
+  return "[]"
 end
 
 
