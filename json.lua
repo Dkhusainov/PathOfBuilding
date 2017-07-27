@@ -58,7 +58,8 @@ local function encode_table(val, stack)
     local n = 0
     for k in pairs(val) do
       if type(k) ~= "number" then
-        error("invalid table: mixed or invalid key types")
+--       todo error("invalid table: mixed or invalid key types")
+        return "[]"
       end
       n = n + 1
     end
