@@ -30,7 +30,10 @@ local GemSelectClass = common.NewClass("GemSelectControl", "EditControl", functi
 	self.gemChangeFunc = changeFunc
 	self.list = { }
 	self.changeFunc = function()
-		self.dropped = true
+		if not self.dropped then
+			self.dropped = true
+			self:UpdateSortCache()
+		end
 		self.selIndex = 0
 		self:BuildList(self.buf)
 		self:UpdateGem()
@@ -41,6 +44,7 @@ function GemSelectClass:BuildList(buf)
 	self.controls.scrollBar.offset = 0
 	wipeTable(self.list)
 	self.searchStr = buf
+	local gems = self.skillsTab.build.data.gems
 	if self.searchStr:match("%S") then
 		-- Search for gem name using increasingly broad search patterns
 		local patternList = {
@@ -52,13 +56,13 @@ function GemSelectClass:BuildList(buf)
 		local added = { }
 		for i, pattern in ipairs(patternList) do
 			local matchList = { }
-			for name, grantedEffect in pairs(self.skillsTab.build.data.gems) do
+			for name, grantedEffect in pairs(gems) do
 				if not added[name] and (" "..name:lower()):match(pattern) then
 					t_insert(matchList, name)
 					added[name] = true
 				end
 			end
-			t_sort(matchList)
+			self:SortGemList(matchList)
 			for _, name in ipairs(matchList) do
 				t_insert(self.list, name)
 			end
@@ -66,22 +70,22 @@ function GemSelectClass:BuildList(buf)
 		local tagName = self.searchStr:match("^%s*(%a+)%s*$")
 		if tagName then
 			local matchList = { }
-			for name, grantedEffect in pairs(self.skillsTab.build.data.gems) do
+			for name, grantedEffect in pairs(gems) do
 				if not added[name] and grantedEffect.gemTags[tagName:lower()] == true then
 					t_insert(matchList, name)
 					added[name] = true
 				end
 			end
-			t_sort(matchList)
+			self:SortGemList(matchList)
 			for _, name in ipairs(matchList) do
 				t_insert(self.list, name)
 			end
 		end
 	else
-		for name, grantedEffect in pairs(self.skillsTab.build.data.gems) do
+		for name, grantedEffect in pairs(gems) do
 			t_insert(self.list, name)
 		end
-		t_sort(self.list)
+		self:SortGemList(self.list)
 	end
 	if not self.list[1] then
 		self.list[1] = "<No matches>"
@@ -89,6 +93,89 @@ function GemSelectClass:BuildList(buf)
 	else
 		self.noMatches = false
 	end
+end
+
+function GemSelectClass:UpdateSortCache()
+	local sortCache = self.sortCache
+	if sortCache and sortCache.socketGroup == self.skillsTab.displayGroup and sortCache.gem == self.skillsTab.displayGroup.gemList[self.index] and 
+	  sortCache.outputRevision == self.skillsTab.build.outputRevision and sortCache.defaultLevel == self.skillsTab.defaultGemLevel and sortCache.defaultQuality == self.skillsTab.defaultGemQuality then
+		return
+	end
+	sortCache = {
+		socketGroup = self.skillsTab.displayGroup,
+		gem = self.skillsTab.displayGroup.gemList[self.index],
+		outputRevision = self.skillsTab.build.outputRevision,
+		defaultLevel = self.skillsTab.defaultGemLevel,
+		defaultQuality = self.skillsTab.defaultGemQuality,
+		canSupport = { },
+		dps = { },
+		dpsColor = { },
+	}
+	self.sortCache = sortCache
+	local gems = self.skillsTab.build.data.gems
+	if self.skillsTab.displayGroup.displaySkillList and self.skillsTab.displayGroup.displaySkillList[1] then
+		for name, grantedEffect in pairs(gems) do
+			if grantedEffect.support then
+				local gem = { grantedEffect = grantedEffect }
+				for _, activeSkill in ipairs(self.skillsTab.displayGroup.displaySkillList) do
+					if calcLib.gemCanSupport(gem, activeSkill) then
+						sortCache.canSupport[name] = true
+						break
+					end
+				end
+			end
+		end
+	end
+	local calcFunc, calcBase = self.skillsTab.build.calcsTab:GetMiscCalculator(self.build)
+	local baseDPS = calcBase.Minion and calcBase.Minion.CombinedDPS or calcBase.CombinedDPS
+	for name, grantedEffect in pairs(gems) do
+		if sortCache.canSupport[name] or grantedEffect.hasGlobalEffect then
+			local gemList = self.skillsTab.displayGroup.gemList
+			local oldGem
+			if gemList[self.index] then
+				oldGem = copyTable(gemList[self.index], true)
+			else
+				gemList[self.index] = { level = self.skillsTab.defaultGemLevel or 20, quality = self.skillsTab.defaultGemQuality or 0, enabled = true }
+			end
+			local gem = gemList[self.index]
+			gem.grantedEffect = grantedEffect
+			if not grantedEffect.levels[gem.level] then
+				gem.level = grantedEffect.defaultLevel
+			end
+			local output = calcFunc()
+			if oldGem then
+				gem.grantedEffect = oldGem.grantedEffect
+				gem.level = oldGem.level
+			else
+				gemList[self.index] = nil
+			end
+			sortCache.dps[name] = output.Minion and output.Minion.CombinedDPS or output.CombinedDPS
+		else
+			sortCache.dps[name] = baseDPS
+		end
+		if sortCache.dps[name] > baseDPS then
+			sortCache.dpsColor[name] = "^x228866"
+		elseif sortCache.dps[name] < baseDPS then
+			sortCache.dpsColor[name] = "^xFF4422"
+		else
+			sortCache.dpsColor[name] = "^xFFFF66"
+		end
+	end
+end
+
+function GemSelectClass:SortGemList(gemList)
+	local sortCache = self.sortCache
+	t_sort(gemList, function(a, b)
+		if sortCache.canSupport[a] == sortCache.canSupport[b] then
+			if self.skillsTab.sortGemsByDPS and sortCache.dps[a] ~= sortCache.dps[b] then
+				return sortCache.dps[a] > sortCache.dps[b]
+			else
+				return a < b
+			end
+		else
+			return sortCache.canSupport[a]
+		end
+	end)
 end
 
 function GemSelectClass:UpdateGem(setText, addUndo)
@@ -180,14 +267,19 @@ function GemSelectClass:Draw(viewPort)
 				end
 			end
 			DrawString(0, y, "LEFT", height - 4, "VAR", self.list[index])
-			if grantedEffect and grantedEffect.support and self.skillsTab.displayGroup.displaySkillList then
-				local gem = { grantedEffect = grantedEffect }
-				for _, activeSkill in ipairs(self.skillsTab.displayGroup.displaySkillList) do
-					if calcLib.gemCanSupport(gem, activeSkill) then
-						SetDrawColor(0.33, 1, 0.33)
-						main:DrawCheckMark(width - 4 - height / 2 - (scrollBar.enabled and 18 or 0), y + (height - 4) / 2, (height - 4) * 0.8)
-						break
+			if grantedEffect then
+				if grantedEffect.support and self.skillsTab.displayGroup.displaySkillList then
+					local gem = { grantedEffect = grantedEffect }
+					for _, activeSkill in ipairs(self.skillsTab.displayGroup.displaySkillList) do
+						if calcLib.gemCanSupport(gem, activeSkill) then
+							SetDrawColor(self.sortCache.dpsColor[self.list[index]])
+							main:DrawCheckMark(width - 4 - height / 2 - (scrollBar.enabled and 18 or 0), y + (height - 4) / 2, (height - 4) * 0.8)
+							break
+						end
 					end
+				elseif grantedEffect.hasGlobalEffect then
+					SetDrawColor(self.sortCache.dpsColor[self.list[index]])
+					DrawString(width - 4 - height / 2 - (scrollBar.enabled and 18 or 0), y - 2, "CENTER_X", height, "VAR", "+")
 				end
 			end
 		end
@@ -196,12 +288,13 @@ function GemSelectClass:Draw(viewPort)
 		if self.hoverSel then
 			local calcFunc, calcBase = self.skillsTab.build.calcsTab:GetMiscCalculator(self.build)
 			if calcFunc then
+				self.tooltip:Clear()
 				local gemList = self.skillsTab.displayGroup.gemList
 				local oldGem
 				if gemList[self.index] then
 					oldGem = copyTable(gemList[self.index], true)
 				else
-					gemList[self.index] = { level = 20, quality = 0, enabled = true }
+					gemList[self.index] = { level = self.skillsTab.defaultGemLevel or 20, quality = self.skillsTab.defaultGemQuality or 0, enabled = true }
 				end
 				local gem = gemList[self.index]
 				gem.grantedEffect = self.skillsTab.build.data.gems[self.list[self.hoverSel]]
@@ -215,8 +308,8 @@ function GemSelectClass:Draw(viewPort)
 				else
 					gemList[self.index] = nil
 				end
-				self.skillsTab.build:AddStatComparesToTooltip(calcBase, output, "^7Selecting this gem will give you:")
-				main:DrawTooltip(x, y + height + 2 + (self.hoverSel - 1) * (height - 4) - scrollBar.offset, width, height - 4, viewPort)
+				self.skillsTab.build:AddStatComparesToTooltip(self.tooltip, calcBase, output, "^7Selecting this gem will give you:")
+				self.tooltip:Draw(x, y + height + 2 + (self.hoverSel - 1) * (height - 4) - scrollBar.offset, width, height - 4, viewPort)
 			end
 		end
 		SetDrawLayer(nil, 0)
@@ -241,18 +334,21 @@ function GemSelectClass:Draw(viewPort)
 			local gem = self.skillsTab.displayGroup.gemList[self.index]
 			if gem and gem.grantedEffect then
 				SetDrawLayer(nil, 10)
-				main:AddTooltipLine(20, colorCodes.GEM..gem.grantedEffect.name)
-				main:AddTooltipSeparator(10)
-				main:AddTooltipLine(16, "^x7F7F7F"..gem.grantedEffect.gemTagString)
-				main:AddTooltipSeparator(10)
-				self.skillsTab.build:AddRequirementsToTooltip(gem.reqLevel, gem.reqStr, gem.reqDex, gem.reqInt)
+				self.tooltip:Clear()
+				self.tooltip.center = true
+				self.tooltip.color = colorCodes.GEM
+				self.tooltip:AddLine(20, colorCodes.GEM..gem.grantedEffect.name)
+				self.tooltip:AddSeparator(10)
+				self.tooltip:AddLine(16, "^x7F7F7F"..gem.grantedEffect.gemTagString)
+				self.tooltip:AddSeparator(10)
+				self.skillsTab.build:AddRequirementsToTooltip(self.tooltip, gem.reqLevel, gem.reqStr, gem.reqDex, gem.reqInt)
 				if gem.grantedEffect.description then
 					local wrap = main:WrapString(gem.grantedEffect.description, 16, m_max(DrawStringWidth(16, "VAR", gem.grantedEffect.gemTagString), 400))
 					for _, line in ipairs(wrap) do
-						main:AddTooltipLine(16, colorCodes.GEM..line)
+						self.tooltip:AddLine(16, colorCodes.GEM..line)
 					end
 				end
-				main:DrawTooltip(x, y, width, height, viewPort, colorCodes.GEM, true)
+				self.tooltip:Draw(x, y, width, height, viewPort)
 				SetDrawLayer(nil, 0)
 			end
 		end
@@ -263,6 +359,7 @@ function GemSelectClass:OnFocusGained()
 	self.EditControl:OnFocusGained()
 	self.dropped = true
 	self.selIndex = 0
+	self:UpdateSortCache()
 	self:BuildList("")
 	for index, name in pairs(self.list) do
 		if name == self.buf then
@@ -348,6 +445,7 @@ function GemSelectClass:OnKeyDown(key, doubleClick)
 		end
 	elseif key == "RETURN" or key == "RIGHTBUTTON" then
 		self.dropped = true
+		self:UpdateSortCache()
 		self.initialIndex = self.selIndex
 		self.initialBuf = self.buf
 		return self

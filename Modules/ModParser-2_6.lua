@@ -32,6 +32,7 @@ local formList = {
 	["penetrates (%d+)%% of"] = "PEN",
 	["penetrates (%d+)%% of enemy"] = "PEN",
 	["^([%d%.]+) (.+) regenerated per second"] = "REGENFLAT",
+	["^([%d%.]+)%% (.+) regenerated per second"] = "REGENPERCENT",
 	["^([%d%.]+)%% of (.+) regenerated per second"] = "REGENPERCENT",
 	["^regenerate ([%d%.]+) (.+) per second"] = "REGENFLAT",
 	["^regenerate ([%d%.]+)%% (.+) per second"] = "REGENPERCENT",
@@ -42,8 +43,12 @@ local formList = {
 	["adds (%d+)%-(%d+) (%a+) damage"] = "DMG",
 	["adds (%d+) to (%d+) (%a+) damage to attacks"] = "DMGATTACKS",
 	["adds (%d+)%-(%d+) (%a+) damage to attacks"] = "DMGATTACKS",
+	["adds (%d+) to (%d+) (%a+) attack damage"] = "DMGATTACKS",
+	["adds (%d+)%-(%d+) (%a+) attack damage"] = "DMGATTACKS",
 	["adds (%d+) to (%d+) (%a+) damage to spells"] = "DMGSPELLS",
 	["adds (%d+)%-(%d+) (%a+) damage to spells"] = "DMGSPELLS",
+	["adds (%d+) to (%d+) (%a+) spell damage"] = "DMGSPELLS",
+	["adds (%d+)%-(%d+) (%a+) spell damage"] = "DMGSPELLS",
 	["adds (%d+) to (%d+) (%a+) damage to attacks and spells"] = "DMGBOTH",
 	["adds (%d+)%-(%d+) (%a+) damage to attacks and spells"] = "DMGBOTH",
 	["adds (%d+) to (%d+) (%a+) damage to spells and attacks"] = "DMGBOTH", -- o_O
@@ -142,7 +147,7 @@ local modNameList = {
 	["damage is taken from mana before life"] = "DamageTakenFromManaBeforeLife",
 	["effect of curses on you"] = "CurseEffectOnSelf",
 	["recovery rate of life, mana and energy shield"] = { "LifeRecovery", "ManaRecovery", "EnergyShieldRecovery" },
-	-- Stun modifiers
+	-- Stun/knockback modifiers
 	["stun recovery"] = "StunRecovery",
 	["stun and block recovery"] = "StunRecovery",
 	["block and stun recovery"] = "StunRecovery",
@@ -151,6 +156,8 @@ local modNameList = {
 	["enemy stun threshold"] = "EnemyStunThreshold",
 	["stun duration on enemies"] = "EnemyStunDuration",
 	["stun duration"] = "EnemyStunDuration",
+	["to knock enemies back on hit"] = "EnemyKnockbackChance",
+	["knockback distance"] = "EnemyKnockbackDistance",
 	-- Auras/curses/buffs
 	["aura effect"] = "AuraEffect",
 	["effect of non-curse auras you cast"] = "AuraEffect",
@@ -164,6 +171,7 @@ local modNameList = {
 	["buff effect"] = "BuffEffect",
 	["effect of buffs on you"] = "BuffEffectOnSelf",
 	["effect of buffs granted by your golems"] = { "BuffEffect", tag = { type = "SkillType", skillType = SkillType.Golem } },
+	["effect of buffs granted by socketed golem skills"] = { "BuffEffect", addToSkill = { type = "SocketedIn", keyword = "golem" } },
 	["effect of the buff granted by your stone golems"] = { "BuffEffect", tag = { type = "SkillName", skillName = "Summon Stone Golem" } },
 	["effect of the buff granted by your lightning golems"] = { "BuffEffect", tag = { type = "SkillName", skillName = "Summon Lightning Golem" } },
 	["effect of the buff granted by your ice golems"] = { "BuffEffect", tag = { type = "SkillName", skillName = "Summon Ice Golem" } },
@@ -230,6 +238,7 @@ local modNameList = {
 	["radius of area skills"] = "AreaOfEffect",
 	["area of effect radius"] = "AreaOfEffect",
 	["area of effect"] = "AreaOfEffect",
+	["area of effect of skills"] = "AreaOfEffect",
 	["area of effect of area skills"] = "AreaOfEffect",
 	["duration"] = "Duration",
 	["skill effect duration"] = "Duration",
@@ -318,6 +327,7 @@ local modNameList = {
 	["flask life recovery rate"] = "FlaskLifeRecoveryRate",
 	["flask mana recovery rate"] = "FlaskManaRecoveryRate",
 	["extra charges"] = "FlaskCharges",
+	["maximum charges"] = "FlaskCharges",
 	["charges used"] = "FlaskChargesUsed",
 	["flask charges used"] = "FlaskChargesUsed",
 	["flask charges gained"] = "FlaskChargesGained",
@@ -365,6 +375,7 @@ local modFlagList = {
 	["for skills used by totems"] = { keywordFlags = KeywordFlag.Totem },
 	["of aura skills"] = { tag = { type = "SkillType", skillType = SkillType.Aura } },
 	["of curse skills"] = { keywordFlags = KeywordFlag.Curse },
+	["of minion skills"] = { tag = { type = "SkillType", skillType = SkillType.Minion } },
 	["for curses"] = { keywordFlags = KeywordFlag.Curse },
 	["warcry"] = { keywordFlags = KeywordFlag.Warcry },
 	["vaal"] = { keywordFlags = KeywordFlag.Vaal },
@@ -378,6 +389,7 @@ local modFlagList = {
 	["zombie"] = { addToMinion = true, addToMinionTag = { type = "SkillName", skillName = "Raise Zombie" } },
 	["raised zombie"] = { addToMinion = true, addToMinionTag = { type = "SkillName", skillName = "Raise Zombie" } },
 	["raised spectre"] = { addToMinion = true, addToMinionTag = { type = "SkillName", skillName = "Raise Spectre" } },
+	["golem"] = { },
 	["chaos golem"] = { addToMinion = true, addToMinionTag = { type = "SkillName", skillName = "Summon Chaos Golem" } },
 	["flame golem"] = { addToMinion = true, addToMinionTag = { type = "SkillName", skillName = "Summon Flame Golem" } },
 	["increased flame golem"] = { addToMinion = true, addToMinionTag = { type = "SkillName", skillName = "Summon Flame Golem" } },
@@ -422,11 +434,11 @@ local preFlagList = {
 	["^trap and mine damage "] = { keywordFlags = bor(KeywordFlag.Trap, KeywordFlag.Mine) },
 	["^left ring slot: "] = { tag = { type = "SlotNumber", num = 1 } },
 	["^right ring slot: "] = { tag = { type = "SlotNumber", num = 2 } },
-	["^socketed gems have "] = { tag = { type = "SocketedIn" } },
-	["^socketed gems deal "] = { tag = { type = "SocketedIn" } },
-	["^socketed curse gems have "] = { tag = { type = "SocketedIn", keyword = "curse" } },
-	["^socketed melee gems have "] = { tag = { type = "SocketedIn", keyword = "melee" } },
-	["^socketed golem gems have "] = { tag = { type = "SocketedIn", keyword = "golem" } },
+	["^socketed gems [hgd][ae][via][enl] "] = { addToSkill = { type = "SocketedIn" } },
+	["^socketed curse gems [hgd][ae][via][enl] "] = { addToSkill = { type = "SocketedIn", keyword = "curse" } },
+	["^socketed melee gems [hgd][ae][via][enl] "] = { addToSkill = { type = "SocketedIn", keyword = "melee" } },
+	["^socketed golem gems [hgd][ae][via][enl] "] = { addToSkill = { type = "SocketedIn", keyword = "golem" } },
+	["^socketed golem skills [hgd][ae][via][enl] "] = { addToSkill = { type = "SocketedIn", keyword = "golem" } },
 	["^your flasks grant "] = { },
 	["^when hit, "] = { },
 	["^you and allies [hgd][ae][via][enl] "] = { },
@@ -452,6 +464,7 @@ local modTagList = {
 	["for each magic item you have equipped"] = { tag = { type = "Multiplier", var = "MagicItem" } },
 	["for each rare item you have equipped"] = { tag = { type = "Multiplier", var = "RareItem" } },
 	["for each unique item you have equipped"] = { tag = { type = "Multiplier", var = "UniqueItem" } },
+	["per buff on you"] = { tag = { type = "Multiplier", var = "BuffOnSelf" } },
 	["per curse on enemy"] = { tag = { type = "Multiplier", var = "CurseOnEnemy" } },
 	["per curse on you"] = { tag = { type = "Multiplier", var = "CurseOnSelf" } },
 	["to you and allies"] = { },
@@ -497,6 +510,7 @@ local modTagList = {
 	["wh[ie][ln]e? no mana is reserved"] = { tag = { type = "Condition", var = "NoManaReserved" } },
 	["wh[ie][ln]e? on full energy shield"] = { tag = { type = "Condition", var = "FullEnergyShield" } },
 	["wh[ie][ln]e? not on full energy shield"] = { tag = { type = "Condition", var = "FullEnergyShield", neg = true } },
+	["while stationary"] = { tag = { type = "Condition", var = "Stationary" } },
 	["while you have no power charges"] = { tag = { type = "Condition", var = "HaveNoPowerCharges" } },
 	["while you have no frenzy charges"] = { tag = { type = "Condition", var = "HaveNoFrenzyCharges" } },
 	["while you have no endurance charges"] = { tag = { type = "Condition", var = "HaveNoEnduranceCharges" } },
@@ -683,10 +697,10 @@ local specialModList = {
 	} end,
 	["grants armour equal to (%d+)%% of your reserved life to you and nearby allies"] = function(num) return { mod("GrantReservedLifeAsAura", "LIST", { mod = mod("Armour", "BASE", num / 100) }) } end,
 	["grants maximum energy shield equal to (%d+)%% of your reserved mana to you and nearby allies"] = function(num) return { mod("GrantReservedManaAsAura", "LIST", { mod = mod("EnergyShield", "BASE", num / 100) }) } end,
-	["skills from your helmet penetrate (%d+)%% elemental resistances"] = function(num) return { mod("ElementalPenetration", "BASE", num, { type = "SocketedIn", slotName = "Helmet" }) } end,
-	["skills from your gloves have (%d+)%% increased area of effect"] = function(num) return { mod("AreaOfEffect", "INC", num, { type = "SocketedIn", slotName = "Gloves" }) } end,
-	["skills from your boots leech (%d+)%% of damage as life"] = function(num) return { mod("DamageLifeLeech", "BASE", num, { type = "SocketedIn", slotName = "Boots" }) } end,
-	["skills in your helm can have up to (%d+) additional totems? summoned at a time"] = function(num) return { mod("ActiveTotemLimit", "BASE", num, { type = "SocketedIn", slotName = "Helmet" }) } end,
+	["skills from your helmet penetrate (%d+)%% elemental resistances"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("ElementalPenetration", "BASE", num) }, { type = "SocketedIn", slotName = "Helmet" }) } end,
+	["skills from your gloves have (%d+)%% increased area of effect"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("AreaOfEffect", "INC", num) }, { type = "SocketedIn", slotName = "Gloves" }) } end,
+	["skills from your boots leech (%d+)%% of damage as life"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("DamageLifeLeech", "BASE", num) }, { type = "SocketedIn", slotName = "Boots" }) } end,
+	["skills in your helm can have up to (%d+) additional totems? summoned at a time"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("ActiveTotemLimit", "BASE", num) }, { type = "SocketedIn", slotName = "Helmet" }) } end,
 	["(%d+)%% less totem damage per totem"] = function(num) return { mod("Damage", "MORE", -num, nil, 0, KeywordFlag.Totem, { type = "PerStat", stat = "ActiveTotemLimit", div = 1 }) } end,
 	["poison you inflict with critical strikes deals (%d+)%% more damage"] = function(num) return { mod("PoisonDamageOnCrit", "MORE", 100) } end,
 	["bleeding you inflict on maimed enemies deals (%d+)%% more damage"] = function(num) return { mod("Damage", "MORE", num, nil, 0, KeywordFlag.Bleed, { type = "EnemyCondition", var = "Maimed"}) } end,
@@ -721,6 +735,7 @@ local specialModList = {
 	["gain shocking conflux for %d seconds"] = { },
 	["gain igniting conflux for %d seconds"] = { },
 	["gain chilling, shocking and igniting conflux for %d seconds"] = { },
+	["(%d+)%% additional block chance for %d second every %d seconds"] = function(num) return { mod("BlockChance", "BASE", num, { type = "Condition", var = "BastionOfHope" }) } end,
 	-- Item local modifiers
 	["has no sockets"] = { },
 	["has 1 socket"] = { },
@@ -741,13 +756,13 @@ local specialModList = {
 	["%+(%d+) to level of socketed (%a+) gems"] = function(num, _, type) return { mod("GemProperty", "LIST", { keyword = type, key = "level", value = num }, { type = "SocketedIn" }) } end,
 	["%+(%d+)%% to quality of socketed (%a+) gems"] = function(num, _, type) return { mod("GemProperty", "LIST", { keyword = type, key = "quality", value = num }, { type = "SocketedIn" }) } end,
 	["%+(%d+) to level of active socketed skill gems"] = function(num) return { mod("GemProperty", "LIST", { keyword = "active_skill", key = "level", value = num }, { type = "SocketedIn" }) } end,
-	["socketed gems fire an additional projectile"] = { mod("ProjectileCount", "BASE", 1, { type = "SocketedIn" }) },
-	["socketed gems fire (%d+) additional projectiles"] = function(num) return { mod("ProjectileCount", "BASE", num, { type = "SocketedIn" }) } end,
+	["socketed gems fire an additional projectile"] = { mod("ExtraSkillMod", "LIST", { mod = mod("ProjectileCount", "BASE", 1) }, { type = "SocketedIn" }) },
+	["socketed gems fire (%d+) additional projectiles"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("ProjectileCount", "BASE", num) }, { type = "SocketedIn" }) } end,
 	["socketed gems reserve no mana"] = { mod("ManaReserved", "MORE", -100, { type = "SocketedIn" }) },
 	["socketed skill gems get a (%d+)%% mana multiplier"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("ManaCost", "MORE", num - 100) }, { type = "SocketedIn" }) } end,
 	["socketed gems have blood magic"] = { flag("SkillBloodMagic", { type = "SocketedIn" }) },
-	["socketed gems gain (%d+)%% of physical damage as extra lightning damage"] = function(num) return { mod("PhysicalDamageGainAsLightning", "BASE", num, { type = "SocketedIn" }) } end,
-	["socketed red gems get (%d+)%% physical damage as extra fire damage"] = function(num) return { mod("PhysicalDamageGainAsFire", "BASE", num, { type = "SocketedIn", keyword = "strength" }) } end,
+	["socketed gems gain (%d+)%% of physical damage as extra lightning damage"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("PhysicalDamageGainAsLightning", "BASE", num) }, { type = "SocketedIn" }) } end,
+	["socketed red gems get (%d+)%% physical damage as extra fire damage"] = function(num) return { mod("ExtraSkillMod", "LIST", { mod = mod("PhysicalDamageGainAsFire", "BASE", num) }, { type = "SocketedIn", keyword = "strength" }) } end,
 	-- Extra skill/support
 	["grants level (%d+) (.+)"] = function(num, _, skill) return extraSkill(skill, num) end,
 	["casts level (%d+) (.+) when equipped"] = function(num, _, skill) return extraSkill(skill, num) end,
@@ -810,11 +825,12 @@ local specialModList = {
 	-- Buffs/debuffs
 	["phasing"] = { flag("Condition:Phasing") },
 	["onslaught"] = { flag("Condition:Onslaught") },
+	["you have phasing if you've killed recently"] = { flag("Condition:Phasing", { type = "Condition", var = "KilledRecently" }) },
 	["your aura buffs do not affect allies"] = { flag("SelfAurasCannotAffectAllies") },
 	["allies' aura buffs do not affect you"] = { flag("AlliesAurasCannotAffectSelf") },
 	["enemies can have 1 additional curse"] = { mod("EnemyCurseLimit", "BASE", 1) },
 	["nearby enemies have (%d+)%% increased effect of curses on them"] = function(num) return { mod("EnemyModifier", "LIST", { mod = mod("CurseEffectOnSelf", "INC", num) }) } end,
-	["your hits inflict decay, dealing (%d+) chaos damage per second for 10 seconds"] = function(num) return { mod("SkillData", "LIST", { key = "decay", value = num, merge = "MAX" }) } end,
+	["your hits inflict decay, dealing (%d+) chaos damage per second for %d+ seconds"] = function(num) return { mod("SkillData", "LIST", { key = "decay", value = num, merge = "MAX" }) } end,
 	-- Traps, Mines and Totems
 	["traps and mines deal (%d+)%-(%d+) additional physical damage"] = function(_, min, max) return { mod("PhysicalMin", "BASE", tonumber(min), nil, 0, bor(KeywordFlag.Trap, KeywordFlag.Mine)), mod("PhysicalMax", "BASE", tonumber(max), nil, 0, bor(KeywordFlag.Trap, KeywordFlag.Mine)) } end,
 	["traps and mines deal (%d+) to (%d+) additional physical damage"] = function(_, min, max) return { mod("PhysicalMin", "BASE", tonumber(min), nil, 0, bor(KeywordFlag.Trap, KeywordFlag.Mine)), mod("PhysicalMax", "BASE", tonumber(max), nil, 0, bor(KeywordFlag.Trap, KeywordFlag.Mine)) } end,
@@ -881,6 +897,13 @@ local specialModList = {
 	["immunity to bleeding during flask effect"] = { mod("AvoidBleed", "BASE", 100, { type = "Condition", var = "UsingFlask" }) },
 	["immune to poison during flask effect"] = { mod("AvoidPoison", "BASE", 100, { type = "Condition", var = "UsingFlask" }) },
 	["immune to curses during flask effect"] = { mod("AvoidCurse", "BASE", 100, { type = "Condition", var = "UsingFlask" }) },
+	-- Knockback
+	["cannot knock enemies back"] = { flag("CannotKnockback") },
+	["knocks back enemies if you get a critical strike with a staff"] = { mod("EnemyKnockbackChance", "BASE", 100, nil, ModFlag.Staff, { type = "Condition", var = "CriticalStrike" }) },
+	["knocks back enemies if you get a critical strike with a bow"] = { mod("EnemyKnockbackChance", "BASE", 100, nil, ModFlag.Bow, { type = "Condition", var = "CriticalStrike" }) },
+	["bow knockback at close range"] = { mod("EnemyKnockbackChance", "BASE", 100, nil, ModFlag.Bow, { type = "Condition", var = "AtCloseRange" }) },
+	["adds knockback during flask effect"] = { mod("EnemyKnockbackChance", "BASE", 100, { type = "Condition", var = "UsingFlask" }) },
+	["adds knockback to melee attacks during flask effect"] = { mod("EnemyKnockbackChance", "BASE", 100, nil, ModFlag.Melee, { type = "Condition", var = "UsingFlask" }) },
 	-- Flasks
 	["flasks do not apply to you"] = { flag("FlasksDoNotApplyToPlayer") },
 	["flasks apply to your zombies and spectres"] = { flag("FlasksApplyToMinion", { type = "SkillName", skillNameList = { "Raise Zombie", "Raise Spectre" } }) },
@@ -998,6 +1021,7 @@ local suffixTypes = {
 	["converted to cold damage"] = "ConvertToCold",
 	["converted to fire damage"] = "ConvertToFire",
 	["converted to chaos damage"] = "ConvertToChaos",
+	["added as energy shield"] = "GainAsEnergyShield",
 	["as extra maximum energy shield"] = "GainAsEnergyShield",
 	["converted to energy shield"] = "ConvertToEnergyShield",
 	["as physical damage"] = "AsPhysical",
@@ -1057,12 +1081,12 @@ local function getSimpleConv(srcList, dst, type, remove, factor)
 				for _, mod in ipairs(nodeMods) do
 					if mod.name == src and mod.type == type then
 						if remove then
-							out:NewMod(src, type, -mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod.tagList))
+							out:NewMod(src, type, -mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod))
 						end
 						if factor then
-							out:NewMod(dst, type, math.floor(mod.value * factor), "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod.tagList))
+							out:NewMod(dst, type, math.floor(mod.value * factor), "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod))
 						else
-							out:NewMod(dst, type, mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod.tagList))
+							out:NewMod(dst, type, mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod))
 						end
 					end
 				end	
@@ -1115,19 +1139,19 @@ local jewelFuncs = {
 			local mask3 = bor(ModFlag.Weapon2H, ModFlag.WeaponMelee)
 			for _, mod in ipairs(nodeMods) do
 				if band(mod.flags, mask1) ~= 0 or band(mod.flags, mask2) == mask2 or band(mod.flags, mask3) == mask3 then
-					out:NewMod(mod.name, mod.type, -mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod.tagList))
-					out:NewMod(mod.name, mod.type, mod.value, "Tree:Jewel", bor(band(mod.flags, bnot(bor(mask1, mask2, mask3))), ModFlag.Bow), mod.keywordFlags, unpack(mod.tagList))
-				elseif mod.tagList[1] then
-					for _, tag in ipairs(mod.tagList) do
+					out:NewMod(mod.name, mod.type, -mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod))
+					out:NewMod(mod.name, mod.type, mod.value, "Tree:Jewel", bor(band(mod.flags, bnot(bor(mask1, mask2, mask3))), ModFlag.Bow), mod.keywordFlags, unpack(mod))
+				elseif mod[1] then
+					for _, tag in ipairs(mod) do
 						if tag.type == "Condition" and tag.var == "UsingStaff" then
-							local newTagList = copyTable(mod.tagList)
+							local newTagList = copyTable(mod)
 							for _, tag in ipairs(newTagList) do
 								if tag.type == "Condition" and tag.var == "UsingStaff" then
 									tag.var = "UsingBow"
 									break
 								end
 							end
-							out:NewMod(mod.name, mod.type, -mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod.tagList))
+							out:NewMod(mod.name, mod.type, -mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(mod))
 							out:NewMod(mod.name, mod.type, mod.value, "Tree:Jewel", mod.flags, mod.keywordFlags, unpack(newTagList))
 							break
 						end
@@ -1156,7 +1180,7 @@ local jewelFuncs = {
 	end,
 -- Threshold jewels
 	["With at least 40 Dexterity in Radius, Frost Blades Melee Damage Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
-	["With at least 40 Dexterity in Radius, Melee Damage dealy by Frost Blades Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
+	["With at least 40 Dexterity in Radius, Melee Damage dealt by Frost Blades Penetrates 15% Cold Resistance"] = getThreshold("Dex", "ColdPenetration", "BASE", 15, ModFlag.Melee, { type = "SkillName", skillName = "Frost Blades" }),
 	["With at least 40 Dexterity in Radius, Frost Blades has 25% increased Projectile Speed"] = getThreshold("Dex", "ProjectileSpeed", "INC", 25, { type = "SkillName", skillName = "Frost Blades" }),
 	["With at least 40 Dexterity in Radius, Ice Shot has 25% increased Area of Effect"] = getThreshold("Dex", "AreaOfEffect", "INC", 25, { type = "SkillName", skillName = "Ice Shot" }),
 	["With at least 40 Dexterity in Radius, Ice Shot has 50% chance of Projectiles Piercing"] = getThreshold("Dex", "PierceChance", "BASE", 50, { type = "SkillName", skillName = "Ice Shot" }),
@@ -1228,8 +1252,8 @@ local function parseMod(line, order)
 	end
 
 	-- Check for a flag/tag specification at the start of the line
-	local modFlag
-	modFlag, line = scan(line, preFlagList)
+	local preFlag
+	preFlag, line = scan(line, preFlagList)
 
 	-- Check for skill name at the start of the line
 	local skillTag
@@ -1275,10 +1299,9 @@ local function parseMod(line, order)
 		skillTag, line = scan(line, skillNameList, true)
 	end
 	
-	-- Scan for flags if one hasn't been found already
-	if not modFlag then
-		modFlag, line = scan(line, modFlagList, true)
-	end
+	-- Scan for flags
+	local modFlag
+	modFlag, line = scan(line, modFlagList, true)
 
 	-- Find modifier value and type according to form
 	local modValue = num
@@ -1342,7 +1365,7 @@ local function parseMod(line, order)
 	local keywordFlags = 0
 	local tagList = { }
 	local misc = { }
-	for _, data in pairs({ modName, modFlag, modTag, modTag2, skillTag }) do
+	for _, data in pairs({ modName, preFlag, modFlag, modTag, modTag2, skillTag }) do
 		if type(data) == "table" then
 			flags = bor(flags, data.flags or 0)
 			keywordFlags = bor(keywordFlags, data.keywordFlags or 0)
@@ -1369,7 +1392,7 @@ local function parseMod(line, order)
 			value = type(modValue) == "table" and modValue[i] or modValue,
 			flags = flags,
 			keywordFlags = keywordFlags,
-			tagList = tagList,
+			unpack(tagList)
 		}
 	end
 	if modList[1] then
@@ -1382,8 +1405,11 @@ local function parseMod(line, order)
 		elseif misc.newAura then
 			-- Modifiers that add extra auras
 			for i, effectMod in ipairs(modList) do
-				local tagList = effectMod.tagList
-				effectMod.tagList = { }
+				local tagList = { }
+				for i, tag in ipairs(effectMod) do
+					tagList[i] = tag
+					effectMod[i] = nil
+				end
 				modList[i] = mod("ExtraAura", "LIST", { mod = effectMod, onlyAllies = misc.newAuraOnlyAllies }, unpack(tagList))
 			end
 		elseif misc.affectedByAura then
@@ -1397,7 +1423,7 @@ local function parseMod(line, order)
 				modList[i] = mod("MinionModifier", "LIST", { mod = effectMod }, misc.addToMinionTag)
 			end
 		elseif misc.addToSkill then
-			-- Skill enchants that add additional effects
+			-- Skill enchants or socketed gem modifiers that add additional effects
 			for i, effectMod in ipairs(modList) do
 				modList[i] = mod("ExtraSkillMod", "LIST", { mod = effectMod }, misc.addToSkill)
 			end
@@ -1426,4 +1452,4 @@ return function(line)
 		end]]
 	end
 	return unpack(copyTable(cache[line]))
-end
+end, cache

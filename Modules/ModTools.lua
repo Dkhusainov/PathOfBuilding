@@ -3,11 +3,17 @@
 -- Module: Mod Tools
 -- Various functions for dealing with modifiers
 --
+local launch = ...
 
 local pairs = pairs
+local ipairs = ipairs
+local select = select
+local type = type
 local t_insert = table.insert
+local t_sort = table.sort
 local m_floor = math.floor
 local m_abs = math.abs
+local s_format = string.format
 local band = bit.band
 local bor = bit.bor
 
@@ -37,13 +43,29 @@ function modLib.createMod(modName, modType, modVal, ...)
 		flags = flags,
 		keywordFlags = keywordFlags,
 		source = source,
-		tagList = { select(tagStart, ...) }
+		select(tagStart, ...)
 	}
 end
 
 modLib.parseMod = { }
+modLib.parseModCache = { }
 for _, targetVersion in pairs(targetVersionList) do
-	modLib.parseMod[targetVersion] = LoadModule("Modules/ModParser-"..targetVersion)
+	modLib.parseMod[targetVersion], modLib.parseModCache[targetVersion] = LoadModule("Modules/ModParser-"..targetVersion, launch)
+end
+
+function modLib.compareModParams(modA, modB)
+	if modA.name ~= modB.name or modA.type ~= modB.type or modA.flags ~= modB.flags or modA.keywordFlags ~= modB.keywordFlags or #modA ~= #modB then
+		return false
+	end
+	for i, tag in ipairs(modA) do
+		if tag.type ~= modB[i].type then
+			return false
+		end
+		if modLib.formatTag(tag) ~= modLib.formatTag(modB[i]) then
+			return false
+		end
+	end
+	return true
 end
 
 function modLib.formatFlags(flags, src)
@@ -53,7 +75,7 @@ function modLib.formatFlags(flags, src)
 			t_insert(flagNames, name)
 		end
 	end
-	table.sort(flagNames)
+	t_sort(flagNames)
 	local ret
 	for i, name in ipairs(flagNames) do
 		ret = (ret and ret.."," or "") .. name
@@ -71,7 +93,7 @@ function modLib.formatTag(tag)
 			t_insert(paramNames, name)
 		end
 	end
-	table.sort(paramNames)
+	t_sort(paramNames)
 	if haveType then
 		t_insert(paramNames, 1, "type")
 	end
@@ -93,7 +115,7 @@ function modLib.formatTag(tag)
 			end
 			val = "{"..val.."}"
 		end
-		str = str .. string.format("%s=%s", paramName, tostring(val))
+		str = str .. s_format("%s=%s", paramName, tostring(val))
 	end
 	return str
 end
@@ -119,7 +141,7 @@ function modLib.formatValue(value)
 			t_insert(paramNames, name)
 		end
 	end
-	table.sort(paramNames)
+	t_sort(paramNames)
 	if haveType then
 		t_insert(paramNames, 1, "type")
 	end
@@ -129,16 +151,16 @@ function modLib.formatValue(value)
 			ret = ret .. "/"
 		end
 		if paramName == "mod" then
-			ret = ret .. string.format("%s=[%s]", paramName, modLib.formatMod(value[paramName]))
+			ret = ret .. s_format("%s=[%s]", paramName, modLib.formatMod(value[paramName]))
 		else
-			ret = ret .. string.format("%s=%s", paramName, tostring(value[paramName]))
+			ret = ret .. s_format("%s=%s", paramName, tostring(value[paramName]))
 		end
 	end
 	return "{"..ret.."}"
 end
 
 function modLib.formatModParams(mod)
-	return string.format("%s|%s|%s|%s|%s", mod.name, mod.type, modLib.formatFlags(mod.flags, ModFlag), modLib.formatFlags(mod.keywordFlags, KeywordFlag), modLib.formatTags(mod.tagList))
+	return s_format("%s|%s|%s|%s|%s", mod.name, mod.type, modLib.formatFlags(mod.flags, ModFlag), modLib.formatFlags(mod.keywordFlags, KeywordFlag), modLib.formatTags(mod))
 end
 
 function modLib.formatMod(mod)

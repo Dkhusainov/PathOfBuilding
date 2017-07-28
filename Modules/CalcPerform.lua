@@ -23,17 +23,17 @@ local function mergeBuff(src, destTable, destKey)
 	end
 	local dest = destTable[destKey]
 	for _, mod in ipairs(src) do
-		local param = modLib.formatModParams(mod)
+		local match = false
 		for index, destMod in ipairs(dest) do
-			if param == modLib.formatModParams(destMod) then
+			if modLib.compareModParams(mod, destMod) then
 				if type(destMod.value) == "number" and mod.value > destMod.value then
 					dest[index] = mod
 				end
-				param = nil
+				match = true
 				break
 			end
 		end
-		if param then
+		if not match then
 			t_insert(dest, mod)
 		end
 	end
@@ -244,6 +244,7 @@ local function doActorMisc(env, actor)
 		if modDB:Sum("FLAG", nil, "Fortify") then
 			local effect = m_floor(20 * (1 + modDB:Sum("INC", nil, "FortifyEffectOnSelf", "BuffEffectOnSelf") / 100))
 			modDB:NewMod("DamageTakenWhenHit", "INC", -effect, "Fortify")
+			modDB.multipliers["BuffOnSelf"] = (modDB.multipliers["BuffOnSelf"] or 0) + 1
 		end
 		if modDB:Sum("FLAG", nil, "Onslaught") then
 			local effect = m_floor(20 * (1 + modDB:Sum("INC", nil, "OnslaughtEffect", "BuffEffectOnSelf") / 100))
@@ -329,6 +330,9 @@ function calcs.perform(env)
 		end
 		env.minion.modDB:NewMod("Damage", "MORE", 500, "Base", 0, KeywordFlag.Bleed, { type = "EnemyCondition", var = "Moving" })
 		for _, mod in ipairs(env.minion.minionData.modList) do
+			env.minion.modDB:AddMod(mod)
+		end
+		for _, mod in ipairs(env.player.mainSkill.extraSkillModList) do
 			env.minion.modDB:AddMod(mod)
 		end
 		if env.aegisModList then
@@ -442,7 +446,7 @@ function calcs.perform(env)
 			local more = modDB:Sum("MORE", skillCfg, "ManaReserved") * skillModList:Sum("MORE", skillCfg, "ManaReserved")
 			local inc = modDB:Sum("INC", skillCfg, "ManaReserved") + skillModList:Sum("INC", skillCfg, "ManaReserved")
 			local base = m_floor(baseVal * mult)
-			local cost = base - m_floor(base * -m_floor((100 + inc) * more - 100) / 100)
+			local cost = m_max(base - m_floor(base * -m_floor((100 + inc) * more - 100) / 100), 0)
 			local pool
 			if modDB:Sum("FLAG", skillCfg, "BloodMagic", "SkillBloodMagic") or skillModList:Sum("FLAG", skillCfg, "SkillBloodMagic") then
 				pool = "Life"
@@ -502,9 +506,8 @@ function calcs.perform(env)
 						if reqSource.source == "Item" then
 							local item = reqSource.sourceItem
 							row.sourceName = colorCodes[item.rarity]..item.name
-							row.sourceNameTooltip = function()
-								env.build.itemsTab:AddItemTooltip(item, reqSource.sourceSlot)
-								return colorCodes[item.rarity], true
+							row.sourceNameTooltip = function(tooltip)
+								env.build.itemsTab:AddItemTooltip(tooltip, item, reqSource.sourceSlot)
 							end
 						elseif reqSource.source == "Gem" then
 							row.sourceName = s_format("%s%s ^7%d/%d", reqSource.sourceGem.color, reqSource.sourceGem.grantedEffect.name, reqSource.sourceGem.level, reqSource.sourceGem.quality)
@@ -563,6 +566,9 @@ function calcs.perform(env)
 						local more = modDB:Sum("MORE", skillCfg, "BuffEffect", "BuffEffectOnSelf")
 						srcList:ScaleAddList(buff.modList, (1 + inc / 100) * more)
 						mergeBuff(srcList, buffs, buff.name)
+						if activeSkill.skillData.thisIsNotABuff then
+							buffs[buff.name].notBuff = true
+						end
 					end
 					if env.minion and (activeSkill.skillData.buffMinions or activeSkill.skillData.buffAllies) then
 						activeSkill.minionBuffSkill = true
@@ -685,7 +691,7 @@ function calcs.perform(env)
 			})
 			local curseModList = { }
 			for _, mod in ipairs(gemModList) do
-				for _, tag in ipairs(mod.tagList) do
+				for _, tag in ipairs(mod) do
 					if tag.type == "GlobalEffect" and tag.effectType == "Curse" then
 						t_insert(curseModList, mod)
 						break
@@ -740,6 +746,9 @@ function calcs.perform(env)
 	-- Apply buff/debuff modifiers
 	for _, modList in pairs(buffs) do
 		modDB:AddList(modList)
+		if not modList.notBuff then
+			modDB.multipliers["BuffOnSelf"] = (modDB.multipliers["BuffOnSelf"] or 0) + 1
+		end
 	end
 	if env.minion then
 		for _, modList in pairs(minionBuffs) do
@@ -774,6 +783,9 @@ function calcs.perform(env)
 			local inc = modDB:Sum("INC", nil, "BuffEffectOnSelf", "AuraEffectOnSelf")
 			local more = modDB:Sum("MORE", nil, "BuffEffectOnSelf", "AuraEffectOnSelf")
 			modDB:ScaleAddList(modList, (1 + inc / 100) * more)
+			if not value.notBuff then
+				modDB.multipliers["BuffOnSelf"] = (modDB.multipliers["BuffOnSelf"] or 0) + 1
+			end
 		end
 		if env.minion and not modDB:Sum("FLAG", nil, "SelfAurasCannotAffectAllies") then
 			local inc = env.minion.modDB:Sum("INC", nil, "BuffEffectOnSelf", "AuraEffectOnSelf")

@@ -61,11 +61,14 @@ function ItemListClass:GetRowValue(column, index, itemId)
 	end
 end
 
-function ItemListClass:AddValueTooltip(index, itemId)
+function ItemListClass:AddValueTooltip(tooltip, index, itemId)
+	if main.popups[1] then
+		tooltip:Clear()
+		return
+	end
 	local item = self.itemsTab.items[itemId]
-	if not main.popups[1] then
-		self.itemsTab:AddItemTooltip(item)
-		return colorCodes[item.rarity], true
+	if tooltip:CheckForUpdate(item, IsKeyDown("SHIFT"), launch.devModeAlt, self.itemsTab.build.outputRevision) then
+		self.itemsTab:AddItemTooltip(tooltip, item)
 	end
 end
 
@@ -114,7 +117,7 @@ function ItemListClass:OnSelClick(index, itemId, doubleClick)
 			self.itemsTab.build.buildFlag = true
 		end
 	elseif doubleClick then
-		self.itemsTab:SetDisplayItem(copyTable(item))
+		self.itemsTab:SetDisplayItem(copyTableSafe(item))
 	end
 end
 

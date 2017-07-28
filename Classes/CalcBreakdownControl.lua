@@ -20,6 +20,7 @@ local CalcBreakdownClass = common.NewClass("CalcBreakdown", "Control", "ControlH
 	self.ControlHost()
 	self.calcsTab = calcsTab
 	self.shown = false
+	self.tooltip = common.New("Tooltip")
 	self.nodeViewer = common.New("PassiveTreeView")
 	self.rangeGuide = NewImageHandle()
 	self.rangeGuide:Load("Assets/range_guide.png")
@@ -198,9 +199,8 @@ function CalcBreakdownClass:AddBreakdownSection(sectionData)
 		for _, row in pairs(section.rowList) do
 			if row.item then
 				row.sourceLabel = colorCodes[row.item.rarity]..row.item.name
-				row.sourceLabelTooltip = function()
-					self.calcsTab.build.itemsTab:AddItemTooltip(row.item, row.source)
-					return colorCodes[row.item.rarity], true
+				row.sourceLabelTooltip = function(tooltip)
+					self.calcsTab.build.itemsTab:AddItemTooltip(tooltip, row.item, row.source)
 				end
 			else
 				row.sourceLabel = row.sourceName
@@ -222,16 +222,15 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 	-- Build list of modifiers to display
 	local cfg = (sectionData.cfg and actor.mainSkill[sectionData.cfg.."Cfg"] and copyTable(actor.mainSkill[sectionData.cfg.."Cfg"], true)) or { }
 	cfg.source = sectionData.modSource
-	cfg.tabulate = true
 	local rowList
 	local modDB = sectionData.enemy and actor.enemy.modDB or actor.modDB
 	if modList then	
 		rowList = modList
 	else
 		if type(sectionData.modName) == "table" then
-			rowList = modDB:Sum(sectionData.modType, cfg, unpack(sectionData.modName))
+			rowList = modDB:Tabulate(sectionData.modType, cfg, unpack(sectionData.modName))
 		else
-			rowList = modDB:Sum(sectionData.modType, cfg, sectionData.modName)
+			rowList = modDB:Tabulate(sectionData.modType, cfg, sectionData.modName)
 		end
 	end
 	if #rowList == 0 then
@@ -284,7 +283,6 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 				sourceTotals[sourceType] = { }
 			end	
 		end
-		cfg.tabulate = false
 		for sourceType, lines in pairs(sourceTotals) do
 			cfg.source = sourceType
 			for _, modType in ipairs(typeList) do
@@ -329,12 +327,11 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 		if not modList and not sectionData.modSource then
 			-- No modifier source specified, add the source type to the table
 			row.source = sourceType
-			row.sourceTooltip = function()
-				main:AddTooltipLine(16, "Total from "..sourceType..":")
+			row.sourceTooltip = function(tooltip)
+				tooltip:AddLine(16, "Total from "..sourceType..":")
 				for _, line in ipairs(sourceTotals[sourceType]) do
-					main:AddTooltipLine(14, line)
+					tooltip:AddLine(14, line)
 				end
-				return nil, false
 			end
 		end
 		if sourceType == "Item" then
@@ -343,9 +340,8 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 			local item = build.itemsTab.items[tonumber(itemId)]
 			if item then
 				row.sourceName = colorCodes[item.rarity]..item.name
-				row.sourceNameTooltip = function()
-					build.itemsTab:AddItemTooltip(item, row.mod.sourceSlot)
-					return colorCodes[item.rarity], true
+				row.sourceNameTooltip = function(tooltip)
+					build.itemsTab:AddItemTooltip(tooltip, item, row.mod.sourceSlot)
 				end
 			end
 		elseif sourceType == "Tree" then
@@ -376,10 +372,10 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 			row.flags = table.concat(flagNames, ", ")
 		end
 		row.tags = nil
-		if row.mod.tagList[1] then
+		if row.mod[1] then
 			-- Format modifier tags
 			local baseVal = type(row.mod.value) == "number" and (row.mod.type == "BASE" and string.format("%+g", math.abs(row.mod.value)) or math.abs(row.mod.value).."%")
-			for _, tag in ipairs(row.mod.tagList) do
+			for _, tag in ipairs(row.mod) do
 				local desc
 				if tag.type == "Condition" then
 					desc = "Condition: "..(tag.neg and "Not " or "")..(tag.varList and table.concat(tag.varList, "/") or self:FormatModName(tag.var))
@@ -498,8 +494,9 @@ function CalcBreakdownClass:DrawBreakdownTable(viewPort, x, y, section)
 					DrawImage(nil, col.x - 2, rowY - 1, col.width, 1)
 					DrawImage(nil, col.x - 2, rowY + 13, col.width, 1)
 					if ttFunc then
-						local color, center = ttFunc()
-						main:DrawTooltip(col.x, rowY, col.width, 12, viewPort, color, center)
+						self.tooltip:Clear()
+						ttFunc(self.tooltip)
+						self.tooltip:Draw(col.x, rowY, col.width, 12, viewPort)
 					elseif ttNode then
 						local viewerX = col.x + col.width + 5
 						if viewPort.x + viewPort.width < viewerX + 304 then

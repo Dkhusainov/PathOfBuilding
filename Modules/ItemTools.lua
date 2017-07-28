@@ -51,7 +51,7 @@ function itemLib.formatModLine(modLine, dbMode)
 	local colorCode
 	if modLine.extra then
 		colorCode = colorCodes.UNSUPPORTED
-		if launch.devMode and IsKeyDown("ALT") then
+		if launch.devModeAlt then
 			line = line .. "   ^1'" .. modLine.extra .. "'"
 		end
 	else
@@ -258,9 +258,17 @@ function itemLib.parseItemRaw(item)
 				elseif specName == "Crafted" then
 					item.crafted = true
 				elseif specName == "Prefix" then
-					t_insert(item.prefixes, specVal)
+					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
+					t_insert(item.prefixes, {
+						modId = affix or specVal,
+						range = tonumber(range),
+					})
 				elseif specName == "Suffix" then
-					t_insert(item.suffixes, specVal)
+					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
+					t_insert(item.suffixes, {
+						modId = affix or specVal,
+						range = tonumber(range),
+					})
 				elseif specName == "Implicits" then
 					item.implicitLines = tonumber(specVal)
 					gameModeStage = "EXPLICIT"
@@ -369,16 +377,16 @@ function itemLib.parseItemRaw(item)
 			for _, list in ipairs({item.prefixes,item.suffixes}) do
 				for i = 1, item.affixLimit/2 do
 					if not list[i] then
-						list[i] = "None"
-					elseif list[i] ~= "None" and not item.affixes[list[i]] then
+						list[i] = { modId = "None" }
+					elseif list[i].modId ~= "None" and not item.affixes[list[i].modId] then
 						for modId, mod in pairs(item.affixes) do
-							if list[i] == mod.affix then
-								list[i] = modId
+							if list[i].modId == mod.affix then
+								list[i].modId = modId
 								break
 							end
 						end
-						if not item.affixes[list[i]] then
-							list[i] = "None"
+						if not item.affixes[list[i].modId] then
+							list[i].modId = "None"
 						end
 					end
 				end
@@ -436,11 +444,11 @@ function itemLib.createItemRaw(item)
 	end
 	if item.crafted then
 		t_insert(rawLines, "Crafted: true")
-		for _, name in ipairs(item.prefixes or { }) do
-			t_insert(rawLines, "Prefix: "..name)
+		for i, affix in ipairs(item.prefixes or { }) do
+			t_insert(rawLines, "Prefix: "..(affix.range and ("{range:"..round(affix.range,3).."}") or "")..affix.modId)
 		end
-		for _, name in ipairs(item.suffixes or { }) do
-			t_insert(rawLines, "Suffix: "..name)
+		for i, affix in ipairs(item.suffixes or { }) do
+			t_insert(rawLines, "Suffix: "..(affix.range and ("{range:"..round(affix.range,3).."}") or "")..affix.modId)
 		end
 	end
 	if item.itemLevel then
@@ -505,14 +513,11 @@ end
 
 -- Rebuild explicit modifiers using the item's affixes
 function itemLib.craftItem(item)
-	local ranges = { }
 	local custom = { }
 	for l = item.buffLines + item.implicitLines + 1, #item.modLines do
 		local modLine = item.modLines[l]
 		if modLine.custom or modLine.crafted then
 			t_insert(custom, modLine)
-		else
-			ranges[modLine.line] = modLine.range
 		end
 		item.modLines[l] = nil
 	end
@@ -522,11 +527,11 @@ function itemLib.craftItem(item)
 	local statOrder = { }
 	for _, list in ipairs({item.prefixes,item.suffixes}) do
 		for i = 1, item.affixLimit/2 do
-			local name = list[i]
-			if not name then
-				list[i] = "None"
+			local affix = list[i]
+			if not affix then
+				list[i] = { modId = "None" }
 			end
-			local mod = item.affixes[name]
+			local mod = item.affixes[affix.modId]
 			if mod then
 				if mod.type == "Prefix" then
 					item.namePrefix = mod.affix .. " "
@@ -535,6 +540,7 @@ function itemLib.craftItem(item)
 				end
 				item.requirements.level = m_max(item.requirements.level or 0, m_floor(mod.level * 0.8))
 				for i, line in ipairs(mod) do
+					line = itemLib.applyRange(line, affix.range or 0.5)
 					local order = mod.statOrder[i]
 					if statOrder[order] then
 						-- Combine stats
@@ -544,9 +550,8 @@ function itemLib.craftItem(item)
 							start = e + 1
 							return tonumber(num) + tonumber(other)
 						end)
-						statOrder[order].range = ranges[statOrder[order].line]
 					else
-						local modLine = { line = line, range = ranges[line], order = order }
+						local modLine = { line = line, order = order }
 						for l = item.buffLines + item.implicitLines + 1, #item.modLines + 1 do
 							if not item.modLines[l] or item.modLines[l].order > order then
 								t_insert(item.modLines, l, modLine)
@@ -589,7 +594,7 @@ local function sumLocal(modList, name, type, flags)
 	local i = 1
 	while modList[i] do
 		local mod = modList[i]
-		if mod.name == name and mod.type == type and mod.flags == flags and mod.keywordFlags == 0 and (not mod.tagList[1] or mod.tagList[1].type == "InSlot") then
+		if mod.name == name and mod.type == type and mod.flags == flags and mod.keywordFlags == 0 and (not mod[1] or mod[1].type == "InSlot") then
 			result = result + mod.value
 			t_remove(modList, i)
 		else
@@ -609,7 +614,7 @@ function itemLib.buildItemModListForSlotNum(item, baseList, slotNum)
 	for _, baseMod in ipairs(baseList) do
 		local mod = copyTable(baseMod)
 		local add = true
-		for _, tag in pairs(mod.tagList) do
+		for _, tag in ipairs(mod) do
 			if tag.type == "SlotNumber" or tag.type == "InSlot" then
 				if tag.num ~= slotNum then
 					add = false
@@ -668,8 +673,8 @@ function itemLib.buildItemModListForSlotNum(item, baseList, slotNum)
 				(mod.name == "Accuracy" and mod.flags == 0) or
 				((mod.name == "LifeOnHit" or mod.name == "ManaOnHit") and mod.flags == ModFlag.Attack) or
 				((mod.name == "PhysicalDamageLifeLeech" or mod.name == "PhysicalDamageManaLeech") and mod.flags == ModFlag.Attack) 
-			   ) and mod.keywordFlags == 0 and not mod.tagList[1] then
-				mod.tagList[1] = { type = "Condition", var = (slotNum == 1) and "MainHandAttack" or "OffHandAttack" }
+			   ) and mod.keywordFlags == 0 and not mod[1] then
+				mod[1] = { type = "Condition", var = (slotNum == 1) and "MainHandAttack" or "OffHandAttack" }
 			end
 		end
 		weaponData.TotalDPS = 0

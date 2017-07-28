@@ -6,6 +6,7 @@
 
 local pairs = pairs
 local ipairs = ipairs
+local type = type
 local t_insert = table.insert
 local m_abs = math.abs
 local m_floor = math.floor
@@ -144,17 +145,72 @@ function isMouseInRegion(region)
 	return cursorX >= region.x and cursorX < region.x + region.width and cursorY >= region.y and cursorY < region.y + region.height
 end
 
+-- Write a Lua table to file
+local function qFmt(s)
+	return '"'..s:gsub("\n","\\n"):gsub("\"","\\\"")..'"'
+end
+function writeLuaTable(out, t, indent)
+	out:write('{')
+	if indent then
+		out:write('\n')
+	end
+	for k, v in pairs(t) do
+		if indent then
+			out:write(string.rep("\t", indent))
+		end
+		if type(k) == "string" and k:match("^%a+$") then
+			out:write(k, '=')
+		else
+			out:write('[')
+			if type(k) == "number" then
+				out:write(k)
+			else
+				out:write(qFmt(k))
+			end
+			out:write(']=')
+		end
+		if type(v) == "table" then
+			writeLuaTable(out, v, indent and indent + 1)
+		elseif type(v) == "string" then
+			out:write(qFmt(v))
+		else
+			out:write(tostring(v))
+		end
+		if next(t, k) ~= nil then
+			out:write(',')
+		end
+		if indent then
+			out:write('\n')
+		end
+	end
+	if indent then
+		out:write(string.rep("\t", indent-1))
+	end
+	out:write('}')
+end
+
 -- Make a copy of a table and all subtables
+function copyTable(tbl, noRecurse)
+	local out = {}
+	for k, v in pairs(tbl) do
+		if not noRecurse and type(v) == "table" then
+			out[k] = copyTable(v)
+		else
+			out[k] = v
+		end
+	end
+	return out
+end
 do
 	local subTableMap = { }
-	function copyTable(tbl, noRecurse, isSubTable)
+	function copyTableSafe(tbl, noRecurse, isSubTable)
 		local out = {}
 		if not noRecurse then
 			subTableMap[tbl] = out
 		end
 		for k, v in pairs(tbl) do
 			if not noRecurse and type(v) == "table" then
-				out[k] = subTableMap[v] or copyTable(v, false, true)
+				out[k] = subTableMap[v] or copyTableSafe(v, false, true)
 			else
 				out[k] = v
 			end
