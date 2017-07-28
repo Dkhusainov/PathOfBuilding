@@ -27,12 +27,15 @@ end
 -- Adds a new undo state to the undo buffer, and also clears the redo buffer
 -- Should be called after the user makes a change to the current state
 function UndoHandlerClass:AddUndoState(noClearRedo)
+	return
+	--[[
 	t_insert(self.undo, 1, self:CreateUndoState())
 	self.undo[102] = nil
 	self.modFlag = true
 	if not noClearRedo then
 		self.redo = wipeTable(self.redo)
 	end
+	]]
 end
 
 -- Reverts the current state to the previous undo state
