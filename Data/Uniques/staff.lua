@@ -81,7 +81,7 @@ Reflects (22-44) Physical Damage to Attackers on Block
 Curse Enemies with level 5 Vulnerability on Block
 ]],[[
 Duskdawn
-Maelström Staff
+MaelstrÃ¶m Staff
 Variant: Pre 2.6.0
 Variant: Current
 Requires Level 64, 113 Str, 113 Int
@@ -231,7 +231,7 @@ Implicits: 2
 +2 to Level of Socketed Fire Gems
 (30-50)% increased Spell Damage
 {variant:1,2}(20-40)% increased Fire Damage
-{variant:3}(70–90)% increased Fire Damage
+{variant:3}(70â€“90)% increased Fire Damage
 10% increased Cast Speed
 70% increased Burning Damage
 ]],[[
@@ -278,7 +278,7 @@ Adds (1-10) to (70-90) Lightning Damage
 {variant:2}50% chance to Shock Chilled Enemies
 ]],[[
 Taryn's Shiver
-Maelström Staff
+MaelstrÃ¶m Staff
 Variant: Pre 2.0.0
 Variant: Pre 2.6.0
 Variant: Current

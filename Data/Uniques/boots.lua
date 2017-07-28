@@ -252,7 +252,7 @@ Variant: 3.0.0 Beta
 League: Warbands
 Requires Level 67, 123 Int
 {variant:1}(110-140)% increased Energy Shield
-{variant:2}(50–80)% increased Energy Shield
+{variant:2}(50â€“80)% increased Energy Shield
 +(20-30) to maximum Energy Shield
 30% increased Movement Speed
 20% increased Movement Speed on Shocked Ground
@@ -412,7 +412,7 @@ League: Warbands
 Requires Level 41, 40 Dex, 40 Int
 {variant:1}+(60-80) to maximum Energy Shield
 {variant:2}+(120-150) to maximum Energy Shield
-{variant:3}+(80–100) to maximum Energy Shield
+{variant:3}+(80â€“100) to maximum Energy Shield
 20% increased Physical Damage
 {variant:1}20% increased Movement Speed
 {variant:2,3}25% increased Movement Speed

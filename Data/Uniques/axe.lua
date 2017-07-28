@@ -128,7 +128,7 @@ Variant: {2_6}Current
 Variant: 3.0.0 Beta
 Requires Level 45, 99 Str, 57 Dex
 {variant:1}(100-120)% increased Physical Damage
-{variant:2}(180–200)% increased Physical Damage
+{variant:2}(180â€“200)% increased Physical Damage
 +100 to maximum Life
 10.0 Life Regenerated per second
 1% of Physical Attack Damage Leeched as Life

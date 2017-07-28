@@ -89,7 +89,7 @@ Implicits: 2
 {variant:4,5}40% increased Accuracy Rating
 {variant:1,2}Adds 1 to (500-600) Lightning Damage
 {variant:3,4}Adds 1 to (550-650) Lightning Damage
-{variant:5}Adds 1 to (650–750) Lightning Damage
+{variant:5}Adds 1 to (650â€“750) Lightning Damage
 (7-10)% increased Attack Speed
 {variant:1}6% increased Damage taken per Frenzy Charge
 {variant:2,3,4}3% increased Damage taken per Frenzy Charge
@@ -358,8 +358,8 @@ Implicits: 2
 {variant:1}+30% to Global Critical Strike Multiplier
 {variant:2}+25% to Global Critical Strike Multiplier
 No Physical Damage
-Adds (80–100) to (160–200) Cold Damage
-Adds (40–60) to (90–110) Cold Damage to Spells
+Adds (80â€“100) to (160â€“200) Cold Damage
+Adds (40â€“60) to (90â€“110) Cold Damage to Spells
 (8-14)% increased Attack Speed
 +257 Intelligence Requirement
 60% increased Critical Strike Chance against Chilled Enemies
@@ -464,7 +464,7 @@ Socketed Melee Gems have 15% increased Area of Effect
 Socketed Red Gems get 10% Physical Damage as Extra Fire Damage
 (50-70)% increased Physical Damage
 {variant:1,2}Adds (50-75) to (85-110) Physical Damage
-{variant:3}Adds (65–75) to (100–110) Physical Damage
+{variant:3}Adds (65â€“75) to (100â€“110) Physical Damage
 (6-12)% increased Attack Speed
 ]],[[
 Edge of Madness
