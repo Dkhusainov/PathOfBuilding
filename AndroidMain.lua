@@ -122,7 +122,7 @@ targetVersionList = { "3_0" }
 
 LoadModule("Api")
 LoadModule("Modules/Common")
-LoadModule("Modules/Data")
+LoadModule("Modules/Data", { devMode = true })
 LoadModule("Modules/ModTools", liveTargetVersion)
 --LoadModule("Modules/ItemTools", launch)
 LoadModule("Modules/CalcTools")
@@ -142,6 +142,7 @@ local classList = {
     "CheckBoxControl",
     "CalcSectionControl",
     "CalcBreakdownControl",
+    "SectionControl",
     "GemSelectControl",
     "PassiveTree",
     "ModDB",
@@ -171,14 +172,14 @@ function recalculate()
     build.spec.curClassId = 0
     build.spec.allocNodes = {}
     local asecnadnt = tree.nodes[58833]
---    printToFile(asecnadnt, "ascendant", 10)
+    --    printToFile(asecnadnt, "ascendant", 10)
     build.spec.allocNodes[58833] = asecnadnt
---    build.calcsTab.buildOutput(build, "MAIN")
+    --    build.calcsTab.buildOutput(build, "MAIN")
     build.buildFlag = false
     build.calcsTab:BuildOutput()
     build:RefreshStatList()
---    printToFile(build.calcsTab, "s", 10)
---    printToFile(build.calcsTab.mainEnv.player, "s", 10)
---    printToFile(build.calcsTab.mainOutput, "s", 2)
+    --    printToFile(build.calcsTab, "s", 10)
+    --    printToFile(build.calcsTab.mainEnv.player, "s", 10)
+    --    printToFile(build.calcsTab.mainOutput, "s", 2)
     return build.controls.statBox.list
 end

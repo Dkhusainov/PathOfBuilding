@@ -1021,9 +1021,6 @@ end
 
 -- Build list of side bar stats
 function buildMode:RefreshStatList()
-	print(wipeTable)
-	print(self.controls.statBox)
-	print(self.controls.statBox.list)
 	local statBoxList = wipeTable(self.controls.statBox.list)
 	if self.calcsTab.mainEnv.minion then
 		t_insert(statBoxList, { height = 18, "^7Minion:" })
