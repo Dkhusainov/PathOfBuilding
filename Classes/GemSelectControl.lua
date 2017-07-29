@@ -36,7 +36,7 @@ local GemSelectClass = common.NewClass("GemSelectControl", "EditControl", functi
 		end
 		self.selIndex = 0
 		self:BuildList(self.buf)
-		self:UpdateGem()
+--		self:UpdateGem()
 	end
 end)
 
@@ -97,6 +97,7 @@ end
 
 function GemSelectClass:UpdateSortCache()
 	local sortCache = self.sortCache
+	if not self.skillsTab.sortGemsByDPS then return end
 	if sortCache and sortCache.socketGroup == self.skillsTab.displayGroup and sortCache.gem == self.skillsTab.displayGroup.gemList[self.index] and 
 	  sortCache.outputRevision == self.skillsTab.build.outputRevision and sortCache.defaultLevel == self.skillsTab.defaultGemLevel and sortCache.defaultQuality == self.skillsTab.defaultGemQuality then
 		return
@@ -165,6 +166,7 @@ end
 
 function GemSelectClass:SortGemList(gemList)
 	local sortCache = self.sortCache
+	if not self.skillsTab.sortGemsByDPS then return end
 	t_sort(gemList, function(a, b)
 		if sortCache.canSupport[a] == sortCache.canSupport[b] then
 			if self.skillsTab.sortGemsByDPS and sortCache.dps[a] ~= sortCache.dps[b] then

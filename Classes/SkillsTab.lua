@@ -36,7 +36,7 @@ local SkillsTabClass = common.NewClass("SkillsTab", "UndoHandler", "ControlHost"
 
 	self.socketGroupList = { }
 
-	self.sortGemsByDPS = true
+	self.sortGemsByDPS = false
 
 	-- Socket group list
 	self.controls.groupList = common.New("SkillList", {"TOPLEFT",self,"TOPLEFT"}, 20, 24, 360, 300, self)

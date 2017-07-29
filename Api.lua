@@ -37,7 +37,7 @@ function getSearchResult(self)
                 searchResultItem.color = colorCodes.INTELLIGENCE
             end
         end
-        if grantedEffect then
+        if grantedEffect and self.skillsTab.sortGemsByDPS then
             if grantedEffect.support and self.skillsTab.displayGroup.displaySkillList then
                 local gem = { grantedEffect = grantedEffect }
                 for _, activeSkill in ipairs(self.skillsTab.displayGroup.displaySkillList) do
