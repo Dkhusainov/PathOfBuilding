@@ -120,9 +120,20 @@ defaultTargetVersion = "3_0"
 liveTargetVersion = "3_0"
 targetVersionList = { "3_0" }
 
+local launch = {
+    devMode = false
+}
+local main = {
+    showThousandsSidebar = false,
+    lastShowThousandsSidebar = false,
+    --todo show dialogs
+    OpenConfirmPopup = function(main, title, msg, confirmLabel, onConfirm) onConfirm() end,
+    OpenMessagePopup = function(title, msg) end
+}
+
 LoadModule("Api")
 LoadModule("Modules/Common")
-LoadModule("Modules/Data", { devMode = true })
+LoadModule("Modules/Data", launch)
 LoadModule("Modules/ModTools", liveTargetVersion)
 --LoadModule("Modules/ItemTools", launch)
 LoadModule("Modules/CalcTools")
@@ -155,13 +166,8 @@ local classList = {
 }
 
 for _, className in pairs(classList) do
-    LoadModule("Classes/"..className)
+    LoadModule("Classes/"..className, launch, main)
 end
-
-local main = {
-    showThousandsSidebar = false,
-    lastShowThousandsSidebar = false
-}
 
 tree = common.New("PassiveTree", liveTargetVersion)
 build = LoadModule("Modules/Build", nil, main)
