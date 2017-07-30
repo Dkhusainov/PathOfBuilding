@@ -28,13 +28,10 @@ local buffModeDropList = {
 	{ label = "Effective DPS", buffMode = "EFFECTIVE" } 
 }
 
-local CalcsTabClass = common.NewClass("CalcsTab", function(self, build)
-    self.controls = {}
-	--[[
+local CalcsTabClass = common.NewClass("CalcsTab", "UndoHandler", "ControlHost", "Control", function(self, build)
 	self.UndoHandler()
 	self.ControlHost()
 	self.Control()
-	]]
 	self.build = build
 
 	self.calcs = calcs[build.targetVersion]

@@ -471,12 +471,10 @@ local varList = {
 	{ var = "EEIgnoreHitDamage", type = "check", label = "Ignore Skill Hit Damage?", ifNode = 39085, tooltip = "This option prevents EE from being reset by the hit damage of your main skill." },
 }
 
-local ConfigTabClass = common.NewClass("ConfigTab", function(self, build)
-	--[[
+local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost", "Control", function(self, build)
 	self.UndoHandler()
 	self.ControlHost()
 	self.Control()
-	]]
 
 	self.build = build
 
