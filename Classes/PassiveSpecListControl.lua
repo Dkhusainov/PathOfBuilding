@@ -9,7 +9,7 @@ local t_insert = table.insert
 local t_remove = table.remove
 local m_max = math.max
 
-local PassiveSpecListClass = common.NewClass("PassiveSpecList", "ListControl", function(self, anchor, x, y, width, height, treeTab)
+local PassiveSpecListClass = common.NewClass("PassiveSpecListControl", "ListControl", function(self, anchor, x, y, width, height, treeTab)
 	self.ListControl(anchor, x, y, width, height, 16, true, treeTab.specList)
 	self.treeTab = treeTab
 	self.controls.copy = common.New("ButtonControl", {"BOTTOMLEFT",self,"TOP"}, 2, -4, 60, 18, "Copy", function()

@@ -213,7 +213,7 @@ end
 
 function TreeTabClass:OpenSpecManagePopup()
 	main:OpenPopup(370, 290, "Manage Passive Trees", {
-		common.New("PassiveSpecList", nil, 0, 50, 350, 200, self),
+		common.New("PassiveSpecListControl", nil, 0, 50, 350, 200, self),
 		common.New("ButtonControl", nil, 0, 260, 90, 20, "Done", function()
 			main:ClosePopup()
 		end),
