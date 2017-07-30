@@ -42,9 +42,9 @@ local fooBanditDropList = {
 local buildMode = common.New("ControlHost")
 
 function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
-	--[[
 	self.dbFileName = dbFileName
 	self.buildName = buildName
+    --[[
 	if dbFileName then
 		self.dbFileSubPath = self.dbFileName:sub(#main.buildPath + 1, -#self.buildName - 5)
 	else
@@ -59,11 +59,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		self:OpenTargetVersionPopup(true)
 		return
 	end
+	]]
 
 	self.abortSave = true
 
 	wipeTable(self.controls)
-
+    --[[
 	local miscTooltip = common.New("Tooltip")
 
 	-- Controls: top bar, left side
@@ -155,6 +156,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 			SetDrawLayer(nil, 0)
 		end
 	end
+	]]
 	self.controls.characterLevel = common.New("EditControl", {"LEFT",self.controls.pointDisplay,"RIGHT"}, 12, 0, 106, 20, "", "Level", "%D", 3, function(buf)
 		self.characterLevel = m_min(tonumber(buf) or 1, 100)
 		self.modFlag = true
@@ -207,12 +209,10 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		self.spec:AddUndoState()
 		self.buildFlag = true
 	end)
-	]]
 
 	-- List of display stats
 	-- This defines the stats in the side bar, and also which stats show in node/item comparisons
 	-- This may be user-customisable in the future
-    local self = buildMode
 	self.displayStats = {
 		{ stat = "ActiveMinionLimit", label = "Active Minion Limit", fmt = "d" },
 		{ stat = "AverageHit", label = "Average Hit", fmt = ".1f", compPercent = true },
@@ -323,7 +323,6 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 
 	-- Load build file
 	self.xmlSectionList = {}
-	--[[
 	if buildXML then
 		if self:LoadDB(buildXML, "Unnamed build") then
 			self:CloseBuild()
@@ -337,7 +336,6 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		end
 		self.modFlag = false
 	end
-    ]]
 
 	if targetVersion then
 		self.targetVersion = targetVersion
@@ -402,14 +400,17 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		end)
 		self.controls.banditMercilessLabel = common.New("LabelControl", {"BOTTOMLEFT",self.controls.banditMerciless,"TOPLEFT"}, 0, 0, 0, 14, "^7Merciless Bandit:")
 	else
+	]]
 		self.controls.bandit = common.New("DropDownControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 70, 300, 16, fooBanditDropList, function(index, value)
 			self.bandit = value.banditId
 			self.modFlag = true
 			self.buildFlag = true
 		end)
+    --[[
 		self.controls.banditLabel = common.New("LabelControl", {"BOTTOMLEFT",self.controls.bandit,"TOPLEFT"}, 0, 0, 0, 14, "^7Bandit:")
 	end
 	self.controls.mainSkillLabel = common.New("LabelControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 95, 300, 16, "^7Main Skill:")
+	]]
 	self.controls.mainSocketGroup = common.New("DropDownControl", {"TOPLEFT",self.controls.mainSkillLabel,"BOTTOMLEFT"}, 0, 2, 300, 16, nil, function(index, value)
 		self.mainSocketGroup = index
 		self.modFlag = true
@@ -471,19 +472,15 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		local x, y = control:GetPos()
 		return main.screenH - main.mainBarHeight - 4 - y
 	end
-	]]
-
-	self.controls.statBox = {}
-	self.controls.statBox.list = {}
 
 	-- Initialise build components
 	self.data = data[self.targetVersion]
-	self.tree = tree
+	self.tree = main.tree[self.targetVersion]
 --	self.importTab = common.New("ImportTab", self)
 --	self.notesTab = common.New("NotesTab", self)
 	self.configTab = common.New("ConfigTab", self)
 	self.itemsTab = common.New("ItemsTab", self)
---	self.treeTab = common.New("TreeTab", self)
+	self.treeTab = common.New("TreeTab", self)
 	self.skillsTab = common.New("SkillsTab", self)
 	self.calcsTab = common.New("CalcsTab", self)
 
@@ -521,7 +518,6 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		-- Check for old calcs tab settings
 		self.configTab:ImportCalcSettings()
 	end
-    --[[
 	-- Initialise class dropdown
 	for classId, class in pairs(self.tree.classes) do
 		t_insert(self.controls.classDrop.list, {
@@ -530,11 +526,10 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		})
 	end
 	table.sort(self.controls.classDrop.list, function(a, b) return a.label < b.label end)
-    ]]
 	-- Build calculation output tables
---	self.outputRevision = 1
---	self.calcsTab:BuildOutput()
---	self:RefreshStatList()
+	self.outputRevision = 1
+	self.calcsTab:BuildOutput()
+	self:RefreshStatList()
 	self.buildFlag = false
 
 	--[[

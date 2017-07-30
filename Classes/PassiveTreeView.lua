@@ -15,13 +15,14 @@ local m_max = math.max
 local m_floor = math.floor
 
 local PassiveTreeViewClass = common.NewClass("PassiveTreeView", function(self)
+	--[[
 	self.ring = NewImageHandle()
 	self.ring:Load("Assets/ring.png", "CLAMP")
 	self.highlightRing = NewImageHandle()
 	self.highlightRing:Load("Assets/small_ring.png", "CLAMP")
 
 	self.tooltip = common.New("Tooltip")
-
+]]
 	self.zoomLevel = 3
 	self.zoom = 1.2 ^ self.zoomLevel
 	self.zoomX = 0
