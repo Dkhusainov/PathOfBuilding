@@ -40,6 +40,9 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 
 	ConPrintf("Loading passive tree data...")
 	local treeText = LoadModule("TreeData/"..targetVersion.."/tree")
+    for k, v in pairs(treeText) do
+        self[k] = v
+    end
 	--[[
 	local treeFile = io.open("TreeData/"..targetVersion.."/tree.lua", "r")
 	if treeFile then
@@ -166,38 +169,34 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 
 	ConPrintf("Processing tree...")
 	self.keystoneMap = { }
-	self.nodes = { }
+	local nodeMap = { }
 	local sockets = { }
---	local orbitMult = { [0] = 0, m_pi / 3, m_pi / 6, m_pi / 6, m_pi / 20 }
---	local orbitDist = { [0] = 0, 82, 162, 335, 493 }
-	for _, nodeIn in pairs({}) do
-        local node = {
-            id = nodeIn.id,
-            sd = nodeIn.sd
-        }
---		node.meta = { __index = node }
-        self.nodes[node.id] = node
---		node.linkedId = { }
+	local orbitMult = { [0] = 0, m_pi / 3, m_pi / 6, m_pi / 6, m_pi / 20 }
+	local orbitDist = { [0] = 0, 82, 162, 335, 493 }
+	for _, node in pairs(self.nodes) do
+		node.meta = { __index = node }
+		nodeMap[node.id] = node
+		node.linkedId = { }
 
 		-- Determine node type
-		if nodeIn.spc[0] then
+		if node.spc[0] then
 			node.type = "classStart"
-			local class = self.classes[nodeIn.spc[0]]
+			local class = self.classes[node.spc[0]]
 			class.startNodeId = node.id
 --			node.startArt = classArt[node.spc[0]]
-		elseif nodeIn.isAscendancyStart then
+		elseif node.isAscendancyStart then
 			node.type = "ascendClassStart"
-			local ascendClass = self.ascendNameMap[nodeIn.ascendancyName].ascendClass
-			ascendClass.startNodeId = node.id
-		elseif nodeIn.m then
+--			local ascendClass = self.ascendNameMap[node.ascendancyName].ascendClass
+--			ascendClass.startNodeId = node.id
+		elseif node.m then
 			node.type = "mastery"
-		elseif nodeIn.isJewelSocket then
+		elseif node.isJewelSocket then
 			node.type = "socket"
 			sockets[node.id] = node
-		elseif nodeIn.ks then
+		elseif node.ks then
 			node.type = "keystone"
-			self.keystoneMap[nodeIn.dn] = node
-		elseif nodeIn["not"] then
+			self.keystoneMap[node.dn] = node
+		elseif node["not"] then
 			node.type = "notable"
 		else
 			node.type = "normal"
@@ -205,12 +204,16 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 
 		--[[ Assign node artwork assets
 		node.sprites = spriteMap[node.icon]
+		if not node.sprites then
+			--error("missing sprite "..node.icon)
+			node.sprites = { }
+		end
 		node.overlay = nodeOverlay[node.type]
 		if node.overlay then
 			node.rsq = node.overlay.rsq
 			node.size = node.overlay.size
 		end
-
+        ]]
 		-- Find node group and derive the true position of the node
 		local group = self.groups[node.g]
 		group.ascendancyName = node.ascendancyName
@@ -222,7 +225,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 		local dist = orbitDist[node.o]
 		node.x = group.x + m_sin(node.angle) * dist
 		node.y = group.y - m_cos(node.angle) * dist
-
+		--[[
 		if passives then
 			-- Passive data is available, override the descriptions
 			node.sd = passives[node.id]
@@ -297,16 +300,15 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 				end
 			end
 		end
-		if nodeIn.passivePointsGranted > 0 then
-			node.modList:NewMod("ExtraPoints", "BASE", nodeIn.passivePointsGranted, "Tree"..node.id)
+		if node.passivePointsGranted > 0 then
+			node.modList:NewMod("ExtraPoints", "BASE", node.passivePointsGranted, "Tree"..node.id)
 		end
 		if node.type == "keystone" then
-			node.keystoneMod = modLib.createMod("Keystone", "LIST", nodeIn.dn, "Tree"..node.id)
+			node.keystoneMod = modLib.createMod("Keystone", "LIST", node.dn, "Tree"..node.id)
         end
-        node.sd = nil
 	end
 
-	--[[ Precalculate the lists of nodes that are within each radius of each socket
+	-- Precalculate the lists of nodes that are within each radius of each socket
 	for nodeId, socket in pairs(sockets) do
 		socket.nodesInRadius = { }
 		socket.attributesInRadius = { }
@@ -317,7 +319,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 			for _, node in ipairs(self.nodes) do
 				if node ~= socket then
 					local vX, vY = node.x - socket.x, node.y - socket.y
-					if vX * vX + vY * vY <= rSq then 
+					if vX * vX + vY * vY <= rSq then
 						socket.nodesInRadius[radiusIndex][node.id] = node
 						for _, att in pairs({"Str","Dex","Int"}) do
 							socket.attributesInRadius[radiusIndex][att] = (socket.attributesInRadius[radiusIndex][att] or 0) + node.modList:Sum("BASE", nil, att)
@@ -327,22 +329,51 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 			end
 		end
 	end
-	]]
 
-	--[[ Pregenerate the polygons for the node connector lines
+	-- Pregenerate the polygons for the node connector lines
 	self.connectors = { }
 	for _, node in ipairs(self.nodes) do
 		for _, otherId in pairs(node.out) do
 			local other = nodeMap[otherId]
 			t_insert(node.linkedId, otherId)
 			t_insert(other.linkedId, node.id)
-			if node.type ~= "classStart" and other.type ~= "classStart" and node.type ~= "mastery" and other.type ~= "mastery" and node.ascendancyName == other.ascendancyName then
-				t_insert(self.connectors, self:BuildConnector(node, other))
-			end
+--			if node.type ~= "classStart" and other.type ~= "classStart" and node.type ~= "mastery" and other.type ~= "mastery" and node.ascendancyName == other.ascendancyName then
+--				t_insert(self.connectors, self:BuildConnector(node, other))
+--			end
 		end
 	end
-	]]
 end)
+
+function PassiveTreeClass:dump()
+	self.assets = nil
+	self.Object = nil
+	self.constants = nil
+	self.extraImages = nil
+	self.groups = nil
+	self.connectors = nil
+	self.skillSprites = nil
+	for _, node in ipairs(self.nodes) do
+		node.modList.Object = nil
+		node.mods= nil
+		node.out = nil
+		node.g = nil
+		node.group = nil
+		node.icon = nil
+		node.da = nil
+		node.ia = nil
+		node.m = nil
+		node.angle = nil
+		node.passivePointsGranted = nil
+		node.ks = nil
+		node.sa = nil
+		node.spc = nil
+		node.isAscendancyStart = nil
+		node["not"] = nil
+		node.o = nil
+		node.oidx = nil
+	end
+	return serpent.dump(self)
+end
 
 -- Checks if a given image is present and downloads it from the given URL if it isn't there
 function PassiveTreeClass:LoadImage(imgName, url, data, ...)
