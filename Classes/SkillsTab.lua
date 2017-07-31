@@ -135,6 +135,7 @@ will automatically apply to the skill.]]
 end)
 
 function SkillsTabClass:Load(xml, fileName)
+	print("SkillsTabClass:Load")
 	self.defaultGemLevel = tonumber(xml.attrib.defaultGemLevel)
 	self.defaultGemQuality = tonumber(xml.attrib.defaultGemQuality)
 	self.controls.defaultLevel:SetText(self.defaultGemLevel or "")

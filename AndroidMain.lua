@@ -124,8 +124,12 @@ for _, targetVersion in ipairs(targetVersionList) do
 end
 
 build = LoadModule("Modules/Build", launch, main)
+build.buildFlag = false
 function initBuild(name, xml)
     build:Init("dbFileName", name, xml, liveTargetVersion)
+end
+function saveBuild()
+    return build:SaveDB()
 end
 
 function recalculate()

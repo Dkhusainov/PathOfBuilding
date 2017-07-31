@@ -322,19 +322,22 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	self.spectreList = { }
 
 	-- Load build file
+	print("BUILD LOAD")
+	print(buildXML)
 	self.xmlSectionList = {}
 	if buildXML then
+		print("if buildXML then")
 		if self:LoadDB(buildXML, "Unnamed build") then
 			self:CloseBuild()
 			return
 		end
 		self.modFlag = true
 	else
-		if self:LoadDBFile() then
-			self:CloseBuild()
-			return
-		end
-		self.modFlag = false
+--		if self:LoadDBFile() then
+--			self:CloseBuild()
+--			return
+--		end
+--		self.modFlag = false
 	end
 
 	if targetVersion then
@@ -498,6 +501,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	self.legacyLoaders = { -- Special loaders for legacy sections
 		["Spec"] = self.treeTab,
 	}
+	printTable(self.xmlSectionList)
 	for _, node in ipairs(self.xmlSectionList) do
 		-- Check if there is a saver that can load this section
 		local saver = self.savers[node.elem] or self.legacyLoaders[node.elem]
@@ -1101,15 +1105,19 @@ end
 
 function buildMode:LoadDB(xmlText, fileName)
 	-- Parse the XML
+	print("buildMode:LoadDB")
 	local dbXML, errMsg = common.xml.ParseXML(xmlText)
 	if not dbXML then
 		launch:ShowErrMsg("^1Error loading '%s': %s", fileName, errMsg)
+		print("return true 1")
 		return true
 	elseif dbXML[1].elem ~= "PathOfBuilding" then
 		launch:ShowErrMsg("^1Error parsing '%s': 'PathOfBuilding' root element missing", fileName)
+		print("return true 2")
 		return true
 	end
 
+	print("-- Load Build section first")
 	-- Load Build section first
 	for _, node in ipairs(dbXML[1]) do
 		if type(node) == "table" and node.elem == "Build" then

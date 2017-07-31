@@ -445,10 +445,10 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 	-- Initialise item sets
 	self.itemSets = { }
 	self.itemSetOrderList = { 1 }
---	self:NewItemSet(1)
---	self:SetActiveItemSet(1)
+	self:NewItemSet(1)
+	self:SetActiveItemSet(1)
 
---	self:PopulateSlots()
+	self:PopulateSlots()
 	self.lastSlot = self.slots[baseSlots[#baseSlots]]
 end)
 
