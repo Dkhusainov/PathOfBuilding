@@ -446,7 +446,8 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	function self.controls.mainSkillMinion.CanReceiveDrag(control, type, value)
 		if type == "Item" and control.list[control.selIndex] and control.list[control.selIndex].itemSetId then
 			local mainSocketGroup = self.skillsTab.socketGroupList[self.mainSocketGroup]
-			return mainSocketGroup.displaySkillList[mainSocketGroup.mainActiveSkill].activeGem.grantedEffect.minionUses[itemLib.getPrimarySlotForItem(value)] -- O_O
+			local minionUses = mainSocketGroup.displaySkillList[mainSocketGroup.mainActiveSkill].activeGem.grantedEffect.minionUses
+			return minionUses and minionUses[itemLib.getPrimarySlotForItem(value)] -- O_O
 		end
 	end
 	function self.controls.mainSkillMinion.ReceiveDrag(control, type, value, source)
@@ -798,10 +799,8 @@ function buildMode:OpenSavePopup(mode, newVersion)
 	controls.label = common.New("LabelControl", nil, 0, 20, 0, 16, "^7This build has unsaved changes.\nDo you want to save them "..modeDesc[mode])
 	controls.save = common.New("ButtonControl", nil, -90, 70, 80, 20, "Save", function()
 		main:ClosePopup()
-		if mode == "VERSION" then
-			self.targetVersion = newVersion
-		end
 		self.actionOnSave = mode
+		self.versionOnSave = newVersion
 		self:SaveDBFile()
 	end)
 	controls.noSave = common.New("ButtonControl", nil, 0, 70, 80, 20, "Don't Save", function()
@@ -866,8 +865,9 @@ function buildMode:OpenSaveAsPopup()
 	controls.close = common.New("ButtonControl", nil, 45, 225, 80, 20, "Cancel", function()
 		main:ClosePopup()
 		self.actionOnSave = nil
+		self.versionOnSave = nil
 	end)
-	main:OpenPopup(470, 255, self.dbFileName and "Save As" or "Save", controls, "save", "edit")
+	main:OpenPopup(470, 255, self.dbFileName and "Save As" or "Save", controls, "save", "edit", "close")
 end
 
 -- Open the spectre library popup
@@ -1178,6 +1178,10 @@ function buildMode:SaveDBFile()
 	if not self.dbFileName then
 		self:OpenSaveAsPopup()
 		return
+	end
+	if self.versionOnSave then
+		self.targetVersion = self.versionOnSave
+		self.versionOnSave = nil
 	end
 	local xmlText = self:SaveDB(self.dbFileName)
 	if not xmlText then

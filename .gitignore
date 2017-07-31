@@ -257,9 +257,10 @@ ModelManifest.xml
 /Export/.~lock.data.ods#
 /Export/data.ods
 /Export/test.lua
-*.csv#
-/Export/passive_skill_stat_descriptions.txt
-/Export/passive_skill_aura_stat_descriptions.txt
-
-TreeData/*
-log.txt
+*.csv
+/Export/*stat_descriptions.txt
+/Export/Tree/PassiveSkillGraph.psg
+/Export/Tree/passives
+/Export/Tree/skills-3.jpg
+/Export/Tree/skills-disabled-3.jpg
+/Export/Tree/groups-3.png
