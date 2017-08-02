@@ -186,8 +186,8 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 --			node.startArt = classArt[node.spc[0]]
 		elseif node.isAscendancyStart then
 			node.type = "ascendClassStart"
---			local ascendClass = self.ascendNameMap[node.ascendancyName].ascendClass
---			ascendClass.startNodeId = node.id
+			local ascendClass = self.ascendNameMap[node.ascendancyName].ascendClass
+			ascendClass.startNodeId = node.id
 		elseif node.m then
 			node.type = "mastery"
 		elseif node.isJewelSocket then
