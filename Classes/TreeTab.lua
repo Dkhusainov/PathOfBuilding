@@ -148,6 +148,7 @@ function TreeTabClass:Load(xml, dbFileName)
 		if type(node) == "table" then
 			if node.elem == "Spec" then
 				local newSpec = common.New("PassiveSpec", self.build)
+				print("newSpec:Load(node, dbFileName)")
 				newSpec:Load(node, dbFileName)
 				t_insert(self.specList, newSpec)
 			end
