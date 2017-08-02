@@ -142,7 +142,7 @@ function PassiveSpecClass:DecodeURL(url)
 			return "Invalid tree link (unknown version number '"..ver.."')"
 		end
 		classId = b:byte(5)	
-		ascendClassId = 0--(ver >= 4) and b:byte(6) or 0   -- This value would be reliable if the developer of a certain online skill tree planner *cough* PoE Planner *cough* hadn't bollocked up
+		ascendClassId = b:byte(6) or 0   -- This value would be reliable if the developer of a certain online skill tree planner *cough* PoE Planner *cough* hadn't bollocked up
 														   -- the generation of the official tree URL. The user would most likely import the PoE Planner URL instead but that can't be relied upon.
 		nodes = b:sub(ver >= 4 and 8 or 7, -1)
 	end	
@@ -162,7 +162,10 @@ function PassiveSpecClass:DecodeURL(url)
 				ascendClassId = self.tree.ascendNameMap[node.ascendancyName].ascendClassId
 			end
 		end
-	end
+    end
+    if (ascendClassId == 0) then
+        ascendClassId = 1
+    end
 	self:SelectAscendClass(ascendClassId)
 	if bandits then
 		-- Decode bandits from PoEPlanner
