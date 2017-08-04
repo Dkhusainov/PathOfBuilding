@@ -58,12 +58,14 @@ defaultTargetVersion = "3_0"
 liveTargetVersion = "3_0"
 targetVersionList = { "3_0" }
 
-local launch = {
+launch = {
     devMode = false,
     ShowErrMsg = function(title, msg) end
 }
-local main = {
+main = {
     tree = {},
+    uniqueDB = { },
+    rareDB = { },
     showThousandsSidebar = false,
     lastShowThousandsSidebar = false,
     --todo show dialogs
@@ -121,6 +123,44 @@ for _, targetVersion in ipairs(targetVersionList) do
         local ok, tree = serpent.load(treeText)
         main.tree[targetVersion] = tree
     end
+end
+
+for _, targetVersion in ipairs(targetVersionList) do
+    main.uniqueDB[targetVersion] = { list = { } }
+    for type, typeList in pairs(data.uniques) do
+        for k, raw in pairs(typeList) do
+            local newItem = itemLib.makeItemFromRaw(targetVersion, "Rarity: Unique\n"..raw)
+            if newItem then
+                itemLib.normaliseQuality(newItem)
+                main.uniqueDB[targetVersion].list[newItem.name] = newItem
+            else
+                ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
+            end
+            typeList[k] = nil
+        end
+    end
+    data.uniques = nil
+--    self.rareDB[targetVersion] = { list = { } }
+--    for _, raw in pairs(data[targetVersion].rares) do
+--        local newItem = itemLib.makeItemFromRaw(targetVersion, "Rarity: Rare\n"..raw)
+--        if newItem then
+--            itemLib.normaliseQuality(newItem)
+--            if newItem.crafted then
+--                if newItem.base.implicit and (#newItem.modLines == 0 or newItem.modLines[1].custom) then
+--                    newItem.implicitLines = 0
+--                    for line in newItem.base.implicit:gmatch("[^\n]+") do
+--                        local modList, extra = modLib.parseMod[targetVersion](line)
+--                        newItem.implicitLines = newItem.implicitLines + 1
+--                        t_insert(newItem.modLines, newItem.implicitLines, { line = line, extra = extra, modList = modList or { } })
+--                    end
+--                end
+--                itemLib.craftItem(newItem)
+--            end
+--            self.rareDB[targetVersion].list[newItem.name] = newItem
+--        else
+--            ConPrintf("Rare DB unrecognised item:\n%s", raw)
+--        end
+--    end
 end
 
 build = LoadModule("Modules/Build", launch, main)
