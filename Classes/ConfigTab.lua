@@ -35,13 +35,21 @@ local varList = {
 	end },
 	{ var = "igniteMode", type = "list", label = "Ignite calculation mode:", tooltip = "Controls how the base damage for ignite is calculated:\nAverage Damage: Ignite is based on the average damage dealt, factoring in crits and non-crits.\nCrit Damage: Ignite is based on crit damage only.", list = {{val="AVERAGE",label="Average Damage"},{val="CRIT",label="Crit Damage"}} },
 	{ section = "Skill Options", col = 2 },
+	{ label = "Dark Pact:", ifSkill = "Dark Pact" },
+	{ var = "darkPactSkeletonLife", type = "number", label = "Skeleton Life:", ifSkill = "Dark Pact", tooltip = "Sets the maximum life of the skeleton that is being targeted.", apply = function(val, modList, enemyModList)
+		modList:NewMod("SkillData", "LIST", { key = "skeletonLife", value = val }, "Config", { type = "SkillName", skillName = "Dark Pact" })
+	end },
 	{ label = "Detonate Dead:", ifSkill = "Detonate Dead" },
-	{ var = "detonateDeadCorpseLife", type = "number", label = "Corpse Life:", ifSkillList = { "Detonate Dead", "Vaal Detonate Dead" }, tooltip = "Sets the maximum life of the corpse that is being detonated.\nFor reference, a level 70 monster has "..data.monsterLifeTable[70].." base life, and a level 80 monster has "..data.monsterLifeTable[80]..".", apply = function(val, modList, enemyModList)
+	{ var = "detonateDeadCorpseLife", type = "number", label = "Corpse Life:", ifSkillList = { "Detonate Dead", "Vaal Detonate Dead" }, tooltip = "Sets the maximum life of the corpse that is being detonated.\nFor reference, a level 70 monster has "..data["3_0"].monsterLifeTable[70].." base life, and a level 80 monster has "..data["3_0"].monsterLifeTable[80]..".", apply = function(val, modList, enemyModList)
 		modList:NewMod("SkillData", "LIST", { key = "corpseLife", value = val }, "Config", { type = "SkillName", skillName = "Detonate Dead" })
 	end },
 	{ label = "Ice Nova:", ifSkill = "Ice Nova" },
 	{ var = "iceNovaCastOnFrostbolt", type = "check", label = "Cast on Frostbolt?", ifSkill = "Ice Nova", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:CastOnFrostbolt", "FLAG", true, "Config", { type = "SkillName", skillName = "Ice Nova" })
+	end },
+	{ label = "Innervate", ifSkill = "Innervate" },
+	{ var = "innervateInnervation", type = "check", label = "Is Innervation active?", ifSkill = "Innervate", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:Innervation", "FLAG", true, "Config")
 	end },
 	{ label = "Raise Spectre:", ifSkill = "Raise Spectre" },
 	{ var = "raiseSpectreSpectreLevel", type = "number", label = "Spectre Level:", ifSkill = "Raise Spectre", tooltip = "Sets the level of the raised spectre.\nThe default level is the level requirement of the Raise Spectre skill.", apply = function(val, modList, enemyModList)
@@ -251,6 +259,9 @@ local varList = {
 	{ var = "conditionShocked", type = "check", label = "Are you Shocked?", ifCond = "Shocked", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Shocked", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionBleeding", type = "check", label = "Are you Bleeding?", ifCond = "Bleeding", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:Bleeding", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionHitRecently", type = "check", label = "Have you Hit Recently?", ifCond = "HitRecently", tooltip = "You will automatically be considered to have Hit Recently if your main skill is self-cast,\nbut you can use this option to force it if necessary.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HitRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -304,24 +315,13 @@ local varList = {
 	end },
 	{ var = "buffConflux", type = "list", label = "Conflux Buff:", ifNode = 51391, list = {{val=0,label="None"},{val="CHILLING",label="Chilling"},{val="SHOCKING",label="Shocking"},{val="IGNITING",label="Igniting"},{val="ALL",label="Chill + Shock + Ignite"}}, apply = function(val, modList, enemyModList)
 		if val == "CHILLING" or val == "ALL" then
-			modList:NewMod("PhysicalCanChill", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("LightningCanChill", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("FireCanChill", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("ChaosCanChill", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+			modList:NewMod("Condition:ChillingConflux", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		end
 		if val == "SHOCKING" or val == "ALL" then
-			modList:NewMod("EnemyShockChance", "BASE", 100, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("PhysicalCanShock", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("ColdCanShock", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("FireCanShock", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("ChaosCanShock", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+			modList:NewMod("Condition:ShockingConflux", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		end
 		if val == "IGNITING" or val == "ALL" then
-			modList:NewMod("EnemyIgniteChance", "BASE", 100, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("PhysicalCanIgnite", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("LightningCanIgnite", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("ColdCanIgnite", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
-			modList:NewMod("ChaosCanIgnite", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+			modList:NewMod("Condition:IgnitingConflux", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		end
 	end },
 	{ var = "buffBastionOfHope", type = "check", label = "Is Bastion of Hope active?", ifNode = 39728, apply = function(val, modList, enemyModList)
@@ -482,7 +482,7 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 
 	self.sectionList = { }
 	self.varControls = { }
-
+	
 	self:BuildModList()
 
 	--[[
