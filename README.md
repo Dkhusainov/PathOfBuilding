@@ -53,7 +53,41 @@ If you'd like to help support the development of Path of Building, I have a [Pat
 ![ss3](https://cloud.githubusercontent.com/assets/19189971/18089780/f0ff234a-6f04-11e6-8c88-6193fe59a5c4.png)
 
 ## Changelog
-### 1.4.52 - 2016/07/30
+### 1.4.55 - 2017/08/04
+ * Fixed an issue where the stat difference tooltip on the gem enable checkbox would sometimes fail to update
+ * Added an option to the Configuration tab for "Are you Bleeding?"
+
+For 3.0 builds:
+ * The Innervation buff can now be enabled using a new option to the Skill Options section of the Configuration tab
+ * Dark Pact now uses the Totem's life when linked to Spell Totem
+ * The increased Chaos Damage taken from the new Spreading Rot jewel now applies when "Is the enemy Hindered?" is enabled
+ 
+### 1.4.54 - 2017/08/03
+ * Modifiers to Burn rate should now be simulated correctly
+
+For 3.0 builds:
+ * Added support for the %-of-Life damage scaling for Dark Pact
+    * Note that the values are not final, and will change when the patch is released
+	* For Cast on Skeleton, the skeleton life must be input in the Configuration tab
+ * Corrected the charge bonuses which weren't reverted properly
+ * Fixed the "Elemental Damage added as Chaos" modifier on Atziri's Promise; re-import from the unique DB
+ * Fixed the new life modifier on Death's Oath
+
+### 1.4.53 - 2017/08/03
+ * Added Inya's Epiphany, Volkuur's Guidance and The Coming Calamity
+ * Fixed an issue where the effect of the Conflux Buff option would persist after Shaper of Desolation is deallocted
+
+For 3.0 builds:
+ * Updated the passive tree to the final version
+ * Updated the charge bonuses
+ * Applied most of the unique changes that hadn't already been applied
+ 
+Still to be added:
+ * Some skill changes (waiting for the patch data to become available)
+ * The new skill granted by Death's Oath
+ * The changes to Shock and Chill
+
+### 1.4.52 - 2017/07/30
  * Fixed an issue where attack skills could fail to utilise weapons in the second weapon set
 
 For 3.0 builds:
