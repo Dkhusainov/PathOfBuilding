@@ -15,7 +15,7 @@ local gameVersionDropList = {
 }
 
 local varList = {
-	{ section = "General", col = 1 },
+	{ section = "General", col = 1, order = 5 },
 	{ var = "enemyLevel", type = "number", label = "Enemy Level:", tooltip = "This overrides the default enemy level used to estimate your hit and evade chances.\nThe default level is your character level, capped at 84, which is the same value\nused in-game to calculate the stats on the character sheet." },
 	{ var = "enemyPhysicalHit", type = "number", label = "Enemy Physical Hit Damage:", tooltip = "This overrides the default damage amount used to estimate your physical damage reduction from armour.\nThe default is 1.5 times the enemy's base damage, which is the same value\nused in-game to calculate the estimate shown on the character sheet." },
 	{ var = "conditionStationary", type = "check", label = "Are you always stationary?", ifCond = "Stationary", apply = function(val, modList, enemyModList)
@@ -34,7 +34,7 @@ local varList = {
 		modList:NewMod("MinionModifier", "LIST", { mod = modLib.createMod("Condition:FullLife", "FLAG", true, "Config") }, "Config")
 	end },
 	{ var = "igniteMode", type = "list", label = "Ignite calculation mode:", tooltip = "Controls how the base damage for ignite is calculated:\nAverage Damage: Ignite is based on the average damage dealt, factoring in crits and non-crits.\nCrit Damage: Ignite is based on crit damage only.", list = {{val="AVERAGE",label="Average Damage"},{val="CRIT",label="Crit Damage"}} },
-	{ section = "Skill Options", col = 2 },
+	{ section = "Skill Options", col = 2, order = 3 },
 	{ label = "Dark Pact:", ifSkill = "Dark Pact" },
 	{ var = "darkPactSkeletonLife", type = "number", label = "Skeleton Life:", ifSkill = "Dark Pact", tooltip = "Sets the maximum life of the skeleton that is being targeted.", apply = function(val, modList, enemyModList)
 		modList:NewMod("SkillData", "LIST", { key = "skeletonLife", value = val }, "Config", { type = "SkillName", skillName = "Dark Pact" })
@@ -70,7 +70,7 @@ local varList = {
 	{ var = "vortexCastOnFrostbolt", type = "check", label = "Cast on Frostbolt?", ifSkill = "Vortex", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:CastOnFrostbolt", "FLAG", true, "Config", { type = "SkillName", skillName = "Vortex" })
 	end },
-	{ section = "Map Modifiers and Player Debuffs", col = 2 },
+	{ section = "Map Modifiers and Player Debuffs", col = 2, order = 4 },
 	{ label = "Map Prefix Modifiers:" },
 	{ var = "enemyHasPhysicalReduction", type = "list", label = "Enemy Physical Damage reduction:", tooltip = "'Armoured'", list = {{val=0,label="None"},{val=20,label="20% (Low tier)"},{val=30,label="30% (Mid tier)"},{val=40,label="40% (High tier)"}}, apply = function(val, modList, enemyModList)	
 		enemyModList:NewMod("PhysicalDamageReduction", "BASE", val, "Config")
@@ -198,7 +198,7 @@ local varList = {
 	{ var = "playerCursedWithWarlordsMark", type = "number", label = "Warlord's Mark:", tooltip = "Sets the level of Warlord's Mark to apply to the player.", apply = function(val, modList, enemyModList)
 		modList:NewMod("ExtraCurse", "LIST", { name = "Warlord's Mark", level = val, applyToPlayer = true })
 	end },
-	{ section = "When In Combat", col = 1 },
+	{ section = "When In Combat", col = 1, order = 1 },
 	{ var = "usePowerCharges", type = "check", label = "Do you use Power Charges?", apply = function(val, modList, enemyModList)
 		modList:NewMod("UsePowerCharges", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -360,7 +360,7 @@ local varList = {
 	{ var = "conditionBlockedHitFromUniqueEnemyRecently", type = "check", label = "Blocked hit from a Unique Recently?", ifNode = 63490, apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:BlockedHitFromUniqueEnemyRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ section = "For Effective DPS", col = 1 },
+	{ section = "For Effective DPS", col = 1, order = 2 },
 	{ var = "critChanceLucky", type = "check", label = "Is your Crit Chance Lucky?", apply = function(val, modList, enemyModList)
 		modList:NewMod("CritChanceLucky", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
@@ -475,6 +475,7 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 	self.UndoHandler()
 	self.ControlHost()
 	self.Control()
+    self.varList = varList
 
 	self.build = build
 
@@ -485,13 +486,13 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 	
 	self:BuildModList()
 
-	--[[
 	local lastSection
 	for _, varData in ipairs(varList) do
 		if varData.section then
 			lastSection = common.New("SectionControl", {"TOPLEFT",self,"TOPLEFT"}, 0, 0, 360, 0, varData.section)
 			lastSection.varControlList = { }
 			lastSection.col = varData.col
+			lastSection.varData = varData
 			lastSection.height = function(self)
 				local height = 20
 				for _, varControl in pairs(self.varControlList) do
@@ -601,16 +602,17 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 			else
 				control.tooltipText = varData.tooltip
 			end
-			t_insert(self.controls, common.New("LabelControl", {"RIGHT",control,"LEFT"}, -4, 0, 0, DrawStringWidth(14, "VAR", varData.label) > 228 and 12 or 14, "^7"..varData.label))
+--			t_insert(self.controls, common.New("LabelControl", {"RIGHT",control,"LEFT"}, -4, 0, 0, DrawStringWidth(14, "VAR", varData.label) > 228 and 12 or 14, "^7"..varData.label))
 			if varData.var then
 				self.varControls[varData.var] = control
 			end
 			t_insert(self.controls, control)
+			control.varData = varData
 			t_insert(lastSection.varControlList, control)
 		end
 	end
 
-	-- Special control for game version selector
+	--[[ Special control for game version selector
 	self.controls.gameVersion = common.New("DropDownControl", {"TOPLEFT",self.sectionList[1],"TOPLEFT"}, 234, 0, 118, 16, gameVersionDropList, function(index, value)
 		if value.version ~= build.targetVersion then
 			main:OpenConfirmPopup("Convert Build", colorCodes.WARNING.."Warning:^7 Converting a build to a different game version may have side effects.\nFor example, if the passive tree has changed, then some passives may be deallocated.\nYou should create a backup copy of the build before proceeding.", "Convert to "..value.versionPretty, function()
@@ -633,6 +635,51 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 	self.controls.scrollBar = common.New("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 	]]
 end)
+
+function ConfigTabClass:GetNonEmptySections()
+	local r = {}
+	for _, section in ipairs(self.sectionList) do
+		for _, varControl in ipairs(section.varControlList) do
+			if varControl:IsShown() then
+				t_insert(r, section.varData)
+				break
+			end
+		end
+	end
+	return r
+end
+
+function ConfigTabClass:GetSectionConfigs(name)
+	local sectionVarControlList
+	for k, section in ipairs(self.sectionList) do
+		if section.varData.section == name then
+			sectionVarControlList = section.varControlList
+		end
+	end
+
+	local r = {
+		labels = {},
+		checkboxes = {},
+		numbers = {},
+		spinners = {}
+	}
+
+	for i, control in ipairs(sectionVarControlList) do
+		if control:IsShown() then
+			local data = control.varData
+			if data.type == "list" then
+				r.spinners[i] = data
+			elseif data.type == "check"  then
+				r.checkboxes[i] = data
+			elseif data.type == "number"  then
+				r.numbers[i] = data
+			else
+				r.labels[i] = data
+			end
+		end
+	end
+	return r
+end
 
 function ConfigTabClass:Load(xml, fileName)
 	for _, node in ipairs(xml) do
