@@ -83,6 +83,7 @@ local skills, mod, flag, skill = ...
 
 #skill DarkPact
 #flags spell area
+--baseMod skill("radius", 24)
 	parts = {
 		{
 			name = "Cast on Player",
@@ -452,6 +453,7 @@ local skills, mod, flag, skill = ...
 			area = true,
 		},
 	},
+#setMod base_skill_show_average_damage_instead_of_dps==nil
 #mods
 
 #skill StormCall
@@ -465,6 +467,7 @@ local skills, mod, flag, skill = ...
 
 #skill SummonChaosGolem
 #flags spell minion golem chaos
+#baseMod skill("allowTotemBuff", true)
 #baseMod flag("Condition:HaveChaosGolem", { type = "GlobalEffect", effectType = "Buff" })
 	minionList = {
 		"SummonedChaosGolem",
@@ -473,6 +476,7 @@ local skills, mod, flag, skill = ...
 
 #skill SummonLightningGolem
 #flags spell minion golem lightning
+#baseMod skill("allowTotemBuff", true)
 #baseMod flag("Condition:HaveLightningGolem", { type = "GlobalEffect", effectType = "Buff" })
 	minionList = {
 		"SummonedLightningGolem",
@@ -536,6 +540,7 @@ local skills, mod, flag, skill = ...
 		},
 	},
 #global Debuff
+#baseMod skill("debuff", true)
 #baseMod skill("stackCount", 5, { type = "SkillPart", skillPart = 2 })
 #baseMod skill("stackCount", 10, { type = "SkillPart", skillPart = 3 })
 #baseMod skill("stackCount", 20, { type = "SkillPart", skillPart = 4 })

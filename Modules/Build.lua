@@ -133,7 +133,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	end
 	self.controls.pointDisplay.width = function(control)
 		local used, ascUsed = self.spec:CountAllocNodes()
-		local usedMax = 120 + (self.calcsTab.mainOutput.ExtraPoints or 0)
+		local usedMax = 99 + (self.targetVersion == "2_6" and 21 or 22) + (self.calcsTab.mainOutput.ExtraPoints or 0)
 		local ascMax = 8
 		control.str = string.format("%s%3d / %3d   %s%d / %d", used > usedMax and "^1" or "^7", used, usedMax, ascUsed > ascMax and "^1" or "^7", ascUsed, ascMax)
 		control.req = "Required level: "..m_max(1, (100 + used - usedMax))
@@ -237,6 +237,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		{ stat = "WithPoisonAverageDamage", label = "Average Dmg. inc. Poison", fmt = ".1f", compPercent = true },
 		{ stat = "DecayDPS", label = "Decay DPS", fmt = ".1f", compPercent = true },
 		{ stat = "Cooldown", label = "Skill Cooldown", fmt = ".2fs", lowerIsBetter = true },
+		{ stat = "AreaOfEffectRadius", label = "AoE Radius", fmt = "d" },
 		{ stat = "ManaCost", label = "Mana Cost", fmt = "d", compPercent = true, lowerIsBetter = true, condFunc = function() return true end },
 		{ },
 		{ stat = "Str", label = "Strength", fmt = "d" },
@@ -789,7 +790,7 @@ function buildMode:OpenTargetVersionPopup(initial)
 	controls.version2_6 = common.New("ButtonControl", nil, -90, 50, 170, 20, "2.6 (Atlas of Worlds)", function()
 		setVersion("2_6")
 	end)
-	controls.version3_0 = common.New("ButtonControl", nil, 90, 50, 170, 20, "3.0 (Fall of Oriath Beta)", function()
+	controls.version3_0 = common.New("ButtonControl", nil, 90, 50, 170, 20, "3.0 (Fall of Oriath)", function()
 		setVersion("3_0")
 	end)
 	controls.note = common.New("LabelControl", nil, 0, 80, 0, 14, "^7Tip: Existing builds can be converted between versions\nusing the 'Game Version' option in the Configuration tab.")

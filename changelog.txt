@@ -1,10 +1,38 @@
+VERSION[1.4.58][2017/08/09]
+ * Added all of the new uniques
+ * Added support for the Void Gaze skill granted by Eber's Unification
+ * Added support for the Storm Cascade skill granted by The Rippling Thoughts
+ * The other skills granted by the new uniques are only partially supported at the moment (no support for the minions)
+ * Charged Dash now has a "Travel distance" option in the Configuration tab
+ * Updated the total available passive skill points
+ * Burn faster/Burn slower should both now be calculated correctly
+ * Modifiers to life/mana/ES recovery rate should now only affect recovery over time
+ * The build list now uses natural sort order (so "Foo 50" comes before "Foo 100")
+ * The gem selection dropdown now accepts "active" as a filter keyword in additional to other gem tags (such as "support")
+For 2.6 builds:
+ * The link created when exporting the passive tree now opens in the 2.6.2 version of the offical passive tree viewer
+VERSION[1.4.57][2017/08/05]
+ * Now that 3.0 is live, the warning that was shown before importing to 3.0 builds is now shown for 2.6 builds instead
+ * The program now behaves correctly when attempting to import from an account with a private profile
+For 3.0 builds:
+ * Lioneye's Fall now correctly transforms modifiers that grant Ailemnt Damage while wielding melee weapons
+VERSION[1.4.56][2017/08/04]
+ * AoE Radius is now shown in the sidebar and stat comparison tooltips
+ * The duration of Wither is now correctly affected by Temporal Chains
+ * Frozen enemies are now correctly considered to be chilled as well
+For 3.0 builds:
+ * Updated skills and item modifiers from the patch data
+ * Updated the Bleeding bonus damage against moving enemies
+ * Added support for the Death Aura skill granted by Death's Oath
+ * Equipping Varunastra now correctly allows "Ailment Damage while wielding X" modifiers of the appropriate types 
+   to apply (thanks Spawnbroker)
 VERSION[1.4.55][2017/08/04]
  * Fixed an issue where the stat difference tooltip on the gem enable checkbox would sometimes fail to update
  * Added an option to the Configuration tab for "Are you Bleeding?"
 For 3.0 builds:
  * The Innervation buff can now be enabled using a new option to the Skill Options section of the Configuration tab
  * Dark Pact now uses the Totem's life when linked to Spell Totem
- * The increased Chaos Damage taken from the new Spreading Rot jewel now applies when "Is the enemy Hindered?" is enabled
+ * The increased Chaos Damage taken from the Spreading Rot jewel now applies when "Is the enemy Hindered?" is enabled
 VERSION[1.4.54][2017/08/03]
  * Modifiers to Burn rate should now be simulated correctly
 For 3.0 builds:

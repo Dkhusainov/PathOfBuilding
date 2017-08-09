@@ -4904,6 +4904,7 @@ skills["SummonChaosGolem"] = {
 		skill("cooldown", 6), 
 		mod("ActiveGolemLimit", "BASE", 1), --"base_number_of_golems_allowed" = 1
 		--"display_minion_monster_type" = 5
+		skill("allowTotemBuff", true), 
 		flag("Condition:HaveChaosGolem", { type = "GlobalEffect", effectType = "Buff" }), 
 	},
 	qualityMods = {
@@ -4983,6 +4984,7 @@ skills["SummonLightningGolem"] = {
 		skill("cooldown", 6), 
 		mod("ActiveGolemLimit", "BASE", 1), --"base_number_of_golems_allowed" = 1
 		--"display_minion_monster_type" = 11
+		skill("allowTotemBuff", true), 
 		flag("Condition:HaveLightningGolem", { type = "GlobalEffect", effectType = "Buff" }), 
 	},
 	qualityMods = {
@@ -5521,6 +5523,7 @@ skills["Wither"] = {
 		mod("ChaosDamageTaken", "INC", 7, 0, 0, { type = "GlobalEffect", effectType = "Debuff" }), --"chaos_damage_taken_+%" = 7
 		nil, --"base_skill_effect_duration" = 500
 		skill("duration", 2), --"base_secondary_skill_effect_duration" = 2000
+		skill("debuff", true), 
 		skill("stackCount", 5, { type = "SkillPart", skillPart = 2 }), 
 		skill("stackCount", 10, { type = "SkillPart", skillPart = 3 }), 
 		skill("stackCount", 20, { type = "SkillPart", skillPart = 4 }), 
