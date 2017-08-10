@@ -35,7 +35,8 @@ local SkillListClass = common.NewClass("SkillList", "ListControl", function(self
 	self.controls.new = common.New("ButtonControl", {"RIGHT",self.controls.deleteAll,"LEFT"}, -4, 0, 60, 18, "New", function()
 		local newGroup = { 
 			label = "", 
-			enabled = true, 
+			displayLabel = "<No active skills>",
+			enabled = true,
 			gemList = { } 
 		}
 		t_insert(self.list, newGroup)
