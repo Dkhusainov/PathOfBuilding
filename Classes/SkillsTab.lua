@@ -120,14 +120,7 @@ will automatically apply to the skill.]]
 
 	-- Skill gem slots
 	self.gemSlots = {}
-    --todo сделать нормально?
 	self:CreateGemSlot(1)
-	self:CreateGemSlot(2)
-	self:CreateGemSlot(3)
-	self:CreateGemSlot(4)
-	self:CreateGemSlot(5)
-	self:CreateGemSlot(6)
-	self:CreateGemSlot(7)
 --	self.controls.gemNameHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].nameSpec,"TOPLEFT"}, 0, -2, 0, 16, "^7Gem name:")
 --	self.controls.gemLevelHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].level,"TOPLEFT"}, 0, -2, 0, 16, "^7Level:")
 --	self.controls.gemQualityHeader = common.New("LabelControl", {"BOTTOMLEFT",self.gemSlots[1].quality,"TOPLEFT"}, 0, -2, 0, 16, "^7Quality:")
