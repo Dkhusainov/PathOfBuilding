@@ -122,6 +122,13 @@ for _, targetVersion in ipairs(targetVersionList) do
     if treeText ~= nil then
         local ok, tree = serpent.load(treeText)
         main.tree[targetVersion] = tree
+        for _, node in ipairs(tree.nodes) do
+            local modList = common.New("ModList")
+            for k, v in ipairs(node.modList) do
+                modList[k] = v
+            end
+            node.modList = modList
+        end
     end
 end
 
