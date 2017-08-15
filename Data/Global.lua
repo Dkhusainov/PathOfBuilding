@@ -7,7 +7,7 @@
 colorCodes = {
 	NORMAL = "^xC8C8C8",
 	MAGIC = "^x8888FF",
-	RARE = "^xFFFF77",
+	RARE = "^xC6C65B",
 	UNIQUE = "^xAF6025",
 	RELIC = "^x60C060",
 	GEM = "^x1AA29B",
