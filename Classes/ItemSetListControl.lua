@@ -82,15 +82,15 @@ function ItemSetListClass:AddValueTooltip(tooltip, index, itemSetId)
 end
 
 function ItemSetListClass:GetDragValue(index, itemSetId)
-	return "ItemList", self.itemsTab.itemSets[itemSetId]
+	return "ItemListControl", self.itemsTab.itemSets[itemSetId]
 end
 
 function ItemSetListClass:CanReceiveDrag(type, value)
-	return type == "SharedItemList"
+	return type == "SharedItemListControl"
 end
 
 function ItemSetListClass:ReceiveDrag(type, value, source)
-	if type == "SharedItemList" then
+	if type == "SharedItemListControl" then
 		local itemSet = self.itemsTab:NewItemSet()
 		itemSet.title = value.title
 		for slotName, verItem in pairs(value.slots) do

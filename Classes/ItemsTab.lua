@@ -94,10 +94,10 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
     self.slots = { }
     self.orderedSlots = { }
     self.slotOrder = {}
-    --[[
+
 	self.slotAnchor = common.New("Control", {"TOPLEFT",self,"TOPLEFT"}, 96, 24, 310, 0)
 	for index, slotName in ipairs(baseSlots) do
-		local slot = common.New("ItemSlot", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, (index - 1) * 20, self, slotName)
+		local slot = common.New("ItemSlotControl", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, (index - 1) * 20, self, slotName)
 		t_insert(self.controls, slot)
 		self.slotOrder[slotName] = #self.orderedSlots
 		if slotName:match("Weapon") then
@@ -105,7 +105,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 			slot.shown = function()
 				return not self.activeItemSet.useSecondWeaponSet
 			end
-			local swapSlot = common.New("ItemSlot", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, (index - 1) * 20, self, slotName.." Swap", slotName)
+			local swapSlot = common.New("ItemSlotControl", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, (index - 1) * 20, self, slotName.." Swap", slotName)
 			t_insert(self.controls, swapSlot)
 			self.slotOrder[swapSlot.slotName] = #self.orderedSlots
 			swapSlot.weaponSet = 2
@@ -117,7 +117,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.sockets = { }
 	for _, node in pairs(build.tree.nodes) do
 		if node.type == "socket" then
-			local socketControl = common.New("ItemSlot", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, 0, self, "Jewel "..node.id, "Socket", node.id)
+			local socketControl = common.New("ItemSlotControl", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, 0, self, "Jewel "..node.id, "Socket", node.id)
 			self.controls["socket"..node.id] = socketControl
 			self.sockets[node.id] = socketControl
 			self.slotOrder["Jewel "..node.id] = #baseSlots + 1 + node.id
@@ -170,7 +170,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.controls.weaponSwapLabel = common.New("LabelControl", {"RIGHT",self.controls.weaponSwap1,"LEFT"}, -4, 0, 0, 14, "^7Weapon Set:")
 
 	-- All items list
-	self.controls.itemList = common.New("ItemList", {"TOPLEFT",self.slotAnchor,"TOPRIGHT"}, 20, -20, 360, 308, self)
+	self.controls.itemList = common.New("ItemListControl", {"TOPLEFT",self.slotAnchor,"TOPRIGHT"}, 20, -20, 360, 308, self)
 
 	-- Database selector
 	self.controls.selectDBLabel = common.New("LabelControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 14, 0, 16, "^7Import from:")
@@ -180,7 +180,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.controls.selectDB = common.New("DropDownControl", {"LEFT",self.controls.selectDBLabel,"RIGHT"}, 4, 0, 150, 18, { "Uniques", "Rare Templates" })
 
 	-- Unique database
-	self.controls.uniqueDB = common.New("ItemDB", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 76, 360, function(c) return m_min(260, self.maxY - select(2, c:GetPos())) end, self, main.uniqueDB[build.targetVersion])
+	self.controls.uniqueDB = common.New("ItemDBControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 76, 360, function(c) return m_min(260, self.maxY - select(2, c:GetPos())) end, self, main.uniqueDB[build.targetVersion])
 	self.controls.uniqueDB.y = function()
 		return self.controls.selectDBLabel:IsShown() and 76 or 54
 	end
@@ -189,7 +189,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	end
 
 	-- Rare template database
-	self.controls.rareDB = common.New("ItemDB", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 76, 360, function(c) return m_min(260, self.maxY - select(2, c:GetPos())) end, self, main.rareDB[build.targetVersion])
+	self.controls.rareDB = common.New("ItemDBControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 76, 360, function(c) return m_min(260, self.maxY - select(2, c:GetPos())) end, self, main.rareDB[build.targetVersion])
 	self.controls.rareDB.y = function()
 		return self.controls.selectDBLabel:IsShown() and 76 or 370
 	end
@@ -207,6 +207,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.controls.newDisplayItem = common.New("ButtonControl", {"TOPLEFT",self.controls.craftDisplayItem,"TOPRIGHT"}, 8, 0, 120, 20, "Create custom...", function()
 		self:EditDisplayItemText()
 	end)
+--[[
 	self.controls.displayItemTip = common.New("LabelControl", {"TOPLEFT",self.controls.craftDisplayItem,"BOTTOMLEFT"}, 0, 8, 100, 16, 
 ^7Double-click an item from one of the lists,
 or copy and paste an item from in game (hover over the item and Ctrl+C)
@@ -214,8 +215,8 @@ to view or edit the item and add it to your build.
 You can Control + Click an item to equip it, or drag it onto the slot.
 This will also add it to your build if it's from the unique/template list.
 If there's 2 slots an item can go in, holding Shift will put it in the second.)
-
-	self.controls.sharedItemList = common.New("SharedItemList", {"TOPLEFT",self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 142, 360, 308, self)
+]]
+	self.controls.sharedItemList = common.New("SharedItemListControl", {"TOPLEFT",self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 142, 360, 308, self)
 
 	-- Display item
 	self.displayItemTooltip = common.New("Tooltip")
@@ -307,7 +308,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 				tooltip:Clear()
 			elseif tooltip:CheckForUpdate(modList) then
 				if value.modId or #modList == 1 then
-					local mod = self.displayItem.affixes[value.modId or modList[1]
+					local mod = self.displayItem.affixes[value.modId or modList[1]]
 					tooltip:AddLine(16, "^7Affix: "..mod.affix)
 					for _, line in ipairs(mod) do
 						tooltip:AddLine(14, "^7"..line)
@@ -317,8 +318,8 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 					end
 				else
 					tooltip:AddLine(16, "^7"..#modList.." Tiers")
-					local minMod = self.displayItem.affixes[modList[1]
-					local maxMod = self.displayItem.affixes[modList[#modList]
+					local minMod = self.displayItem.affixes[modList[1]]
+					local maxMod = self.displayItem.affixes[modList[#modList]]
 					for l, line in ipairs(minMod) do
 						local minLine = line:gsub("%((%d[%d%.]*)%-(%d[%d%.]*)%)", "%1")
 						local maxLine = maxMod[l]:gsub("%((%d[%d%.]*)%-(%d[%d%.]*)%)", "%2")
@@ -440,7 +441,6 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 		t_insert(self.controls.rareDB.dragTargetList, slot)
 		t_insert(self.controls.sharedItemList.dragTargetList, slot)
 	end
-	]]
 
 	-- Initialise item sets
 	self.itemSets = { }

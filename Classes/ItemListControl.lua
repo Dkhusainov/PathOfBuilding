@@ -8,7 +8,7 @@ local launch, main = ...
 local pairs = pairs
 local t_insert = table.insert
 
-local ItemListClass = common.NewClass("ItemList", "ListControl", function(self, anchor, x, y, width, height, itemsTab)
+local ItemListClass = common.NewClass("ItemListControl", "ListControl", function(self, anchor, x, y, width, height, itemsTab)
 	self.ListControl(anchor, x, y, width, height, 16, true, itemsTab.itemOrderList)
 	self.itemsTab = itemsTab
 	self.label = "^7All items:"
@@ -53,12 +53,25 @@ function ItemListClass:GetRowValue(column, index, itemId)
 		local used = ""
 		local slot, itemSet = self.itemsTab:GetEquippedSlotForItem(item)
 		if not slot then
-			used = "  ^9(Unused)"
+			used = "  (Unused)"
 		elseif itemSet then
-			used = "  ^9(Used in '" .. (itemSet.title or "Default") .. "')"
+			used = "  (Used in '" .. (itemSet.title or "Default") .. "')"
 		end
-		return colorCodes[item.rarity] .. item.name .. used
+		return {
+			color = colorCodes[item.rarity],
+			label = item.name .. used,
+			id = itemId
+		}
 	end
+end
+
+function ItemListClass:getItems()
+	local result = {}
+	for id, item in pairs(self.itemsTab.items) do
+		local i = self:GetRowValue(1, nil, id)
+		t_insert(result, i)
+	end
+	return result
 end
 
 function ItemListClass:AddValueTooltip(tooltip, index, itemId)

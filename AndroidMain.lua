@@ -103,6 +103,11 @@ local classList = {
     "PassiveSpec",
     "PassiveSpecListControl",
     "PassiveTreeView",
+    "SliderControl",
+    "ItemSlotControl",
+    "ItemListControl",
+    "SharedItemListControl",
+    "ItemDBControl",
     "ModDB",
     "ModList",
     "SkillList",
@@ -147,7 +152,7 @@ for _, targetVersion in ipairs(targetVersionList) do
         end
     end
     data.uniques = nil
---    self.rareDB[targetVersion] = { list = { } }
+    main.rareDB[targetVersion] = { list = { } }
 --    for _, raw in pairs(data[targetVersion].rares) do
 --        local newItem = itemLib.makeItemFromRaw(targetVersion, "Rarity: Rare\n"..raw)
 --        if newItem then

@@ -9,7 +9,7 @@ local pairs = pairs
 local t_insert = table.insert
 local t_remove = table.remove
 
-local SharedItemListClass = common.NewClass("SharedItemList", "ListControl", function(self, anchor, x, y, width, height, itemsTab)
+local SharedItemListClass = common.NewClass("SharedItemListControl", "ListControl", function(self, anchor, x, y, width, height, itemsTab)
 	self.ListControl(anchor, x, y, width, height, 16, true, main.sharedItemList)
 	self.itemsTab = itemsTab
 	self.label = "^7Shared items:"

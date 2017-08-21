@@ -9,7 +9,7 @@ local pairs = pairs
 local ipairs = ipairs
 local t_insert = table.insert
 
-local ItemDBClass = common.NewClass("ItemDB", "ListControl", function(self, anchor, x, y, width, height, itemsTab, db)
+local ItemDBClass = common.NewClass("ItemDBControl", "ListControl", function(self, anchor, x, y, width, height, itemsTab, db)
 	self.ListControl(anchor, x, y, width, height, 16, false)
 	self.itemsTab = itemsTab
 	self.db = db

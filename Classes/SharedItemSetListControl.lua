@@ -66,15 +66,15 @@ function SharedItemSetListClass:AddValueTooltip(tooltip, index, sharedItemSet)
 end
 
 function SharedItemSetListClass:GetDragValue(index, value)
-	return "SharedItemList", value
+	return "SharedItemListControl", value
 end
 
 function SharedItemSetListClass:CanReceiveDrag(type, value)
-	return type == "ItemList"
+	return type == "ItemListControl"
 end
 
 function SharedItemSetListClass:ReceiveDrag(type, value, source)
-	if type == "ItemList" then
+	if type == "ItemListControl" then
 		local sharedItemList = { title = value.title, slots = { } }
 		for slotName, slot in pairs(self.itemsTab.slots) do
 			if not slot.nodeId then
