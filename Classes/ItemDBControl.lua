@@ -47,22 +47,22 @@ local ItemDBClass = common.NewClass("ItemDBControl", "ListControl", function(sel
 	t_insert(self.typeList, 5, "Two Handed Melee")
 	self.slotList = { "Any slot", "Weapon 1", "Weapon 2", "Helmet", "Body Armour", "Gloves", "Boots", "Amulet", "Ring", "Belt", "Jewel" }
 	self.controls.slot = common.New("DropDownControl", {"BOTTOMLEFT",self,"TOPLEFT"}, 0, -22, 95, 18, self.slotList, function(index, value)
-		self:BuildList()
+--		self:BuildList()
 	end)
 	self.controls.type = common.New("DropDownControl", {"LEFT",self.controls.slot,"RIGHT"}, 2, 0, 135, 18, self.typeList, function(index, value)
-		self:BuildList()
+--		self:BuildList()
 	end)
 	self.controls.league = common.New("DropDownControl", {"LEFT",self.controls.type,"RIGHT"}, 2, 0, 126, 18, self.leagueList, function(index, value)
-		self:BuildList()
+--		self:BuildList()
 	end)
 	self.controls.league.shown = function()
 		return #self.leagueList > 2
 	end
 	self.controls.search = common.New("EditControl", {"BOTTOMLEFT",self,"TOPLEFT"}, 0, -2, 258, 18, "", "Search", "%c", 100, function()
-		self:BuildList()
+--		self:BuildList()
 	end)
 	self.controls.searchMode = common.New("DropDownControl", {"LEFT",self.controls.search,"RIGHT"}, 2, 0, 100, 18, { "Anywhere", "Names", "Modifiers" }, function(index, value)
-		self:BuildList()
+--		self:BuildList()
 	end)
 	self:BuildSortOrder()
 	self:BuildList()
@@ -146,6 +146,7 @@ function ItemDBClass:BuildList()
 	wipeTable(self.list)
 	for id, item in pairs(self.db.list) do
 		if self:DoesItemMatchFilters(item) then
+			item.color = colorCodes[item.rarity]
 			t_insert(self.list, item)
 		end
 	end
