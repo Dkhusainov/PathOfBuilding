@@ -119,10 +119,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	self.controls.saveAs.enabled = function()
 		return self.dbFileName
 	end
+	]]
 
 	-- Controls: top bar, right side
 	self.anchorTopBarRight = common.New("Control", nil, function() return main.screenW / 2 + 6 end, 4, 0, 20)
 	self.controls.pointDisplay = common.New("Control", {"LEFT",self.anchorTopBarRight,"RIGHT"}, -12, 0, 0, 20)
+	--[[
 	self.controls.pointDisplay.x = function(control)
 		local width, height = control:GetSize()
 		if self.controls.saveAs:GetPos() + self.controls.saveAs:GetSize() < self.anchorTopBarRight:GetPos() - width - 16 then
@@ -131,14 +133,20 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 			return 0
 		end
 	end
+	]]
 	self.controls.pointDisplay.width = function(control)
 		local used, ascUsed = self.spec:CountAllocNodes()
 		local usedMax = 99 + (self.targetVersion == "2_6" and 21 or 22) + (self.calcsTab.mainOutput.ExtraPoints or 0)
-		local ascMax = 8
-		control.str = string.format("%s%3d / %3d   %s%d / %d", used > usedMax and "^1" or "^7", used, usedMax, ascUsed > ascMax and "^1" or "^7", ascUsed, ascMax)
-		control.req = "Required level: "..m_max(1, (100 + used - usedMax))
-		return DrawStringWidth(16, "FIXED", control.str) + 8
+		return {
+			used = used,
+			allocatedAsc = ascUsed,
+			usedMax = usedMax
+		}
+--		control.str = string.format("%s%3d / %3d   %s%d / %d", used > usedMax and "^1" or "^7", used, usedMax, ascUsed > ascMax and "^1" or "^7", ascUsed, ascMax)
+--		control.req = "Required level: "..m_max(1, (100 + used - usedMax))
+--		return DrawStringWidth(16, "FIXED", control.str) + 8
 	end
+	--[[
 	self.controls.pointDisplay.Draw = function(control)
 		local x, y = control:GetPos()
 		local width, height = control:GetSize()
@@ -316,7 +324,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 
 	self.targetVersion = defaultTargetVersion
 	self.characterLevel = 1
---	self.controls.characterLevel:SetText(tostring(self.characterLevel))
+	self.controls.characterLevel:SetText(tostring(self.characterLevel))
 	self.banditNormal = "None"
 	self.banditCruel = "None"
 	self.banditMerciless = "None"
@@ -652,6 +660,7 @@ function buildMode:Save(xml)
 end
 
 function buildMode:OnFrame(inputEvents)
+	--[[
 	if not self.targetVersion then
 		main:DrawBackground(main.viewPort)
 		return
@@ -713,7 +722,7 @@ function buildMode:OnFrame(inputEvents)
 			self.controls[diff]:SelByValue(self[diff], "banditId")
 		end
 	end
-
+	]]
 	if self.buildFlag then
 		-- Rebuild calculation output tables
 		self.outputRevision = self.outputRevision + 1
@@ -721,14 +730,14 @@ function buildMode:OnFrame(inputEvents)
 		self.calcsTab:BuildOutput()
 		self:RefreshStatList()
 	end
-	if main.showThousandsSidebar ~= self.lastShowThousandsSidebar then
-		self:RefreshStatList()
-	end
+--	if main.showThousandsSidebar ~= self.lastShowThousandsSidebar then
+--		self:RefreshStatList()
+--	end
 
 	-- Update contents of main skill dropdowns
 	self:RefreshSkillSelectControls(self.controls, self.mainSocketGroup, "")
 
-	-- Draw contents of current tab
+	--[[Draw contents of current tab
 	local sideBarWidth = 312
 	local tabViewPort = {
 		x = sideBarWidth,
@@ -770,6 +779,7 @@ function buildMode:OnFrame(inputEvents)
 	DrawImage(nil, sideBarWidth - 4, 32, 4, main.screenH - 32)
 
 	self:DrawControls(main.viewPort)
+	]]
 end
 
 -- Opens the game version selection popup
@@ -1001,7 +1011,8 @@ end
 
 function buildMode:FormatStat(statData, statVal)
 	local val = statVal * ((statData.pc or statData.mod) and 100 or 1) - (statData.mod and 100 or 0)
-	local color = (statVal >= 0 and "^7" or colorCodes.NEGATIVE)
+--	local color = (statVal >= 0 and "^7" or colorCodes.NEGATIVE)
+	local color = ""
 	local valStr = s_format("%"..statData.fmt, val)
 	if main.showThousandsSidebar then
 		valStr = color .. formatNumSep(valStr)
@@ -1021,14 +1032,13 @@ function buildMode:AddDisplayStatList(statList, actor)
 				local statVal = actor.output[statData.stat]
 				if statVal and ((statData.condFunc and statData.condFunc(statVal,actor.output)) or (not statData.condFunc and statVal ~= 0)) then
 					t_insert(statBoxList, {
-						height = 16,
-						"^7"..statData.label..":",
+						statData.label..":",
 						self:FormatStat(statData, statVal),
 					})
 				end
 			end
 		elseif not statBoxList[#statBoxList] or statBoxList[#statBoxList][1] then
-			t_insert(statBoxList, { height = 10 })
+			t_insert(statBoxList, {"", ""})
 		end
 	end
 end

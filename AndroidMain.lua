@@ -183,10 +183,3 @@ end
 function saveBuild()
     return build:SaveDB()
 end
-
-function recalculate()
-    build.buildFlag = false
-    build.calcsTab:BuildOutput()
-    build:RefreshStatList()
-    return build.controls.statBox.list
-end
