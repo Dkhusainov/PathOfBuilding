@@ -55,9 +55,10 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	end
 
 	if not dbFileName and not targetVersion and not buildXML then
-		self.targetVersion = nil
-		self:OpenTargetVersionPopup(true)
-		return
+		targetVersion = liveTargetVersion
+		--self.targetVersion = nil
+		--self:OpenTargetVersionPopup(true)
+		--return
 	end
 	]]
 
@@ -241,8 +242,8 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		{ stat = "WithIgniteAverageDamage", label = "Average Dmg. inc. Ignite", fmt = ".1f", compPercent = true },
 		{ stat = "PoisonDPS", label = "Poison DPS", fmt = ".1f", compPercent = true },
 		{ stat = "PoisonDamage", label = "Total Damage per Poison", fmt = ".1f", compPercent = true },
-		{ stat = "WithPoisonDPS", label = "Total DPS inc. Poison", fmt = ".1f", compPercent = true },
-		{ stat = "WithPoisonAverageDamage", label = "Average Dmg. inc. Poison", fmt = ".1f", compPercent = true },
+		{ stat = "WithPoisonDPS", label = "Total DPS inc. Poison", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v ~= o.TotalDPS end },
+		{ stat = "WithPoisonAverageDamage", label = "Average Dmg. inc. Poison", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v ~= o.AverageDamage end },
 		{ stat = "DecayDPS", label = "Decay DPS", fmt = ".1f", compPercent = true },
 		{ stat = "Cooldown", label = "Skill Cooldown", fmt = ".2fs", lowerIsBetter = true },
 		{ stat = "AreaOfEffectRadius", label = "AoE Radius", fmt = "d" },
@@ -425,6 +426,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 		self.modFlag = true
 		self.buildFlag = true
 	end)
+	self.controls.mainSocketGroup.tooltipFunc = function(tooltip, mode, index, value)
+		local socketGroup = self.skillsTab.socketGroupList[index]
+		if socketGroup and tooltip:CheckForUpdate(socketGroup, self.outputRevision) then
+			self.skillsTab:AddSocketGroupTooltip(tooltip, socketGroup)
+		end
+	end
 	self.controls.mainSkill = common.New("DropDownControl", {"TOPLEFT",self.controls.mainSocketGroup,"BOTTOMLEFT"}, 0, 2, 300, 16, nil, function(index, value)
 		local mainSocketGroup = self.skillsTab.socketGroupList[self.mainSocketGroup]
 		mainSocketGroup.mainActiveSkill = index
@@ -1051,6 +1058,10 @@ function buildMode:RefreshStatList()
 		self:AddDisplayStatList(self.minionDisplayStats, self.calcsTab.mainEnv.minion)
 		t_insert(statBoxList, { height = 10 })
 		t_insert(statBoxList, { height = 18, "^7Player:" })
+	end
+	if self.calcsTab.mainEnv.player.mainSkill.skillFlags.disable then
+		t_insert(statBoxList, { height = 16, "^7Skill disabled:" })
+		t_insert(statBoxList, { height = 14, align = "CENTER_X", x = 140, self.calcsTab.mainEnv.player.mainSkill.disableReason })
 	end
 	self:AddDisplayStatList(self.displayStats, self.calcsTab.mainEnv.player)
 end

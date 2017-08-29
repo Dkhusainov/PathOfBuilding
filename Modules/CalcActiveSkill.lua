@@ -219,6 +219,7 @@ function calcs.buildActiveSkillModList(env, actor, activeSkill)
 	if skillTypes[SkillType.Shield] and not activeSkill.summonSkill and (not actor.itemList["Weapon 2"] or actor.itemList["Weapon 2"].type ~= "Shield") then
 		-- Skill requires a shield to be equipped
 		skillFlags.disable = true
+		activeSkill.disableReason = "This skill requires a Shield"
 	end
 
 	if skillFlags.attack then
@@ -240,6 +241,7 @@ function calcs.buildActiveSkillModList(env, actor, activeSkill)
 		elseif skillTypes[SkillType.DualWield] or not skillTypes[SkillType.CanDualWield] or skillTypes[SkillType.MainHandOnly] or skillFlags.forceMainHand then
 			-- Skill requires a compatible main hand weapon
 			skillFlags.disable = true
+			activeSkill.disableReason = "Main Hand weapon is not usable with this skill"
 		end
 		if skillTypes[SkillType.DualWield] or skillTypes[SkillType.CanDualWield] then
 			if not skillTypes[SkillType.MainHandOnly] and not skillFlags.forceMainHand then
@@ -247,18 +249,24 @@ function calcs.buildActiveSkillModList(env, actor, activeSkill)
 				if weapon2Flags then
 					activeSkill.weapon2Flags = weapon2Flags
 					skillFlags.weapon2Attack = true
-				elseif skillTypes[SkillType.DualWield] or not skillFlags.weapon1Attack then
+				elseif skillTypes[SkillType.DualWield] then
 					-- Skill requires a compatible off hand weapon
 					skillFlags.disable = true
+					activeSkill.disableReason = activeSkill.disableReason or "Off Hand weapon is not usable with this skill"
+				elseif not skillFlags.weapon1Attack then
+					-- Neither weapon is compatible
+					skillFlags.disable = true
+					activeSkill.disableReason = "No usable weapon equipped"
 				end
 			end
 		elseif actor.weaponData2.type then
 			-- Skill cannot be used while dual wielding
 			skillFlags.disable = true
+			activeSkill.disableReason = "This skill cannot be used while Dual Wielding"
 		end
 		skillFlags.bothWeaponAttack = skillFlags.weapon1Attack and skillFlags.weapon2Attack
 	end
-	
+
 	-- Build skill mod flag set
 	local skillModFlags = 0
 	if skillFlags.hit then
@@ -369,6 +377,11 @@ function calcs.buildActiveSkillModList(env, actor, activeSkill)
 	-- Initialise skill modifier list
 	local skillModList = common.New("ModList")
 	activeSkill.skillModList = skillModList
+
+	if actor.modDB and actor.modDB:Sum("FLAG", activeSkill.skillCfg, "DisableSkill") then
+		skillFlags.disable = true
+		activeSkill.disableReason = "Skills of this type are disabled"
+	end
 
 	if skillFlags.disable then
 		wipeTable(skillFlags)
@@ -488,13 +501,12 @@ function calcs.buildActiveSkillModList(env, actor, activeSkill)
 	-- Separate global effect modifiers (mods that can affect defensive stats or other skills)
 	local i = 1
 	while skillModList[i] do
-		local effectType, effectName, allowTotemBuff, cond
+		local effectType, effectName, effectTag
 		for _, tag in ipairs(skillModList[i]) do
 			if tag.type == "GlobalEffect" then
 				effectType = tag.effectType
 				effectName = tag.effectName or activeSkill.activeGem.grantedEffect.name
-				allowTotemBuff = tag.allowTotemBuff
-				cond = tag.effectCond
+				effectTag = tag
 				break
 			end
 		end
@@ -510,10 +522,17 @@ function calcs.buildActiveSkillModList(env, actor, activeSkill)
 				buff = {
 					type = effectType,
 					name = effectName,
-					allowTotemBuff = allowTotemBuff,
-					cond = cond,
+					allowTotemBuff = effectTag.allowTotemBuff,
+					cond = effectTag.cond,
 					modList = { },
 				}
+				if not effectTag.effectName then
+					-- Inherit buff configuration from the active skill
+					buff.applyNotPlayer = activeSkill.skillData.buffNotPlayer
+					buff.applyMinions = activeSkill.skillData.buffMinions
+					buff.applyAllies = activeSkill.skillData.buffAllies
+					buff.allowTotemBuff = activeSkill.skillData.allowTotemBuff
+				end
 				t_insert(activeSkill.buffList, buff)
 			end
 			local match = false

@@ -17,6 +17,7 @@ local gameVersionDropList = {
 
 local varList = {
 	{ section = "General", col = 1, order = 5 },
+	{ var = "resistancePenalty", type = "list", label = "Resistance penalty:", ifVer = "3_0", list = {{val=0,label="None"},{val=-30,label="Act 5 (-30%)"},{val=nil,label="Act 10 (-60%)"}} },
 	{ var = "enemyLevel", type = "number", label = "Enemy Level:", tooltip = "This overrides the default enemy level used to estimate your hit and evade chances.\nThe default level is your character level, capped at 84, which is the same value\nused in-game to calculate the stats on the character sheet." },
 	{ var = "enemyPhysicalHit", type = "number", label = "Enemy Physical Hit Damage:", tooltip = "This overrides the default damage amount used to estimate your physical damage reduction from armour.\nThe default is 1.5 times the enemy's base damage, which is the same value\nused in-game to calculate the estimate shown on the character sheet." },
 	{ var = "conditionStationary", type = "check", label = "Are you always stationary?", ifCond = "Stationary", apply = function(val, modList, enemyModList)
@@ -285,6 +286,9 @@ local varList = {
 	{ var = "conditionKilledAffectedByDoT", type = "check", label = "Killed Enemy affected by your DoT Recently?", ifCond = "KilledAffectedByDotRecently", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:KilledAffectedByDotRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "multiplierShockedEnemyKilledRecently", type = "number", label = "# of Shocked Enemies Killed Recently:", ifMult = "ShockedEnemyKilledRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ShockedEnemyKilledRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionFrozenEnemyRecently", type = "check", label = "Have you Frozen an Enemy Recently?", ifCond = "FrozenEnemyRecently", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:FrozenEnemyRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -433,7 +437,7 @@ local varList = {
 	{ var = "conditionEnemyRareOrUnique", type = "check", label = "is the enemy Rare or Unique?", ifCond = "EnemyRareOrUnique", tooltip = "Your enemy will automatically be considered to be Unique if one of the Boss options is selected.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:EnemyRareOrUnique", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "enemyIsBoss", type = "list", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance\n50% less Duration of Bleed\n50% less Duration of Poison\n50% less Duration of Ignite", list = {{val="NONE",label="No"},{val=true,label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
+	{ var = "enemyIsBoss", type = "list", ifVer = "2_6", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance\n50% less Duration of Bleed\n50% less Duration of Poison\n50% less Duration of Ignite", list = {{val="NONE",label="No"},{val=true,label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
 		if val == true then
 			modList:NewMod("Condition:EnemyRareOrUnique", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 			enemyModList:NewMod("CurseEffectOnSelf", "MORE", -60, "Boss")
@@ -447,6 +451,19 @@ local varList = {
 			enemyModList:NewMod("SelfBleedDuration", "MORE", -50, "Boss")
 			enemyModList:NewMod("SelfPoisonDuration", "MORE", -50, "Boss")
 			enemyModList:NewMod("SelfIgniteDuration", "MORE", -50, "Boss")
+		end
+	end },
+	{ var = "enemyIsBoss", type = "list", ifVer = "3_0", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance", list = {{val="NONE",label="No"},{val=true,label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
+		if val == true then
+			modList:NewMod("Condition:EnemyRareOrUnique", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
+			enemyModList:NewMod("CurseEffectOnSelf", "MORE", -60, "Boss")
+			enemyModList:NewMod("ElementalResist", "BASE", 30, "Boss")
+			enemyModList:NewMod("ChaosResist", "BASE", 15, "Boss")
+		elseif val == "SHAPER" then
+			modList:NewMod("Condition:EnemyRareOrUnique", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
+			enemyModList:NewMod("CurseEffectOnSelf", "MORE", -80, "Boss")
+			enemyModList:NewMod("ElementalResist", "BASE", 40, "Boss")
+			enemyModList:NewMod("ChaosResist", "BASE", 25, "Boss")
 		end
 	end },
 	{ var = "enemyPhysicalReduction", type = "number", label = "Enemy Phys. Damage Reduction:", apply = function(val, modList, enemyModList)
@@ -509,7 +526,7 @@ local ConfigTabClass = common.NewClass("ConfigTab", "UndoHandler", "ControlHost"
 			end
 			t_insert(self.sectionList, lastSection)
 			t_insert(self.controls, lastSection)
-		else
+		elseif not varData.ifVer or varData.ifVer == build.targetVersion then
 			local control
 			if varData.type == "check" then
 				control = common.New("CheckBoxControl", {"TOPLEFT",lastSection,"TOPLEFT"}, 234, 0, 18, nil, function(state)
@@ -829,7 +846,7 @@ function ConfigTabClass:BuildModList()
 	self.enemyModList = enemyModList
 	local input = self.input
 	for _, varData in ipairs(varList) do
-		if varData.apply then
+		if varData.apply and (not varData.ifVer or varData.ifVer == self.build.targetVersion) then
 			if varData.type == "check" then
 				if input[varData.var] then
 					varData.apply(true, modList, enemyModList, self.build)

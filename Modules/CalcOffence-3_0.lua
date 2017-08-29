@@ -171,7 +171,7 @@ function calcs.offence(env, actor)
 	if modDB:Sum("FLAG", nil, "MinionDamageAppliesToPlayer") then
 		-- Minion Damage conversion from The Scourge
 		for _, value in ipairs(modDB:Sum("LIST", env.player.mainSkill.skillCfg, "MinionModifier")) do
-			if value.mod.name == "Damage" then
+			if value.mod.name == "Damage" and value.mod.type == "INC" then
 				modDB:AddMod(value.mod)
 			end
 		end
@@ -374,6 +374,26 @@ function calcs.offence(env, actor)
 					t_insert(breakdown.Duration, s_format("/ %.2f ^8(debuff expires slower/faster)", 1 / debuffDurationMult))
 				end
 				t_insert(breakdown.Duration, s_format("= %.2fs", output.Duration))
+			end
+		end
+		durationBase = skillData.durationSecondary or 0
+		if durationBase > 0 then
+			local durationMod = calcLib.mod(modDB, skillCfg, "Duration", "SecondaryDuration", "SkillAndDamagingAilmentDuration")
+			output.DurationSecondary = durationBase * durationMod
+			if skillData.debuffSecondary then
+				output.DurationSecondary = output.DurationSecondary * debuffDurationMult
+			end
+			if breakdown and output.DurationSecondary ~= durationBase then
+				breakdown.DurationSecondary = {
+					s_format("%.2fs ^8(base)", durationBase),
+				}
+				if output.DurationMod ~= 1 then
+					t_insert(breakdown.DurationSecondary, s_format("x %.2f ^8(duration modifier)", durationMod))
+				end
+				if skillData.debuffSecondary and debuffDurationMult ~= 1 then
+					t_insert(breakdown.DurationSecondary, s_format("/ %.2f ^8(debuff expires slower/faster)", 1 / debuffDurationMult))
+				end
+				t_insert(breakdown.DurationSecondary, s_format("= %.2fs", output.DurationSecondary))
 			end
 		end
 	end
@@ -1350,6 +1370,9 @@ function calcs.offence(env, actor)
 					if effectMod ~= 1 then
 						t_insert(breakdown.BleedDPS, s_format("x %.2f ^8(ailment effect modifier)", effectMod))
 					end
+					if output.RuthlessBlowEffect ~= 0 then
+						t_insert(breakdown.BleedDPS, s_format("x %.2f ^8(ruthless blow effect modifier)", output.RuthlessBlowEffect))
+					end
 					t_insert(breakdown.BleedDPS, s_format("= %.1f", baseVal))
 					breakdown.multiChain(breakdown.BleedDPS, {
 						label = "Bleed DPS:",
@@ -1437,7 +1460,7 @@ function calcs.offence(env, actor)
 				if canDeal.Physical then
 					local min, max = calcAilmentSourceDamage(actor, output, dotCfg, pass == 2 and breakdown and breakdown.PoisonPhysical, "Physical", dmgTypeFlags.Chaos)
 					output.PoisonPhysicalMin = min
-					output.PoisonPhysicalMax = ma
+					output.PoisonPhysicalMax = max
 					totalMin = totalMin + min * nonChaosMult
 					totalMax = totalMax + max * nonChaosMult
 				end
@@ -1854,14 +1877,12 @@ function calcs.offence(env, actor)
 	-- Calculate combined DPS estimate, including DoTs
 	local baseDPS = output[(skillData.showAverage and "AverageDamage") or "TotalDPS"] + output.TotalDot
 	output.CombinedDPS = baseDPS
-	if skillFlags.poison then
-		if skillData.showAverage then
-			output.CombinedDPS = output.CombinedDPS + output.TotalPoisonAverageDamage
-			output.WithPoisonAverageDamage = baseDPS + output.TotalPoisonAverageDamage
-		else
-			output.CombinedDPS = output.CombinedDPS + output.TotalPoisonDPS
-			output.WithPoisonDPS = baseDPS + output.TotalPoisonDPS
-		end
+	if skillData.showAverage then
+		output.CombinedDPS = output.CombinedDPS + (output.TotalPoisonAverageDamage or 0)
+		output.WithPoisonAverageDamage = baseDPS + (output.TotalPoisonAverageDamage or 0)
+	else
+		output.CombinedDPS = output.CombinedDPS + (output.TotalPoisonDPS or 0)
+		output.WithPoisonDPS = baseDPS + (output.TotalPoisonDPS or 0)
 	end
 	if skillFlags.ignite then
 		if skillFlags.igniteCanStack then

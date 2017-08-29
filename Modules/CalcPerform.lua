@@ -47,7 +47,7 @@ local function doActorAttribsPoolsConditions(env, actor)
 	local condList = modDB.conditions
 
 	-- Set conditions
-	if actor.itemList["Weapon 2"] and actor.itemList["Weapon 2"].type == "Shield" then
+	if (actor.itemList["Weapon 2"] and actor.itemList["Weapon 2"].type == "Shield") or (actor == env.player and env.aegisModList) then
 		condList["UsingShield"] = true
 	end
 	if actor.weaponData1.type == "None" then
@@ -596,23 +596,23 @@ function calcs.perform(env)
 			if buff.cond and not modDB:Sum("FLAG", nil, "Condition:"..buff.cond) then
 				-- Nothing!
 			elseif buff.type == "Buff" then
-				if env.mode_buffs and (not activeSkill.skillFlags.totem or activeSkill.skillData.allowTotemBuff or buff.allowTotemBuff) then
-				 	if not activeSkill.skillData.buffNotPlayer then
+				if env.mode_buffs and (not activeSkill.skillFlags.totem or buff.allowTotemBuff) then
+				 	if not buff.applyNotPlayer then
 						activeSkill.buffSkill = true
 						local srcList = common.New("ModList")
-						local inc = modDB:Sum("INC", skillCfg, "BuffEffect", "BuffEffectOnSelf")
-						local more = modDB:Sum("MORE", skillCfg, "BuffEffect", "BuffEffectOnSelf")
+						local inc = modDB:Sum("INC", skillCfg, "BuffEffect", "BuffEffectOnSelf") + skillModList:Sum("INC", skillCfg, "BuffEffect")
+						local more = modDB:Sum("MORE", skillCfg, "BuffEffect", "BuffEffectOnSelf") * skillModList:Sum("MORE", skillCfg, "BuffEffect")
 						srcList:ScaleAddList(buff.modList, (1 + inc / 100) * more)
 						mergeBuff(srcList, buffs, buff.name)
 						if activeSkill.skillData.thisIsNotABuff then
 							buffs[buff.name].notBuff = true
 						end
 					end
-					if env.minion and (activeSkill.skillData.buffMinions or activeSkill.skillData.buffAllies) then
+					if env.minion and (buff.applyMinions or buff.applyAllies) then
 						activeSkill.minionBuffSkill = true
 						local srcList = common.New("ModList")
-						local inc = modDB:Sum("INC", skillCfg, "BuffEffect") + env.minion.modDB:Sum("INC", nil, "BuffEffectOnSelf")
-						local more = modDB:Sum("MORE", skillCfg, "BuffEffect") * env.minion.modDB:Sum("MORE", nil, "BuffEffectOnSelf")
+						local inc = modDB:Sum("INC", skillCfg, "BuffEffect") + env.minion.modDB:Sum("INC", nil, "BuffEffectOnSelf") + skillModList:Sum("INC", skillCfg, "BuffEffect")
+						local more = modDB:Sum("MORE", skillCfg, "BuffEffect") * env.minion.modDB:Sum("MORE", nil, "BuffEffectOnSelf") * skillModList:Sum("MORE", skillCfg, "BuffEffect")
 						srcList:ScaleAddList(buff.modList, (1 + inc / 100) * more)
 						mergeBuff(srcList, minionBuffs, buff.name)
 					end
