@@ -13,7 +13,7 @@ local ItemSlotClass = common.NewClass("ItemSlotControl", "DropDownControl", func
 	self.DropDownControl(anchor, x, y, 310, 20, { }, function(index, value)
 		if self.items[index] ~= self.selItemId then
 			self:SetSelItemId(self.items[index])
-			itemsTab:PopulateSlots()
+			self.selIndex = index
 			itemsTab:AddUndoState()
 			itemsTab.build.buildFlag = true
 		end
