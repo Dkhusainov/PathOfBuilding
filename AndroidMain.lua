@@ -28,17 +28,3 @@ end
 function saveBuild()
     return build:SaveDB()
 end
-
-function loadUnique(raw)
-    local newItem = itemLib.makeItemFromRaw(liveTargetVersion, "Rarity: Unique\n"..raw)
-    if newItem then
-        itemLib.normaliseQuality(newItem)
-        main.uniqueDB[liveTargetVersion].list[newItem.name] = newItem
-    else
-        ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
-    end
-end
-
-function removeUnique(name)
-    main.uniqueDB[liveTargetVersion].list[name] = nil
-end
