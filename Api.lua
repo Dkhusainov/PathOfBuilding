@@ -7,15 +7,56 @@
 --
 
 -----------------Data--------------
-function addSkill(key, skill)
-    if not data[liveTargetVersion].skills[key] then
-        data[liveTargetVersion].skills[key] = skill
+
+-----------------Skills
+
+local function processMod(grantedEffect, mod)
+    mod.source = "Skill:"..grantedEffect.id
+    if type(mod.value) == "table" and mod.value.mod then
+        mod.value.mod.source = "Skill:"..grantedEffect.id
+    end
+    for _, tag in ipairs(mod) do
+        if tag.type == "GlobalEffect" then
+            grantedEffect.hasGlobalEffect = true
+            break
+        end
     end
 end
-function removeSkill(key)
-    data[liveTargetVersion].skills[key] = nil
+
+function addSkill(key, grantedEffect)
+    if not data[liveTargetVersion].skills[key] then
+        data[liveTargetVersion].skills[key] = grantedEffect
+
+        grantedEffect.id = key
+        -- Add sources for skill mods, and check for global effects
+        for _, list in pairs({grantedEffect.baseMods, grantedEffect.qualityMods, grantedEffect.levelMods}) do
+            for _, mod in pairs(list) do
+                if mod.name then
+                    processMod(grantedEffect, mod)
+                else
+                    for _, mod in ipairs(mod) do
+                        processMod(grantedEffect, mod)
+                    end
+                end
+            end
+        end
+
+        if grantedEffect.gemTags then
+            data[liveTargetVersion].gems[grantedEffect.name] = grantedEffect
+            grantedEffect.defaultLevel = (grantedEffect.levels[20] and 20) or (grantedEffect.levels[3][2] and 3) or 1
+        end
+    end
 end
 
+function removeSkill(key)
+    local skill = data[liveTargetVersion].skills[key]
+    if skill then
+        data[liveTargetVersion].skills[key] = nil
+        data[liveTargetVersion].gems[skill.name] = nil
+    end
+end
+
+-----------------Uniques
 function loadUnique(raw)
     local newItem = itemLib.makeItemFromRaw(liveTargetVersion, "Rarity: Unique\n"..raw)
     if newItem then

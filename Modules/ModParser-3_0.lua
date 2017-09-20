@@ -1552,6 +1552,12 @@ local count = 0
 --foo:close()
 return function(line, isComb)
 	if not cache[line] then
+		local fromDisk = modCacheLoader:loadByLine(line)
+		if (fromDisk ~= nil) then
+			cache[line] = fromDisk
+		end
+	end
+	if not cache[line] then
 		local modList, extra = parseMod(line, 1)
 		if modList and extra then
 			modList, extra = parseMod(line, 2)

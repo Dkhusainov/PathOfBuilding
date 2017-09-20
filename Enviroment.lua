@@ -39,8 +39,8 @@ function LoadModule(name, ...)
 end
 
 function ConPrintf(text, ...)
-    local t = string.format(text, ...)
-    print(t)
+--    local t = string.format(text, ...)
+    print(text)
 end
 
 function unpack(t, i)
@@ -53,6 +53,7 @@ end
 --POB stuff
 defaultTargetVersion = "3_0"
 liveTargetVersion = "3_0"
+targetVersion = "3_0"
 targetVersionList = { "3_0" }
 
 launch = {
@@ -73,6 +74,11 @@ main = {
 }
 main.uniqueDB[liveTargetVersion] = { list = { } }
 main.rareDB[liveTargetVersion] = { list = { } }
+
+--plcaeholder
+modCacheLoader = {
+    loadByLine = function() return nil end
+}
 
 LoadModule("Api")
 LoadModule("Modules/Common")
@@ -122,4 +128,3 @@ local classList = {
 for _, className in pairs(classList) do
     LoadModule("Classes/"..className, launch, main)
 end
-

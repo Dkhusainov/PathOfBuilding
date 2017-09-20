@@ -125,7 +125,7 @@ data.unarmedWeaponData = {
 -- Uniques
 data.uniques = { }
 for _, type in pairs(itemTypes) do
-	if (launch.full) then
+	if (loadUniques) then
 		data.uniques[type] = LoadModule("Data/Uniques/"..type)
 	end
 end
@@ -162,8 +162,9 @@ for _, targetVersion in ipairs(targetVersionList) do
 	-- Load skills
 	data[targetVersion].skills = { }
 	for _, type in pairs(skillTypes) do
---		if (not launch.full) then return end
-		dataModule("Skills/"..type, data[targetVersion].skills, makeSkillMod, makeFlagMod, makeSkillDataMod)
+		if (loadSkills) then
+			dataModule("Skills/"..type, data[targetVersion].skills, makeSkillMod, makeFlagMod, makeSkillDataMod)
+		end
 	end
 	for skillId, grantedEffect in pairs(data[targetVersion].skills) do
 		grantedEffect.id = skillId

@@ -7,7 +7,11 @@
 --
 
 local treeText = ...
+
 require("Enviroment")
+
+loadSkills = false
+loadUniques = false
 
 local ok, tree = serpent.load(treeText)
 main.tree[liveTargetVersion] = tree
@@ -18,6 +22,9 @@ for _, node in ipairs(tree.nodes) do
     end
     node.modList = modList
 end
+
+--LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
+modCacheLoader = {}--load mods form disk
 
 build = LoadModule("Modules/Build", launch, main)
 build.buildFlag = false
