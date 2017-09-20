@@ -21,7 +21,7 @@ The Baron
 Close Helmet
 Requires Level 26, 58 Str
 +2 to Level of Socketed Minion Gems
-+(20–40) to Strength
++(20-40) to Strength
 Minions have 20% increased maximum Life
 Your Strength is added to your Minions
 +1 to maximum number of Zombies per 300 Strength
@@ -114,13 +114,13 @@ Variant: Current
 Requires Level 20, 46 Dex
 {variant:1}+1 to Level of Socketed Fire Gems
 {variant:1}+1 to Level of Socketed Cold Gems
-{variant:2}(20–30)% increased Cold Damage if you have used a Fire Skill Recently
-{variant:2}(20–30)% increased Fire Damage if you have used a Cold Skill Recently
+{variant:2}(20-30)% increased Cold Damage if you have used a Fire Skill Recently
+{variant:2}(20-30)% increased Fire Damage if you have used a Cold Skill Recently
 (80-100)% increased Evasion Rating
 60% increased Mana Regeneration Rate
-{variant:1}−(20-10)% to Fire Resistance
+{variant:1}-(20-10)% to Fire Resistance
 {variant:2}+(20-30)% to Fire Resistance
-{variant:1}−(20-10)% to Cold Resistance
+{variant:1}-(20-10)% to Cold Resistance
 {variant:2}+(20-30)% to Cold Resistance
 ]],[[
 Obscurantis 
@@ -185,7 +185,7 @@ Hubris Circlet
 Requires Level 69, 154 Int
 +(200-250) to Accuracy Rating
 (120-150)% increased Energy Shield
-−30% to Fire Resistance
+-30% to Fire Resistance
 (0.4-0.8)% of Physical Attack Damage Leeched as Life
 (0.2-0.4)% of Physical Attack Damage Leeched as Mana
 Increases and Reductions to Spell Damage also apply to Attacks
@@ -206,7 +206,7 @@ Variant: {2_6}Pre 3.0.0
 Variant: Current
 Requires Level 52
 {variant:1}+(260-300) to maximum Energy Shield
-{variant:2}+(170–210) to maximum Energy Shield
+{variant:2}+(170-210) to maximum Energy Shield
 Reflects 5 Physical Damage to Melee Attackers
 Take 5 Physical Damage when hit by Attacks
 Pain Attunement
@@ -224,7 +224,7 @@ Requires Level 39, 83 Int
 (30-50)% increased Curse Duration
 20% increased Elemental Damage
 {variant:1,2}(10-20)% increased Damage per Curse on Enemy
-{variant:3}(10–20)% increased Damage with Hits and Ailments per Curse on Enemy
+{variant:3}(10-20)% increased Damage with Hits and Ailments per Curse on Enemy
 ]],[[
 Rime Gaze
 Mind Cage
@@ -387,7 +387,7 @@ Socketed Gems are supported by level 20 Cast on Death
 20% reduced Mana Regeneration Rate
 {variant:1}+(20-30) to maximum Energy Shield
 {variant:2}+(70-90) to maximum Energy Shield
-{variant:3}+(50–70) to maximum Energy Shield
+{variant:3}+(50-70) to maximum Energy Shield
 +(43-61)% to Chaos Resistance
 ]],[[
 Geofri's Crest
@@ -425,7 +425,7 @@ Variant: Current
 Requires Level 68, 62 Str, 91 Int
 Adds (13-17) to (29-37) Chaos Damage
 {variant:1}+(200-250) to maximum Energy Shield
-{variant:2}+(150–200) to maximum Energy Shield
+{variant:2}+(150-200) to maximum Energy Shield
 +(32-40)% to Cold Resistance
 +(15-20)% to Lightning Resistance
 Regenerate 100 Energy Shield per second if all worn items are Corrupted
@@ -489,7 +489,7 @@ Requires Level 38, 44 Dex, 44 Int
 {variant:2,3}Trigger level 1 Create Lesser Shrine when you Kill an Enemy
 (120-150)% increased Evasion and Energy Shield
 {variant:2}+(40-65) to maximum Energy Shield
-{variant:3}+(30–45) to maximum Energy Shield
+{variant:3}+(30-45) to maximum Energy Shield
 {variant:1}+(30-40) to maximum Mana
 {variant:2,3}+(60-80) to maximum Life
 {variant:2,3}+(30-40)% to Cold Resistance
@@ -506,7 +506,7 @@ Variant: Current
 Requires Level 67, 73 Dex, 88 Int
 +(40-50) to maximum Energy Shield
 {variant:1,2}(130-150)% increased Evasion and Energy Shield
-{variant:3}(90–110)% increased Evasion and Energy Shield
+{variant:3}(90-110)% increased Evasion and Energy Shield
 {variant:1}+2 to Level of Socketed Curse Gems
 {variant:2,3}+1 to Level of Socketed Curse Gems
 Socketed Curse Gems are Supported by Level 22 Blasphemy

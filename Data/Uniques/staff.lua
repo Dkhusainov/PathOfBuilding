@@ -231,7 +231,7 @@ Implicits: 2
 +2 to Level of Socketed Fire Gems
 {variant:1,2}(30-50)% increased Spell Damage
 {variant:1,2}(20-40)% increased Fire Damage
-{variant:3}(70–90)% increased Fire Damage
+{variant:3}(70-90)% increased Fire Damage
 10% increased Cast Speed
 70% increased Burning Damage
 ]],[[

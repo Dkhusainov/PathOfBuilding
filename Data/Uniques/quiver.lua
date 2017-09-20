@@ -115,7 +115,7 @@ Two-Point Arrow Quiver
 League: Talisman Standard, Talisman Hardcore
 Requires Level 56
 (20-30)% increased Accuracy Rating
-−10% to Fire Resistance
+-10% to Fire Resistance
 +(20-30)% to Lightning Resistance
 +7 Life gained for each Enemy hit by your Attacks
 20% reduced Projectile Speed

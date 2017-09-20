@@ -79,7 +79,7 @@ Implicits: 1
 {variant:2,3}+(160-180) to maximum Life
 5% reduced Movement Speed
 20% increased Stun Recovery
-−25 Physical Damage taken from Projectile Attacks
+-25 Physical Damage taken from Projectile Attacks
 +5% Chance to Block
 ]],[[
 Lycosidae
@@ -124,8 +124,8 @@ Implicits: 1
 {variant:3}+(10-20) to maximum Life
 (60-80)% increased Armour
 +(30-50) to maximum Life
-{variant:1}−10 Physical Damage taken from Projectile Attacks
-{variant:2,3}−(50-80) Physical Damage taken from Projectile Attacks
+{variant:1}-10 Physical Damage taken from Projectile Attacks
+{variant:2,3}-(50-80) Physical Damage taken from Projectile Attacks
 200% increased Armour against Projectiles
 +25% additional Block Chance against Projectiles
 ]],[[
@@ -170,7 +170,7 @@ Implicits: 1
 {variant:3}6% increased Movement Speed
 +(40-60) to Intelligence
 {variant:1,2}(80-100)% increased Evasion Rating
-{variant:3}(180–200)% increased Evasion Rating
+{variant:3}(180-200)% increased Evasion Rating
 +(20-30) to all Elemental Resistances
 {variant:2,3}50% reduced Duration of Curses on you
 {variant:3}10% additional Block chance while not Cursed
@@ -631,7 +631,7 @@ Implicits: 2
 (18-28)% increased Trap Damage
 (15-25)% increased Physical Damage
 +(60-80) to maximum Life
-−(14-18) Physical Damage taken from Attacks
+-(14-18) Physical Damage taken from Attacks
 {variant:1}15% chance to gain a Power Charge on Throwing a Trap
 {variant:2,3}25% chance to gain a Power Charge on Throwing a Trap
 Grants level 20 Bear Trap Skill
@@ -646,7 +646,7 @@ Implicits: 2
 {variant:2}2% chance to Dodge Spell Damage
 (10-15)% increased Attack Speed
 (10-20)% increased maximum Life
-−50% to all Elemental Resistances
+-50% to all Elemental Resistances
 10% increased Area of Effect of Area Skills
 Nearby allies Recover 2% of your maximum Life when you Die
 ]],

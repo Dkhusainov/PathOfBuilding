@@ -45,7 +45,7 @@ Onyx Amulet
 Requires Level 20
 +(10-16) to all Attributes
 +(80-100) to all Attributes
-–4 Physical Damage taken from Attacks
+-4 Physical Damage taken from Attacks
 ]],[[
 Atziri's Foible
 Paua Amulet
@@ -105,7 +105,7 @@ Requires Level 20
 +(20-30) to Strength
 Grants level 10 Gluttony of Elements Skill
 Adds 19-43 Chaos Damage to Attacks
-−(10-5)% to all Elemental Resistances
+-(10-5)% to all Elemental Resistances
 +(17-29)% to Chaos Resistance
 Corrupted
 ]],[[
@@ -412,9 +412,9 @@ Variant: Current
 Requires Level 23
 +(16-24) to Dexterity and Intelligence
 100% increased Global Critical Strike Chance
-{variant:1}−50% to Global Critical Strike Multiplier
-{variant:2}−75% to Global Critical Strike Multiplier
-{variant:3}−25% to Global Critical Strike Multiplier
+{variant:1}-50% to Global Critical Strike Multiplier
+{variant:2}-75% to Global Critical Strike Multiplier
+{variant:3}-25% to Global Critical Strike Multiplier
 +(30-50) to maximum Life
 +(30-50) to maximum Mana
 40% increased Stun Recovery

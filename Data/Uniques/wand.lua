@@ -111,7 +111,7 @@ Implicits: 2
 (30-40)% increased Spell Damage
 {variant:1}125% increased Physical Damage
 {variant:2,3}175% increased Physical Damage
-{variant:4}(250–275)% increased Physical Damage
+{variant:4}(250-275)% increased Physical Damage
 +10 to Intelligence
 (20-30)% increased Lightning Damage
 10% increased Cast Speed

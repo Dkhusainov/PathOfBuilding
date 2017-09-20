@@ -91,7 +91,7 @@ Collateral Damage
 Viridian Jewel
 Limited to: 2
 Radius: Medium
-(10–15)% increased Physical Damage
+(10-15)% increased Physical Damage
 With at least 40 Dexterity in Radius, Shrapnel Shot has 25% increased Area of Effect
 With at least 40 Dexterity in Radius, Shrapnel Shot's
 cone has a 50% chance to deal Double Damage
@@ -142,7 +142,7 @@ Fight for Survival
 Viridian Jewel
 Limited to: 2
 Radius: Medium
-(10–15)% increased Cold Damage
+(10-15)% increased Cold Damage
 With at least 40 Dexterity in Radius, Melee Damage 
 dealt by Frost Blades Penetrates 15% Cold Resistance
 With at least 40 Dexterity in Radius, Frost Blades has 25% increased Projectile Speed
@@ -156,7 +156,7 @@ First Snow
 Cobalt Jewel
 Limited to: 2
 Radius: Medium
-(7–10)% increased Projectile Damage 
+(7-10)% increased Projectile Damage
 With at least 40 Intelligence in Radius, Freezing Pulse fires 2 additional Projectiles
 With at least 40 Intelligence in Radius, 25% increased Freezing Pulse Damage if
 you've Shattered an Enemy Recently
@@ -182,7 +182,7 @@ Frozen Trail
 Cobalt Jewel
 Limited to: 2
 Radius: Medium
-(7–10)% increased Projectile Damage
+(7-10)% increased Projectile Damage
 With at least 40 Intelligence in Radius, Frostbolt fires 2 additional Projectiles
 With at least 40 Intelligence in Radius, Frostbolt Projectiles gain 40% increased Projectile
 Speed per second
@@ -278,7 +278,7 @@ Inevitability
 Cobalt Jewel
 Limited to: 2
 Radius: Medium
-(10–15)% increased Fire Damage
+(10-15)% increased Fire Damage
 With at least 40 Intelligence in Radius, Magma Orb fires an additional Projectile
 With at least 40 Intelligence in Radius, Magma Orb
 has 10% increased Area of Effect per Chain
@@ -327,7 +327,7 @@ Might and Influence
 Viridian Jewel
 Limited to: 1
 Radius: Medium
-(10–15)% increased Physical Damage
+(10-15)% increased Physical Damage
 With at least 40 Dexterity in Radius, Dual Strike has a 20% chance
 to deal Double Damage with the Main-Hand Weapon
 With at least 40 Dexterity in Radius, Dual Strike deals Off-Hand Splash Damage
@@ -447,7 +447,7 @@ Variant: {2_6}Pre 3.0.0
 Variant: Current
 Limited to: 1
 Radius: Medium
-(10–15)% increased Physical Damage 
+(10-15)% increased Physical Damage
 With at least 40 Dexterity in Radius, Ethereal Knives fires Projectiles in a Nova
 {variant:1}With at least 40 Dexterity in Radius, Ethereal Knives fires 10 additional Projectiles
 {variant:2}With at least 40 Dexterity in Radius, Ethereal Knives fires 5 additional Projectiles
@@ -511,7 +511,7 @@ Sudden Ignition
 Viridian Jewel
 Limited to: 1
 Radius: Medium
-(10–15)% increased Fire Damage 
+(10-15)% increased Fire Damage
 With at least 40 Dexterity in Radius, Burning
 Arrow can inflict an additional Ignite on an Enemy
 ]],[[
@@ -573,7 +573,7 @@ Wildfire
 Crimson Jewel
 Limited to: 2
 Radius: Medium
-(10–15)% increased Fire Damage 
+(10-15)% increased Fire Damage
 With at least 40 Strength in Radius, Molten Strike fires 2 additional Projectiles
 With at least 40 Strength in Radius, Molten Strike has 25% increased Area of Effect
 ]],[[
@@ -591,7 +591,7 @@ Winter Burial
 Crimson Jewel
 Limited to: 2
 Radius: Medium
-(10–15)% increased Cold Damage 
+(10-15)% increased Cold Damage
 With at least 40 Strength in Radius, Glacial Hammer deals
 Cold-only Splash Damage to surrounding targets
 With at least 40 Strength in Radius, 25% of Glacial
@@ -649,7 +649,7 @@ Corrupted
 ]],[[
 Fragility
 Crimson Jewel
-−1 Maximum Endurance Charges
+-1 Maximum Endurance Charges
 Corrupted
 ]],[[
 Hungry Abyss
@@ -668,12 +668,12 @@ Corrupted
 ]],[[
 Pacifism
 Viridian Jewel
-−1 Maximum Frenzy Charges
+-1 Maximum Frenzy Charges
 Corrupted
 ]],[[
 Powerlessness
 Cobalt Jewel
-−1 Maximum Power Charges
+-1 Maximum Power Charges
 Corrupted
 ]],[[
 Sacrificial Harvest

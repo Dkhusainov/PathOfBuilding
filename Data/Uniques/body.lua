@@ -7,7 +7,7 @@ Bramblejack
 Plate Vest
 Adds 2 to 4 Physical Damage to Attacks
 +(12-20) to maximum Life
-−2 Physical Damage taken from Attacks
+-2 Physical Damage taken from Attacks
 40% of Melee Physical Damage taken reflected to Attacker
 ]],[[
 The Brass Dome
@@ -44,9 +44,9 @@ Golden Plate
 Requires Level 56, 106 Str
 (10-15)% increased Quantity of Items found
 (30-50)% increased Rarity of Items found
-−10% to Fire Resistance
+-10% to Fire Resistance
 +(20-30)% to Cold Resistance
-−20% to Lightning Resistance
+-20% to Lightning Resistance
 20% reduced Movement Speed
 30% reduced Strength Requirement
 ]],[[
@@ -81,7 +81,7 @@ Requires Level 17, 53 Str
 (60-80)% increased Armour
 25% increased Light Radius
 Chaos Damage does not bypass Energy Shield
-{variant:1}−10 Chaos Damage taken
+{variant:1}-10 Chaos Damage taken
 {variant:2}-(30-40) Chaos Damage taken
 {variant:2}25% reduced Chaos Damage Taken Over Time
 ]],[[
@@ -91,7 +91,7 @@ Requires Level 30
 Adds 2 to 4 Physical Damage to Attacks
 +2000 to Armour
 +(12-20) to maximum Life
-−2 Physical Damage taken from Attacks
+-2 Physical Damage taken from Attacks
 40% of Melee Physical Damage taken reflected to Attacker
 ]],
 -- Body: Evasion
@@ -107,7 +107,7 @@ Requires Level 17, 53 Dex
 +(40-50)% to Fire Resistance
 Cannot be Ignited
 (10-15)% increased Physical Damage with Ranged Weapons
-−(5-7) Physical Damage taken from Attacks
+-(5-7) Physical Damage taken from Attacks
 ]],[[
 Briskwrap
 Strapped Leather
@@ -199,7 +199,7 @@ Requires Level 59, 160 Dex
 +(11-25)% to Lightning Resistance
 25% reduced Movement Speed
 1% increased Movement Speed per 450 Evasion Rating
-−(50-40) Physical Damage taken when hit by Animals
+-(50-40) Physical Damage taken when hit by Animals
 ]],[[
 The Rat Cage
 Sharkskin Tunic
@@ -209,7 +209,7 @@ League: Torment
 Requires Level 56, 152 Dex
 (100-120)% increased Evasion Rating
 +(160-200) to maximum Life
-{variant:1}−5% to maximum Fire Resistance
+{variant:1}-5% to maximum Fire Resistance
 {variant:2}-50% to Fire Resistance
 15% increased Movement Speed
 20% increased Fire Damage taken
@@ -248,7 +248,7 @@ Requires Level 68, 194 Int
 40% increased Spell Damage
 (110-130)% increased Energy Shield
 {variant:1}+(50-65) to maximum Energy Shield
-{variant:2}+(15–25) to maximum Energy Shield
+{variant:2}+(15-25) to maximum Energy Shield
 10% increased Area of Effect of Area Skills
 5% increased Damage taken
 (30-40)% increased Energy Shield Recovery Rate
@@ -268,7 +268,7 @@ Variant: {2_6}Pre 3.0.0
 Variant: Current
 Requires Level 56, 152 Int
 {variant:1}(250-300)% increased Energy Shield
-{variant:2}(150–200)% increased Energy Shield
+{variant:2}(150-200)% increased Energy Shield
 Minions cannot be Blinded
 Minions have 15% chance to Blind Enemies on hit
 Socketed Minion Gems are Supported by Level 16 Life Leech
@@ -289,7 +289,7 @@ Socketed Gems are Supported by level 15 Added Chaos Damage
 {variant:1}(125-150)% increased Energy Shield
 {variant:2}(180-220)% increased Energy Shield
 {variant:3,4}(280-320)% increased Energy Shield
-{variant:5}(210–250)% increased Energy Shield
+{variant:5}(210-250)% increased Energy Shield
 {variant:1,2,3}Blood Magic
 {variant:4,5}Socketed Gems have Blood Magic
 ]],[[
@@ -302,7 +302,7 @@ Requires Level 65, 187 Int
 (25-35)% increased Fire Damage
 100% increased Global Critical Strike Chance
 {variant:1}(190-230)% increased Energy Shield
-{variant:2}(120–160)% increased Energy Shield
+{variant:2}(120-160)% increased Energy Shield
 15% of Fire Damage Converted to Chaos Damage
 {variant:1}100% increased Spell Damage taken when on Low Mana
 {variant:2}25% increased Spell Damage taken when on Low Mana
@@ -328,7 +328,7 @@ Requires Level 62, 180 Int
 (3-10)% increased Spell Damage
 {variant:1}(200-250)% increased Energy Shield
 {variant:2}(140-200)% increased Energy Shield
-{variant:3}(100–150)% increased Energy Shield
+{variant:3}(100-150)% increased Energy Shield
 10% faster start of Energy Shield Recharge
 +(30-40)% to Lightning Resistance
 Reflects 1 to 250 Lightning Damage to Melee Attackers
@@ -525,7 +525,7 @@ Requires Level 60, 96 Str, 96 Dex
 Adds 1 to (20-30) Lightning Damage to Attacks
 (90-120)% increased Armour and Evasion
 +(60-80) to maximum Life
-−60% to Lightning Resistance
+-60% to Lightning Resistance
 {variant:1}40% of Physical Damage taken as Lightning Damage
 {variant:2}30% of Physical Damage taken as Lightning Damage
 ]],[[
@@ -568,7 +568,7 @@ Requires Level 64, 90 Str, 105 Int
 (50-75)% increased Armour and Energy Shield
 +(50-70) to maximum Life
 {variant:1,2}+(70-80) to maximum Energy Shield
-{variant:3}+(30–40) to maximum Energy Shield
+{variant:3}+(30-40) to maximum Energy Shield
 +(14-18)% to all Elemental Resistances
 {variant:1}+1 maximum Energy Shield per 5 Strength
 {variant:2,3}+2 maximum Energy Shield per 5 Strength
@@ -650,7 +650,7 @@ Requires Level 62, 96 Dex, 96 Int
 +(9-12)% to all Elemental Resistances
 20% increased Area of Effect of Area Skills
 {variant:1}12% increased Area Damage
-{variant:2}(40–50)% increased Area Damage
+{variant:2}(40-50)% increased Area Damage
 Extra gore
 ]],[[
 Cloak of Defiance

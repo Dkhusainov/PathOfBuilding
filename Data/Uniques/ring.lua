@@ -9,7 +9,7 @@ Requires Level 20
 (6-15)% increased Rarity of Items found
 +10 to Dexterity
 (50-70)% increased Rarity of Items found
-−20% to all Elemental Resistances
+-20% to all Elemental Resistances
 ]],[[
 Berek's Grip
 Two-Stone Ring
@@ -159,7 +159,7 @@ Variant: Current
 Requires Level 16
 +(20-30)% to Fire Resistance
 {variant:1}(15-25)% increased Fire Damage
-{variant:2}(30–40)% increased Fire Damage
+{variant:2}(30-40)% increased Fire Damage
 (5-10)% increased Cast Speed
 {variant:1}5% chance to Ignite
 {variant:2}10% chance to Ignite
@@ -269,8 +269,8 @@ Variant: Pre 2.6.0
 Variant: Current
 Requires Level 5
 Has 1 Socket
-{variant:1}−25% to all Elemental Resistances
-{variant:2}−20% to all Elemental Resistances
+{variant:1}-25% to all Elemental Resistances
+{variant:2}-20% to all Elemental Resistances
 +(75-100)% to Fire Resistance when Socketed with a Red Gem
 +(75-100)% to Cold Resistance when Socketed with a Green Gem
 +(75-100)% to Lightning Resistance when Socketed with a Blue Gem
@@ -288,10 +288,10 @@ Requires Level 69
 +(9-13)% to Chaos Resistance
 {variant:1}15% reduced maximum Life
 {variant:2}10% reduced maximum Life
-{variant:3}(5–10)% reduced maximum Life
+{variant:3}(5-10)% reduced maximum Life
 {variant:1}15% reduced maximum Energy Shield
 {variant:2}10% reduced maximum Energy Shield
-{variant:3}(5–10)% reduced maximum Energy Shield
+{variant:3}(5-10)% reduced maximum Energy Shield
 +(40-50)% to Chaos Resistance
 Gain 20% of Physical Damage as Extra Chaos Damage
 ]],[[
@@ -371,7 +371,7 @@ Requires Level 22
 +(20-25) to maximum Mana
 +(30-60) to maximum Mana
 (3-6) Mana Regenerated per second
-−(4-8) to Mana Cost of Skills
+-(4-8) to Mana Cost of Skills
 8% of Damage taken gained as Mana over 4 seconds when Hit
 ]],[[
 Pyre
@@ -383,7 +383,7 @@ Requires Level 11
 +(20-30)% to Cold Resistance
 +(25-35)% to Fire Resistance
 {variant:1,2}(25-35)% increased Burning Damage
-{variant:3}(60–80)% increased Burning Damage
+{variant:3}(60-80)% increased Burning Damage
 {variant:1}100% of Cold Damage Converted to Fire Damage
 {variant:2,3}40% of Cold Damage Converted to Fire Damage
 10% increased Light Radius
@@ -488,7 +488,7 @@ Requires Level 30
 {variant:1}15% increased Elemental Damage with Weapons
 {variant:2}30% increased Elemental Damage with Attack Skills
 {variant:1}+(10-15)% to all Elemental Resistances
-{variant:2}+(20–30)% to all Elemental Resistances
+{variant:2}+(20-30)% to all Elemental Resistances
 {variant:1}15% increased Elemental Damage
 {variant:2}30% increased Elemental Damage
 {variant:1}5% chance to Freeze, Shock and Ignite
@@ -573,7 +573,7 @@ Requires Level 38
 +(15-25) to maximum Energy Shield
 +(10-20) to maximum Energy Shield
 +(20-30)% to Fire Resistance
-−40% to Cold Resistance
+-40% to Cold Resistance
 Stun Threshold is based on Energy Shield instead of Life
 ]],[[
 Ventor's Gamble
@@ -581,11 +581,11 @@ Gold Ring
 Requires Level 65
 (6-15)% increased Rarity of Items found
 +(0-60) to maximum Life
-(−10 to 10)% increased Quantity of Items found
-(−40 to 40)% increased Rarity of Items found
-+(−25 to 50)% to Fire Resistance
-+(−25 to 50)% to Cold Resistance
-+(−25 to 50)% to Lightning Resistance
+(-10 to 10)% increased Quantity of Items found
+(-40 to 40)% increased Rarity of Items found
++(-25 to 50)% to Fire Resistance
++(-25 to 50)% to Cold Resistance
++(-25 to 50)% to Lightning Resistance
 ]],[[
 Voideye
 Unset Ring
@@ -614,7 +614,7 @@ The Warden's Brand
 Iron Ring
 Requires Level 30
 Adds 1 to 4 Physical Damage to Attacks
-Adds (5–15) to (25–50) Physical Damage to Attacks
+Adds (5-15) to (25-50) Physical Damage to Attacks
 30% reduced Attack Speed
 15% chance to gain a Frenzy Charge when you Stun an Enemy
 ]],

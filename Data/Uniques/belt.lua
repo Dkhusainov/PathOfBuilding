@@ -72,7 +72,7 @@ Heavy Belt
 Requires Level 30
 +(25-35) to Strength
 5% increased Quantity of Items found
-+(20–40)% to Cold Resistance
++(20-40)% to Cold Resistance
 Rampage
 1% increased Rarity of Items found per 15 Rampage Kills
 ]],[[
@@ -162,11 +162,11 @@ Requires Level 50
 +(75-100) to maximum Life
 (67-75) Life Regenerated per second
 (8-10) Mana Regenerated per second
-{variant:1}−40% to all Elemental Resistances
-{variant:3}−(15-25)% to all Elemental Resistances
-{variant:1}−10% to all maximum Resistances
-{variant:2}−5% to all maximum Resistances
-−(50-40) Physical Damage taken from Attacks
+{variant:1}-40% to all Elemental Resistances
+{variant:3}-(15-25)% to all Elemental Resistances
+{variant:1}-10% to all maximum Resistances
+{variant:2}-5% to all maximum Resistances
+-(50-40) Physical Damage taken from Attacks
 40% increased Armour while not Ignited, Frozen or Shocked
 ]],[[
 The Magnate
@@ -214,7 +214,7 @@ Requires Level 16
 {variant:2}(6-8)% increased Quantity of Items found
 +20% to Fire Resistance
 20% increased Flask effect duration
-−2 Physical Damage taken from Attacks
+-2 Physical Damage taken from Attacks
 ]],[[
 Perseverance
 Vanguard Belt
@@ -261,9 +261,9 @@ Requires Level 44
 Ryslatha's Coil
 Studded Belt
 Requires Level 20
-(20–30)% increased Stun Duration on Enemies 
-+(20–40) to Strength 
-Adds 1 to (15–20) Physical Damage to Attacks 
+(20-30)% increased Stun Duration on Enemies
++(20-40) to Strength
+Adds 1 to (15-20) Physical Damage to Attacks
 Gain 50 Life when you Stun an Enemy 
 20% less Minimum Physical Attack Damage 
 20% more Maximum Physical Attack Damage

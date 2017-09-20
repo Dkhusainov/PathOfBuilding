@@ -183,7 +183,7 @@ Variant: Current
 Requires Level 55, 79 Int
 (125-150)% increased Critical Strike Chance for Spells
 {variant:1,2}(280-350)% increased Energy Shield
-{variant:3}(180–250)% increased Energy Shield
+{variant:3}(180-250)% increased Energy Shield
 {variant:1}80% increased Mana Cost of Skills
 {variant:2,3}(40-80)% increased Mana Cost of Skills
 +(15-20) Energy Shield gained on Kill
@@ -213,10 +213,10 @@ Rampage
 Haemophilia
 Serpentscale Gauntlets
 Requires Level 43, 34 Str, 34 Dex
-+(20–30) to Strength 
++(20-30) to Strength
 25% increased Damage over Time 
 Attacks have 25% chance to cause Bleeding 
-(25–40)% increased Attack Damage against Bleeding Enemies 
+(25-40)% increased Attack Damage against Bleeding Enemies
 Bleeding Enemies you Kill Explode, dealing 5% of
 their Maximum Life as Physical Damage 
 25% reduced Bleed duration

@@ -89,9 +89,9 @@ Implicits: 2
 {variant:1}40% increased Stun Duration on Enemies
 {variant:2,3}15% reduced Enemy Stun Threshold
 {variant:1,2}Adds (16-22) to (26-32) Physical Damage
-{variant:3}Adds (26–32) to (36–42) Physical Damage
+{variant:3}Adds (26-32) to (36-42) Physical Damage
 {variant:1,2}Adds (16-22) to (26-32) Cold Damage
-{variant:3}Adds (26–32) to (36–42) Cold Damage
+{variant:3}Adds (26-32) to (36-42) Cold Damage
 (8-14)% increased Attack Speed
 +(40-50)% to Fire Resistance
 (35-50)% increased Chill Duration on Enemies
@@ -376,7 +376,7 @@ Requires Level 63, 212 Str
 Implicits: 2
 {variant:1}20% increased Stun Duration on Enemies
 {variant:2}30% increased Stun Duration on Enemies
-Adds (80-100) to (320–370) Physical Damage
+Adds (80-100) to (320-370) Physical Damage
 50% of Physical Damage Converted to Lightning Damage
 15% chance to Shock
 10% chance to Cause Monsters to Flee
@@ -396,7 +396,7 @@ Implicits: 2
 +1 to Level of Socketed Melee Gems
 +1 to Level of Socketed Minion Gems
 {variant:1,2}(100-120)% increased Physical Damage
-{variant:3}(200–220)% increased Physical Damage
+{variant:3}(200-220)% increased Physical Damage
 25% increased maximum Mana
 Minions have (20-40)% increased maximum Life
 15% increased Skill Effect Duration
@@ -491,7 +491,7 @@ Socketed Gems are Supported by level 15 Increased Area of Effect
 (220-250)% increased Physical Damage
 Adds 10 to 20 Physical Damage
 10% reduced Attack Speed
-−100 to Accuracy Rating
+-100 to Accuracy Rating
 10% reduced Movement Speed
 (40-50)% increased Stun Duration on Enemies
 ]],[[
@@ -514,10 +514,10 @@ Imperial Maul
 Requires Level 65, 212 Str
 30% increased Stun Duration on Enemies
 Socketed Gems are Supported by Level 20 Endurance Charge on Melee Stun
-Adds (60–70) to (300–350) Physical Damage
+Adds (60-70) to (300-350) Physical Damage
 +40 to Intelligence
 10% increased Physical Damage per Endurance Charge
-(20–30)% reduced Enemy Stun Threshold with this Weapon
+(20-30)% reduced Enemy Stun Threshold with this Weapon
 ]],[[
 Trypanon
 Great Mallet
