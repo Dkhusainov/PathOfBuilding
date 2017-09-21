@@ -76,9 +76,8 @@ main.uniqueDB[liveTargetVersion] = { list = { } }
 main.rareDB[liveTargetVersion] = { list = { } }
 
 --plcaeholder
-modCacheLoader = {
-    loadByLine = function() return nil end
-}
+modCacheLoader = { loadByLine = function() return nil end }
+skillLoader = { loadByLine = function() return nil end }
 
 LoadModule("Api")
 LoadModule("Modules/Common")

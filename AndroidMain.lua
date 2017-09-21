@@ -26,6 +26,8 @@ end
 --LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
 modCacheLoader = {}--load mods form disk
 
+skillLoader = {}
+
 build = LoadModule("Modules/Build", launch, main)
 build.buildFlag = false
 function initBuild(name, xml)
