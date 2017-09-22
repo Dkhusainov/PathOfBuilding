@@ -57,10 +57,11 @@ targetVersion = "3_0"
 targetVersionList = { "3_0" }
 
 launch = {
+    loadSkills = false,
+    loadUniques = false,
     devMode = false,
     ShowErrMsg = function(title, msg) end
 }
-launch.full = treeText == nil
 
 main = {
     tree = {},

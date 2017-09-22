@@ -10,9 +10,6 @@ local treeText = ...
 
 require("Enviroment")
 
-loadSkills = false
-loadUniques = false
-
 local ok, tree = serpent.load(treeText)
 main.tree[liveTargetVersion] = tree
 for _, node in ipairs(tree.nodes) do
