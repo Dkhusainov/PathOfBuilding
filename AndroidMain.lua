@@ -12,12 +12,9 @@ require("Enviroment")
 
 local ok, tree = serpent.load(treeText)
 main.tree[liveTargetVersion] = tree
+local meta = getmetatable(common.New("ModList"))
 for _, node in ipairs(tree.nodes) do
-    local modList = common.New("ModList")
-    for k, v in ipairs(node.modList) do
-        modList[k] = v
-    end
-    node.modList = modList
+    setmetatable(node.modList, meta)
 end
 
 --LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
