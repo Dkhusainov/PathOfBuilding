@@ -17,6 +17,20 @@ for _, node in ipairs(tree.nodes) do
     setmetatable(node.modList, meta)
 end
 
+if (launch.loadUniques) then
+    for type, typeList in pairs(data.uniques) do
+        for _, raw in pairs(typeList) do
+            local newItem = itemLib.makeItemFromRaw(targetVersion, "Rarity: Unique\n"..raw)
+            if newItem then
+                itemLib.normaliseQuality(newItem)
+                main.uniqueDB[targetVersion].list[newItem.name] = newItem
+            else
+                ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
+            end
+        end
+    end
+end
+
 --LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
 modCacheLoader = {}--load mods form disk
 
