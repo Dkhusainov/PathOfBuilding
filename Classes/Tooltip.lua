@@ -46,6 +46,8 @@ function TooltipClass:CheckForUpdate(...)
 end
 
 function TooltipClass:AddLine(size, text)
+	t_insert(self.lines, { size = size, text = text })
+	do return end
 	if text then
 		for line in s_gmatch(text .. "\n", "([^\n]*)\n") do	
 			if self.maxWidth then
@@ -60,7 +62,7 @@ function TooltipClass:AddLine(size, text)
 end
 
 function TooltipClass:AddSeparator(size)
-	t_insert(self.lines, { size = size })
+	t_insert(self.lines, { text = "", size = size })
 end
 
 function TooltipClass:GetSize()
