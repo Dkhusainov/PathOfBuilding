@@ -57,8 +57,12 @@ function ItemListClass:GetRowValue(column, index, itemId)
 		elseif itemSet then
 			used = "  (Used in '" .. (itemSet.title or "Default") .. "')"
 		end
+		item["color"] = colorCodes[item.rarity]
+		item["label"] = item.name .. used
+		item["id"] = itemId
 		return {
 			color = colorCodes[item.rarity],
+			name = item.name,
 			label = item.name .. used,
 			id = itemId
 		}
@@ -104,6 +108,9 @@ function ItemListClass:OnOrderChange()
 	self.itemsTab:AddUndoState()
 end
 
+function ItemListClass:ClickItem(itemId)
+	self:OnSelClick(0, itemId, true)
+end
 function ItemListClass:OnSelClick(index, itemId, doubleClick)
 	local item = self.itemsTab.items[itemId]
 	if IsKeyDown("CTRL") then
