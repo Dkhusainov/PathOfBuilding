@@ -8,7 +8,8 @@
 
 local serialized = ...
 
-require("Enviroment")
+serpent = require("serpent")
+local ok, tree = serpent.load(serialized.tree)
 
 -- ModParser
 -- Build active skill name lookup
@@ -20,7 +21,9 @@ _, preSkillNameList = serpent.load(serialized.preSkillNameList)
 _, baseLists = serpent.load(serialized.baseLists)
 _, baseTypeList = serpent.load(serialized.baseTypeList)
 
-local ok, tree = serpent.load(serialized.tree)
+require("Enviroment")
+
+--local ok, tree = serpent.load(serialized.tree)
 main.tree[liveTargetVersion] = tree
 local meta = getmetatable(common.New("ModList"))
 for _, node in ipairs(tree.nodes) do
