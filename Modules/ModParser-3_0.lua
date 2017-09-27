@@ -1170,9 +1170,8 @@ local regenTypes = {
 	["maximum mana and energy shield"] = { "ManaRegen", "EnergyShieldRegen" },
 }
 -- Build active skill name lookup
-local skillNameList = { }
-local preSkillNameList = {}
---[[
+skillNameList = { }
+preSkillNameList = {}
 for skillName, grantedEffect in pairs(data["3_0"].gems) do
 	if not grantedEffect.hidden and not grantedEffect.support then
 		skillNameList[" "..skillName:lower().." "] = { tag = { type = "SkillName", skillName = skillName } }
@@ -1187,7 +1186,6 @@ for skillName, grantedEffect in pairs(data["3_0"].gems) do
 		end
 	end	
 end
-]]
 local function getSimpleConv(srcList, dst, type, remove, factor)
 	return function(nodeMods, out, data)
 		if nodeMods then

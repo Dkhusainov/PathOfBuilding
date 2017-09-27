@@ -6,9 +6,12 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-local treeText = ...
+local treeText, skillNameListText, preSkillNameListText = ...
 
 require("Enviroment")
+
+_, skillNameList = serpent.load(skillNameListText)
+_, preSkillNameList = serpent.load(preSkillNameListText)
 
 local ok, tree = serpent.load(treeText)
 main.tree[liveTargetVersion] = tree
