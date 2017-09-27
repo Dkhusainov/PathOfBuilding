@@ -39,7 +39,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.itemOrderList = { }
 
 	-- Build lists of item bases, separated by type
-	self.baseLists = { }
+	self.baseLists = baseLists or { }
 	for name, base in pairs(self.build.data.itemBases) do
 		if not base.hidden then
 			local type = base.type
@@ -50,10 +50,11 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 			t_insert(self.baseLists[type], { label = name:gsub(" %(.+%)",""), name = name, base = base })
 		end
 	end
-	self.baseTypeList = { }
+	self.baseTypeList = baseTypeList or { }
 	for type, list in pairs(self.baseLists) do
 		t_insert(self.baseTypeList, type)
-		table.sort(list, function(a, b) 
+		if (launch.loadBases) then
+		table.sort(list, function(a, b)
 			if a.base.req and b.base.req then
 				if a.base.req.level == b.base.req.level then
 					return a.name < b.name
@@ -68,6 +69,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 				return a.name < b.name
 			end
 		end)
+		end
 	end
 	table.sort(self.baseTypeList)
 
@@ -1128,6 +1130,7 @@ end
 function ItemsTabClass:CraftItem()
 	local controls = { }
 	local function makeItem(base)
+		base.base = baseLoader:loadByName(base.name)
 		local item = { name = base.name, base = base.base, baseName = base.name, modLines = { }, quality = 0 }
 		local raritySel = controls.rarity.selIndex
 		if base.base.flask then

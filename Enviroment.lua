@@ -7,8 +7,7 @@
 --
 local t_insert = table.insert
 
-local _,_, loadSkills = ...
-
+local settings = ...
 inspect = require("inspect")
 json = require("json")
 serpent = require("serpent")
@@ -64,7 +63,8 @@ targetVersion = "3_0"
 targetVersionList = { "3_0" }
 
 launch = {
-    loadSkills = loadSkills or false,
+    loadSkills = settings and settings.loadSkills or false,
+    loadBases = settings and settings.loadBases or false,
     loadUniques = false,
     devMode = false,
     ShowErrMsg = function(title, msg) end

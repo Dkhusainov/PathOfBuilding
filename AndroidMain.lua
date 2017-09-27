@@ -6,14 +6,21 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-local treeText, skillNameListText, preSkillNameListText = ...
+local serialized = ...
 
 require("Enviroment")
 
-_, skillNameList = serpent.load(skillNameListText)
-_, preSkillNameList = serpent.load(preSkillNameListText)
+-- ModParser
+-- Build active skill name lookup
+_, skillNameList = serpent.load(serialized.skillNameList)
+_, preSkillNameList = serpent.load(serialized.preSkillNameList)
 
-local ok, tree = serpent.load(treeText)
+-- ItemsTab
+-- Build lists of item bases, separated by type
+_, baseLists = serpent.load(serialized.baseLists)
+_, baseTypeList = serpent.load(serialized.baseTypeList)
+
+local ok, tree = serpent.load(serialized.tree)
 main.tree[liveTargetVersion] = tree
 local meta = getmetatable(common.New("ModList"))
 for _, node in ipairs(tree.nodes) do
@@ -35,9 +42,9 @@ if (launch.loadUniques) then
 end
 
 --LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
-modCacheLoader = {}--load mods form disk
-
+modCacheLoader = {}
 skillLoader = {}
+baseLoader = {}
 
 build = LoadModule("Modules/Build", launch, main)
 build.buildFlag = false

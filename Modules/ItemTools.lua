@@ -112,14 +112,15 @@ function itemLib.parseItemRaw(item)
 	end
 	item.namePrefix = ""
 	item.nameSuffix = ""
+	local itemBases = baseLoader:all()
 	if item.rarity == "NORMAL" or item.rarity == "MAGIC" then
-		for baseName, baseData in pairs(verData.itemBases) do
+		for baseName, baseData in pairs(itemBases) do
 			local s, e = item.name:find(baseName, 1, true)
 			if s then
 				item.baseName = baseName
 				item.namePrefix = item.name:sub(1, s - 1)
 				item.nameSuffix = item.name:sub(e + 1)
-				item.type = baseData.type
+--				item.type = baseData.type
 				break
 			end
 		end
@@ -138,15 +139,16 @@ function itemLib.parseItemRaw(item)
 		if item.rawLines[l] == "Two-Toned Boots" then
 			item.rawLines[l] = "Two-Toned Boots (Armour/Energy Shield)"
 		end
-		if verData.itemBases[item.rawLines[l]] then
+		if itemBases[item.rawLines[l]] then
 			item.baseName = item.rawLines[l]
 			item.title = item.name
 			item.name = item.title .. ", " .. item.baseName:gsub(" %(.+%)","")
-			item.type = verData.itemBases[item.baseName].type
+--			item.type = verData.itemBases[item.baseName].type
 			l = l + 1
 		end
 	end
-	item.base = verData.itemBases[item.baseName]
+	item.base = baseLoader:loadByName(item.baseName)
+	item.type = item.base and item.base.type
 	item.modLines = { }
 	item.implicitLines = 0
 	item.buffLines = 0

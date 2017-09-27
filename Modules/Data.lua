@@ -216,7 +216,9 @@ for _, targetVersion in ipairs(targetVersionList) do
 	-- Item bases
 	data[targetVersion].itemBases = { }
 	for _, type in pairs(itemTypes) do
-		dataModule("Bases/"..type, data[targetVersion].itemBases)
+		if (launch.loadBases) then
+			dataModule("Bases/"..type, data[targetVersion].itemBases)
+		end
 	end
 
 	-- Rare templates
