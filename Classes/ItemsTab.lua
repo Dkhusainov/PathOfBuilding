@@ -120,6 +120,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	for _, node in pairs(build.tree.nodes) do
 		if node.type == "socket" then
 			local socketControl = common.New("ItemSlotControl", {"TOPLEFT",self.slotAnchor,"TOPLEFT"}, 0, 0, self, "Jewel "..node.id, "Socket", node.id)
+			socketControl.inactive = true
 			self.controls["socket"..node.id] = socketControl
 			self.sockets[node.id] = socketControl
 			self.slotOrder["Jewel "..node.id] = #baseSlots + 1 + node.id
@@ -450,7 +451,6 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 	self:NewItemSet(1)
 	self:SetActiveItemSet(1)
 
-	self:PopulateSlots()
 	self.lastSlot = self.slots[baseSlots[#baseSlots]]
 end)
 
@@ -729,13 +729,12 @@ end
 
 -- Update the item lists for all the slot controls
 function ItemsTabClass:PopulateSlots()
-	for _, slot in pairs(self.slots) do
-		slot:Populate()
-	end
+	itemsTabDelegate:PopulateSlots(self)
 end
 
 -- Updates the status and position of the socket controls
 function ItemsTabClass:UpdateSockets()
+	if not self.build.spec then return end
 	-- Build a list of active sockets
 	local activeSocketList = { }
 	for nodeId, slot in pairs(self.sockets) do
@@ -1837,6 +1836,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 end
 
 function ItemsTabClass:CreateUndoState()
+	do return {} end
 	local state = { }
 	state.activeItemSetId = self.activeItemSetId
 	state.items = copyTableSafe(self.items)

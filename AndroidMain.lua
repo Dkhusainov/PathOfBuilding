@@ -21,6 +21,8 @@ _, preSkillNameList = serpent.load(serialized.preSkillNameList)
 _, baseLists = serpent.load(serialized.baseLists)
 _, baseTypeList = serpent.load(serialized.baseTypeList)
 
+itemsTabDelegate = {}
+
 require("Enviroment")
 
 --local ok, tree = serpent.load(serialized.tree)

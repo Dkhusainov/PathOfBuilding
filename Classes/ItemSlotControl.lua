@@ -14,6 +14,7 @@ local ItemSlotClass = common.NewClass("ItemSlotControl", "DropDownControl", func
 		if self.items[index] ~= self.selItemId then
 			self:SetSelItemId(self.items[index])
 			self.selIndex = index
+			itemsTab:PopulateSlots()
 			itemsTab:AddUndoState()
 			itemsTab.build.buildFlag = true
 		end
@@ -25,7 +26,9 @@ local ItemSlotClass = common.NewClass("ItemSlotControl", "DropDownControl", func
 		return not self.inactive
 	end
 	self.itemsTab = itemsTab
-	self.items = { }
+	self.items = {}
+	self.items[1] = 0
+	self.list[1] = { label = "None" }
 	self.slotName = slotName
 	self.slotNum = tonumber(slotName:match("%d+"))
 	if slotName:match("Flask") then
@@ -66,6 +69,17 @@ function ItemSlotClass:SetSelItemId(selItemId)
 		end
 	else
 		self.itemsTab.activeItemSet[self.slotName].selItemId = selItemId
+	end
+end
+
+function ItemSlotClass:AddItem(item)
+	t_insert(self.items, item.id)
+	t_insert(self.list, { label = item.name, color = colorCodes[item.rarity] })
+	if item.id == self.selItemId then
+		self.selIndex = #self.list
+	end
+	if not self.selItemId or not self.itemsTab.items[self.selItemId] or not self.itemsTab:IsItemValidForSlot(self.itemsTab.items[self.selItemId], self.slotName) then
+		self:SetSelItemId(0)
 	end
 end
 
