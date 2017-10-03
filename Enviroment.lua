@@ -7,7 +7,7 @@
 --
 local t_insert = table.insert
 
-local settings = ...
+local _, _, settings = ...
 inspect = require("inspect")
 json = require("json")
 serpent = require("serpent")
