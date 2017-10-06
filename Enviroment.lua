@@ -49,11 +49,8 @@ function ConPrintf(text, ...)
     print(text)
 end
 
-function unpack(t, i)
-    i = i or 1		--single argument (like below), i defaults to 1
-    if t[i] then
-        return t[i], unpack(t, i+1)		--recursion
-    end
+function unpack(t)
+    return unpackf:invoke(t)--LuaModule
 end
 
 --POB stuff
