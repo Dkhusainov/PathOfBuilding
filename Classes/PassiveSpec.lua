@@ -22,16 +22,15 @@ local PassiveSpecClass = common.NewClass("PassiveSpec", "UndoHandler", function(
 	-- Make a local copy of the passive tree that we can modify
 	self.nodes = { }
 	for _, treeNode in ipairs(self.tree.nodes) do
-		self.nodes[treeNode.id] = setmetatable({ 
-			linked = { },
-			power = { }
-		}, treeNode.meta)
+		self.nodes[treeNode.id] = treeNode
 	end
+	--[[
 	for id, node in pairs(self.nodes) do
 		for _, otherId in ipairs(node.linkedId) do
 			t_insert(node.linked, self.nodes[otherId])
 		end
 	end
+	]]
 
 	-- List of currently allocated nodes
 	-- Keys are node IDs, values are nodes
@@ -103,7 +102,6 @@ function PassiveSpecClass:ImportFromNodeList(classId, ascendClassId, hashList)
 	for _, id in pairs(hashList) do
 		local node = self.nodes[id]
 		if node then
-			node.alloc = true
 			self.allocNodes[id] = node
 		end
 	end
@@ -155,7 +153,6 @@ function PassiveSpecClass:DecodeURL(url)
 		local id = nodes:byte(i) * 256 + nodes:byte(i + 1)
 		local node = self.nodes[id]
 		if node then
-			node.alloc = true
 			self.allocNodes[id] = node
 			if ascendClassId == 0 and node.ascendancyName then
 				-- Just guess the ascendancy class based on the allocated nodes
@@ -238,8 +235,10 @@ function PassiveSpecClass:SelectAscendClass(ascendClassId)
 	self:BuildAllDependsAndPaths()
 end
 
+function PassiveSpecClass:ResetNodes() end
+
 -- Determines if the given class's start node is connected to the current class's start node
--- Attempts to find a path between the nodes which doesn't pass through any ascendancy nodes (i.e Ascendant)
+--[[ Attempts to find a path between the nodes which doesn't pass through any ascendancy nodes (i.e Ascendant)
 function PassiveSpecClass:IsClassConnected(classId)
 	for _, other in ipairs(self.nodes[self.tree.classes[classId].startNodeId].linked) do
 		-- For each of the nodes to which the given class's start node connects...
@@ -318,7 +317,7 @@ function PassiveSpecClass:DeallocNode(node)
 	-- Rebuild all paths and dependancies for all allocated nodes
 	self:BuildAllDependsAndPaths()
 end
-
+]]
 -- Count the number of allocated nodes and allocated ascendancy nodes
 function PassiveSpecClass:CountAllocNodes()
 	local used, ascUsed, sockets = 0, 0, 0
@@ -340,7 +339,7 @@ function PassiveSpecClass:CountAllocNodes()
 end
 
 -- Attempt to find a class start node starting from the given node
--- Unless noAscent == true it will also look for an ascendancy class start node 
+--[[ Unless noAscent == true it will also look for an ascendancy class start node
 function PassiveSpecClass:FindStartFromNode(node, visited, noAscend)
 	-- Mark the current node as visited so we don't go around in circles
 	node.visited = true
@@ -393,9 +392,10 @@ function PassiveSpecClass:BuildPathFromNode(root)
 		end
 	end
 end
-
+]]
 -- Rebuilds dependancies and paths for all nodes
-function PassiveSpecClass:BuildAllDependsAndPaths()
+function PassiveSpecClass:BuildAllDependsAndPaths() end
+	--[[
 	-- This table will keep track of which nodes have been visited during each path-finding attempt
 	local visited = { }
 
@@ -486,11 +486,12 @@ function PassiveSpecClass:BuildAllDependsAndPaths()
 		end
 	end
 end
+]]
 
 function PassiveSpecClass:CreateUndoState()
-	return self:EncodeURL()
+--	return self:EncodeURL()
 end
 
 function PassiveSpecClass:RestoreUndoState(state)
-	self:DecodeURL(state)
+--	self:DecodeURL(state)
 end

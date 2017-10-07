@@ -371,6 +371,14 @@ function PassiveTreeClass:dump()
 		node["not"] = nil
 		node.o = nil
 		node.oidx = nil
+		node.unknown = nil
+		node.meta = nil
+		node.isMultipleChoice = nil
+		node.isMultipleChoiceOption = nil
+		node.isJewelSocket = nil
+		node.linkedId = nil
+		node.x = nil
+		node.y = nil
 	end
 	return serpent.dump(self)
 end
