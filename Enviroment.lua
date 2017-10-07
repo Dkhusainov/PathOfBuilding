@@ -48,9 +48,18 @@ function ConPrintf(text, ...)
 --    local t = string.format(text, ...)
     print(text)
 end
-
-function unpack(t)
-    return unpackf:invoke(t)--LuaModule
+--function unpack(t)
+--    return unpackf:invoke(t)--LuaModule
+--end
+--function unpack(t)
+--    return t:unpack()
+--end
+--todo fix this
+function unpack (t, i)
+    i = i or 1
+    if t[i] ~= nil then
+        return t[i], unpack(t, i + 1)
+    end
 end
 
 --POB stuff
