@@ -147,7 +147,10 @@ function itemLib.parseItemRaw(item)
 			l = l + 1
 		end
 	end
-	item.base = baseLoader:loadByName(item.baseName)
+	if item.baseName ~= nil then
+		baseLoader:loadTable(item.baseName)
+	end
+	item.base = verData.itemBases[item.baseName]
 	item.type = item.base and item.base.type
 	item.modLines = { }
 	item.implicitLines = 0
@@ -370,7 +373,7 @@ function itemLib.parseItemRaw(item)
 	end
 	item.affixLimit = 0
 	if item.crafted then
-		if not item.affixes then 
+		if not item.affixes then
 			item.crafted = false
 		elseif item.rarity == "MAGIC" then
 			item.affixLimit = 2

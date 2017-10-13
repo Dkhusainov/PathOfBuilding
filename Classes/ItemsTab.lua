@@ -481,6 +481,9 @@ function ItemsTabClass:Load(xml, dbFileName)
 			itemLib.buildItemModList(item)
 			self.items[item.id] = item
 			t_insert(self.itemOrderList, item.id)
+			if (item.rarity == "UNIQUE") then
+				skillLoader:loadSkillsForUnique(item.name)
+			end
 		elseif node.elem == "Slot" then
 			local slot = self.slots[node.attrib.name or ""]
 			if slot then
@@ -1129,7 +1132,7 @@ end
 function ItemsTabClass:CraftItem()
 	local controls = { }
 	local function makeItem(base)
-		base.base = baseLoader:loadByName(base.name)
+		base.base = baseLoader:loadTable(base.name)
 		local item = { name = base.name, base = base.base, baseName = base.name, modLines = { }, quality = 0 }
 		local raritySel = controls.rarity.selIndex
 		if base.base.flask then

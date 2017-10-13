@@ -48,27 +48,16 @@ function addSkill(key, grantedEffect)
     end
 end
 
-function removeSkill(key)
-    local skill = data[liveTargetVersion].skills[key]
-    if skill then
-        data[liveTargetVersion].skills[key] = nil
-        data[liveTargetVersion].gems[skill.name] = nil
-    end
-end
-
------------------Uniques
-function loadUnique(raw)
+function createUnique(raw)
     local newItem = itemLib.makeItemFromRaw(liveTargetVersion, "Rarity: Unique\n"..raw)
-    if newItem then
-        itemLib.normaliseQuality(newItem)
-        main.uniqueDB[liveTargetVersion].list[newItem.name] = newItem
-    else
-        ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
-    end
-end
-
-function removeUnique(name)
-    main.uniqueDB[liveTargetVersion].list[name] = nil
+    itemLib.normaliseQuality(newItem)
+    return newItem
+--    if newItem then
+--        itemLib.normaliseQuality(newItem)
+--        main.uniqueDB[liveTargetVersion].list[newItem.name] = newItem
+--    else
+--        ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
+--    end
 end
 
 -----------------GemSearch--------------

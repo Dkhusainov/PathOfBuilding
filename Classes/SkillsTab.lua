@@ -151,7 +151,7 @@ function SkillsTabClass:Load(xml, fileName)
 				gem.nameSpec = child.attrib.nameSpec or ""
 				local key = child.attrib.skillId
 				if key then
-					skillLoader:loadByKey(key)
+					skillLoader:loadTable(key)
 					local skill = self.build.data.skills[child.attrib.skillId]
 					if skill and self.build.data.gems[skill.name] then
 						gem.nameSpec = skill.name
