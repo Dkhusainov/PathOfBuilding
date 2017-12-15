@@ -36,6 +36,20 @@ local skills, mod, flag, skill = ...
 #baseMod skill("radius", 26)
 #mods
 
+#skill CorpseWarp
+#flags spell area fire movement
+	setupFunc = function(actor, output)
+		local skillData = actor.mainSkill.skillData
+		if actor.mainSkill.skillFlags.totem then
+			skillData.FireBonusMin = output.TotemLife * skillData.selfFireExplosionLifeMultiplier
+			skillData.FireBonusMax = output.TotemLife * skillData.selfFireExplosionLifeMultiplier
+		else
+			skillData.FireBonusMin = output.Life * skillData.selfFireExplosionLifeMultiplier
+			skillData.FireBonusMax = output.Life * skillData.selfFireExplosionLifeMultiplier
+		end
+	end,
+#mods
+
 #skill BoneOffering
 #flags spell duration
 #baseMod skill("buffMinions", true)
@@ -109,6 +123,12 @@ local skills, mod, flag, skill = ...
 		actor.mainSkill.skillData.ChaosMin = actor.mainSkill.skillData.ChaosMin + add
 		actor.mainSkill.skillData.ChaosMax = actor.mainSkill.skillData.ChaosMax + add
 	end,
+#mods
+
+#skill Despair
+#flags spell curse area duration
+#baseMod skill("debuff", true)
+#baseMod skill("radius", 22)
 #mods
 
 #skill Discharge
@@ -314,9 +334,8 @@ local skills, mod, flag, skill = ...
 #baseMod skill("radius", 14)
 #mods
 
-#skill LightningTendrils
+#skill LightningTendrilsChannelled
 #flags spell area lightning
-#baseMod skill("dpsMultiplier", 4)
 #baseMod skill("radius", 22)
 #mods
 
@@ -364,7 +383,8 @@ local skills, mod, flag, skill = ...
 #mods
 
 #skill RaiseSpectre
-#flags spell minion spectre
+#flags spell minion spectre duration
+#setMod accuracy_rating==mod("MinionModifier", "LIST", { mod = mod("Accuracy", "BASE", nil) })
 	minionList = {
 	},
 #mods
@@ -520,12 +540,6 @@ local skills, mod, flag, skill = ...
 #skill FrostBoltNova
 #flags spell area duration cold
 #baseMod skill("dotIsArea", true)
-#mods
-
-#skill Vulnerability
-#flags spell curse area duration
-#baseMod skill("debuff", true)
-#baseMod skill("radius", 22)
 #mods
 
 #skill Wither

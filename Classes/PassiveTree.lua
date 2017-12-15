@@ -342,6 +342,16 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 --			end
 		end
 	end
+
+	for classId, class in pairs(self.classes) do
+		local startNode = nodeMap[class.startNodeId]
+		for _, nodeId in ipairs(startNode.linkedId) do
+			local node = nodeMap[nodeId]
+			if node.type == "normal" then
+				node.modList:NewMod("Condition:ConnectedTo"..class.name.."Start", "FLAG", true, "Tree:"..nodeId)
+			end
+		end
+	end
 end)
 
 function PassiveTreeClass:dump()

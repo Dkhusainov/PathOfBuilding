@@ -39,6 +39,18 @@ local function mergeBuff(src, destTable, destKey)
 	end
 end
 
+-- Merge keystone modifiers
+local function mergeKeystones(env)
+	local modDB = env.modDB
+
+	for _, name in ipairs(modDB:Sum("LIST", nil, "Keystone")) do
+		if not env.keystonesAdded[name] then
+			env.keystonesAdded[name] = true
+			modDB:AddList(env.build.tree.keystoneMap[name].modList)
+		end
+	end
+end
+
 -- Calculate attributes and life/mana pools, and set conditions
 local function doActorAttribsPoolsConditions(env, actor)
 	local modDB = actor.modDB
@@ -147,9 +159,19 @@ local function doActorAttribsPoolsConditions(env, actor)
 		end
 	end
 
+	output.LowestAttribute = m_min(output.Str, output.Dex, output.Int)
+	condList["DexHigherThanInt"] = output.Dex > output.Int
+	condList["StrHigherThanDex"] = output.Str > output.Dex
+	condList["IntHigherThanStr"] = output.Int > output.Str
+
 	-- Add attribute bonuses
 	modDB:NewMod("Life", "BASE", m_floor(output.Str / 2), "Strength")
-	actor.strDmgBonus = round((output.Str + modDB:Sum("BASE", nil, "DexIntToMeleeBonus")) / 5)
+	local strDmgBonusRatioOverride = modDB:Sum("BASE", nil, "StrDmgBonusRatioOverride")
+	if strDmgBonusRatioOverride > 0 then
+		actor.strDmgBonus = round((output.Str + modDB:Sum("BASE", nil, "DexIntToMeleeBonus")) * strDmgBonusRatioOverride)
+	else
+		actor.strDmgBonus = round((output.Str + modDB:Sum("BASE", nil, "DexIntToMeleeBonus")) / 5)
+	end
 	modDB:NewMod("PhysicalDamage", "INC", actor.strDmgBonus, "Strength", ModFlag.Melee)
 	modDB:NewMod("Accuracy", "BASE", output.Dex * 2, "Dexterity")
 	if not modDB:Sum("FLAG", nil, "IronReflexes") then
@@ -304,15 +326,8 @@ function calcs.perform(env)
 	local enemyDB = env.enemyDB
 
 	-- Merge keystone modifiers
-	do
-		local keystoneList = wipeTable(tempTable1)
-		for _, name in ipairs(modDB:Sum("LIST", nil, "Keystone")) do
-			keystoneList[name] = true
-		end
-		for name in pairs(keystoneList) do
-			modDB:AddList(env.build.tree.keystoneMap[name].modList)
-		end
-	end
+	env.keystonesAdded = { }
+	mergeKeystones(env)
 
 	-- Build minion skills
 	for _, activeSkill in ipairs(env.activeSkillList) do
@@ -400,6 +415,9 @@ function calcs.perform(env)
 		if modDB:Sum("FLAG", nil, "StrengthAddedToMinions") then
 			env.minion.modDB:NewMod("Str", "BASE", round(calcLib.val(modDB, "Str")), "Player")
 		end
+		if modDB:Sum("FLAG", nil, "HalfStrengthAddedToMinions") then
+			env.minion.modDB:NewMod("Str", "BASE", round(calcLib.val(modDB, "Str") * 0.5), "Player")
+		end
 	end
 	if env.aegisModList then
 		env.player.itemList["Weapon 2"] = nil
@@ -457,6 +475,9 @@ function calcs.perform(env)
 			end
 		end
 	end
+
+	-- Merge keystones again to catch any that were added by flasks
+	mergeKeystones(env)
 
 	-- Calculate skill life and mana reservations
 	env.player.reserved_LifeBase = 0
@@ -625,6 +646,7 @@ function calcs.perform(env)
 					if not activeSkill.skillData.auraCannotAffectSelf then
 						activeSkill.buffSkill = true
 						affectedByAura[env.player] = true
+						modDB.conditions["AffectedBy"..buff.name] = true
 						local srcList = common.New("ModList")
 						local inc = modDB:Sum("INC", skillCfg, "AuraEffect", "BuffEffectOnSelf", "AuraEffectOnSelf") + skillModList:Sum("INC", skillCfg, "AuraEffect")
 						local more = modDB:Sum("MORE", skillCfg, "AuraEffect", "BuffEffectOnSelf", "AuraEffectOnSelf") * skillModList:Sum("MORE", skillCfg, "AuraEffect")
@@ -635,6 +657,7 @@ function calcs.perform(env)
 					if env.minion and not modDB:Sum("FLAG", nil, "YourAurasCannotAffectAllies") then
 						activeSkill.minionBuffSkill = true
 						affectedByAura[env.minion] = true
+						env.minion.modDB.conditions["AffectedBy"..buff.name] = true
 						local srcList = common.New("ModList")
 						local inc = modDB:Sum("INC", skillCfg, "AuraEffect") + env.minion.modDB:Sum("INC", nil, "BuffEffectOnSelf", "AuraEffectOnSelf") + skillModList:Sum("INC", skillCfg, "AuraEffect")
 						local more = modDB:Sum("MORE", skillCfg, "AuraEffect") * env.minion.modDB:Sum("MORE", nil, "BuffEffectOnSelf", "AuraEffectOnSelf") * skillModList:Sum("MORE", skillCfg, "AuraEffect")

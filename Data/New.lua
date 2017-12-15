@@ -3,6 +3,344 @@
 --
 
 data.uniques.new = {
+-- 3.1 General
+[[
+Arborix
+Assassin Bow
+Requires Level: 62
+Adds 64 to 206 Physical Damage
+99% increased Evasion Rating
+2 Additional Arrows
+Every 16 seconds you gain iron Reflexes for 8 seconds
+30% more Bow Damage at Close Range while you have iron Reflexes
+30% increased Attack, Cast and Movements Speed while you do not have Iron Reflexes
+You have Far Shot while you do not have Iron Reflexes
+]],[[
+Balefire
+Opal Sceptre
+Requires Level 60
+40% increased Elemental Damage
+Grants Level 25 Scorching Ray Skill
+16% increased Cast Speed
+Recover 3% of Maximum Life on Kill
+Recover 3% of Maximum Mana on Kill
+10% increased Scorching Ray beam length
+]],[[
+Bloodbond
+Bone Armour
+Requires Level: 35
+Grants Level 15 Blood Offering Skill 
+(100–120)% increased Evasion and Energy Shield 
+(15–25)% increased maximum Life 
+Minions have (20–30)% increased maximum Life 
+1% of Life Regenerated per second 
+Minions have (6–10)% chance to Dodge Attacks 
+]],[[
+Cane of Unravelling
+Ezomyte Staff
+Requires Level: 62
+18% Chance to Block 
++2 to Level of Socketed Chaos Gems
+63% increased Chaos Damage
+2% increased Cast Speed per Power Charge
+Gain a Power Charge after spending a total of 200 Mana
+2 Mana Regenerated per Second per Power Charge
+]],[[
+Coralito's Signature
+Diamond Flask
+Requires Level: 27
+Take 30 Chaos Damage per Second during Flask effect 
+25% chance to Poison on Hit during Flask effect 
+Your Critical Strikes do not deal extra Damage during Flask effect 
+(50–75)% increased Duration of Poisons you inflict during Flask effect 
+Grants Perfect Agony during Flask effect 
+]],[[
+Cyclopean Coil
+Leather Belt
+Requires Level 68
++(25-40) to maximum Life
++80 to maximum Life
+13% increased Attributes
+Cannot be Frozen if Dexterity is higher than Intelligence
+Cannot be Ignited if Strength is higher than Dexterity
+Cannot be Shocked if Intelligence is higher than Strength
+1% increased Damage per 5 of your lowest Attribute
+]],[[
+Doedre's Skin
+Widowsilk Robe
+Requires Level: 65
+Socketed Curse Gems are Supported by Level 30 Blasphemy
+Grants Level 20 Summon Doedre's Effigy Skill
+Socketed Curse Skills are Triggered by Doedre's Effigy when Summoned
+Socketed Curse Skills ignore Curse Limit
++38 to Intelligence
+142% increased Energy Shield
+17% reduced Effect of your Curses
+]],[[
+Giantsbane
+Bronze Gauntlets
+Requires Level: 23
+Adds 4 to 12 Physical Damage to Attacks
++30 to Strength
+90% increased Armour
+Iron Grip
+]],[[
+Gloomfang
+Blue Pearl Amulet
+Requires 77
+(48-56)% increased Mana Regeneration Rate
+0.5% of Chaos Damage Leeched as Life
+Lose 10 Life for each Enemy hit by your Spells
+Lose 20 Life for each Enemy hit by your Attacks
+Skills Chain +1 times
+Projectiles gain 19% of Non-Chaos Damage as Extra Chaos Damage per Chain
+]],[[
+The Golden Rule
+Viridian Jewel
+(30–40)% increased Armour while Bleeding 
+Bleeding you inflict is Reflected to you 
++1% to Chaos Resistance per Poison on you 
+Poison you inflict is Reflected to you 
+]],[[
+Grelwood Shank
+Eternal Sword
+Requires Level 66
++475 to Accuracy Rating
+186% increased Physical Damage
+16% increased Attack Speed
+80% increased Armour while stationary
+2 additional Projectiles if you've been Hit Recently
+Point Blank
+Iron Reflexes while stationary
+]],[[
+The Hungry Loop
+Unset Ring
+Requires Level: 45
+Has 1 Socket 
+Consumes Socketed Support Gems when they reach Maximum Level
+Can Consume 4 Support Gems
+Has not Consumed any Gems 
+]],[[
+Impresence
+Onyx Amulet
+Requires Level 64
++(10-16) to all Attributes
+Adds 21 to 35 Cold Damage
++59 to maximum Life
+46% increased Mana Regeneration Rate
++25% to Cold Resistance
+100% reduced Frostbite Mana Reservation
+Gain Maddening Presence for 10 seconds when you Kill a Rare or Unique Enemy
+]],[[
+Invictus Solaris
+Archon Kite Shield
+Requires Level: 68
++12% to all Elemental Resistances
++2 to Level of Socketed Gems 
+Triggers Level 20 Fire Aegis when Equipped 
+(200–250)% increased Armour and Energy Shield 
++(60–80) to maximum Life 
+Cannot be Ignited 
+]],[[
+Iron Heart
+Crusader Plate
+Requires Level: 59
+80% increased Armour
+10% reduced Movement Speed
+12% Chance to Block
+Cannot Block Spells
+Strength's Damage Bonus instead grants 3% increased Melee Physical Damage per 10 Strength
+]],[[
+Kalisa's Grace
+Samite Gloves
+Requires Level: 47
+Socketed Gems are Supported by Level 18 Faster Casting
++21 to Intelligence
++67 to maximum Energy Shield
++65 to maximum Life
+Gain +2% to Critical Strike Chance for 2 seconds when you Spend a total of 800 Mana
+]],[[
+Leper's Alms
+Mirrored Spiked Shield
+Requires Level: 66
+4% chance to Dodge Attacks 
+(130–150)% increased Evasion and Energy Shield 
++(60–80) to maximum Life 
+40% increased Duration of Ailments on Enemies 
++(3–4)% Chance to Block 
+Shared Suffering
+]],[[
+The Long Winter
+Cobalt Jewel
+Limited to: 2
+Radius: Medium
+(10–15)% increased Cold Damage 
+With 40 Intelligence in Radius, 20% of Glacial Cascade Physical Damage
+Converted to Cold Damage
+With 40 Intelligence in Radius, Glacial Cascade has an additional Burst 
+]],[[
+Memory Vault
+Praetor Crown
+Requires Level: 68
++135 to maximum Energy Shield
++161 to maximum Mana
+33% increased Mana Regeneration Rate
++24% to Fire Resistance
+10% increased Mana Reserved
+Gain Armour equal to your Reserved Mana
+]],[[
+Nebuloch
+Nightmare Mace
+Requires Level 68
+10% reduced Enemy Stun Threshold
+Adds 47 to 116 Physical Damage
+Gain 32% of Physical Attack Damage as Extra Fire Damage
++4% to Chaos Resistance per Endurance Charge
+1% reduced Elemental Damage taken when Hit per Endurance Charge
+Adds 5 to 8 Physical Damage per Endurance Charge
++500 to Armour per Endurance Charge
+400 Fire Damage taken per second per Endurance Charge if you've been Hit Recently
+]],[[
+Oskarm
+Nubuck Gloves
+Requires Level: 33
+39% increased Accuracy Rating
++50 to maximum Life
+-15% to Chaos Resistance
+7% chance to Dodge Spell Damage
+Curse Enemies with level 10 Assassin's Mark on Hit
+2% increased Attack Critical Strike Chance per 200 Accuracy Rating
+]],[[
+The Poet's Pen
+Carved Wand
+Requires Level: 12
+(11–15)% increased Spell Damage 
++1 to Level of Socketed Active Skill Gems per 25 Player Levels 
+Adds 3 to 5 Physical Damage to Attacks with this Weapon per 3 Player Levels 
+(8–12)% increased Attack Speed 
+Trigger a Socketed Spell when you Attack
+]],[[
+Pure Talent
+Viridian Jewel
+Implicits: 0
+While your Passive Skill Tree connects to a class' Starting location, you gain:
+Marauder: Melee Skills have 15% increased Area of Effect
+Duelist: 1% of Attack Damage Leeched as Life
+Ranger: 7% increased Movement Speed
+Shadow: +0.5 to Critical Strike Chance
+Witch: 0.5% of Maximum Mana Regenerated per second
+Templar: Damage Penetrates 5% Elemental Resistances
+Scion: +25 to All Attributes
+]],[[
+Ralakesh's Impatience
+Riveted Boots
+Requires Level: 36
++19% to Cold Resistance
++18% to Chaos Resistance
+20% increased Movement Speed
+Gain a Frenzy, Endurance, or Power Charge once per second while you are Stationary
+Lose all Frenzy, Endurance, and Power Charges when you Move
+]],[[
+Soul's Wick
+Cobalt Jewel
+Limited to: 1
++2 to maximum number of Spectres
+41% reduced Mana Cost of Raise Spectre
+Spectres have (800–1000)% increased Critical Strike Chance 
+Spectres have a Base Duration of 20 seconds
+Spectres do not travel between Areas 
+]],[[
+Stormcharger
+Plated Greaves
+Requires Level: 23
+20% increased Movement Speed
+50% increased Shock Duration on Enemies
+25% of Physical Damage Converted to Lightning Damage
+24% increased Effect of Shock
+]],[[
+Vix Lunaris
+Cardinal Round Shield
+Requires Level: 66
++2 to Level of Socketed Gems
+Triggers level 20 Cold Aegis when equipped
+229% increased Armour and Evasion
++61 to maximum Life
+Cannot be Frozen
+]],[[
+Watcher's Eye
+Prismatic Jewel
+Limited to: 1
+5% increased maximum Energy Shield
+5% increased maximum Life
+6% increased maximum Mana
+29% of Physical Damage Converted to Cold Damage while affected by Hatred
++7% chance to Evade Attacks while affected by Grace
+]],[[
+White Wind
+Imperial Skean
+Requires Level: 66
+30% increased Global Critical Strike Chance 
+Adds 196 to 310 Cold Damage
+14% increased Attack Speed
++324 to Evasion Rating
+20% chance to Dodge Attacks while your Off Hand is empty
+100% increased Cold Damage while your Off Hand is empty
+]],[[
+Wraithlord
+Bone Circlet
+Requires Level: 34
++2 to Level of Socketed Minion Gems 
+(120–150)% increased Energy Shield 
+Minions Regenerate 1% Life per second 
++1000 to Spectre maximum Life
+]],[[
+Yoke of Suffering
+Onyx Amulet
+Requires Level: 25
++(10–16) to all Attributes 
++16% to Fire Resistance
++12% to Cold Resistance
++22% to Lightning Resistance
+30% reduced Duration of Ailments on Enemies
+10% chance to Shock
+Enemies take 5% increased Damage for each type of Ailment you have inflicted on them
+Your Elemental Damage can Shock
+]],
+-- Abyss
+[[
+Bubonic Trail
+Murder Boots
+League: Abyss
+Requires Level 69, 82 Dex, 42 Int
+Has 1 Abyssal Socket
+Triggers level 20 Death Walk when Equipped
+4% increased maximum Life
+30% increased Movement Speed
+10% increased Damage for each type of Abyssal Jewel affecting you
+]],
+
+
+-- 3.0 (will be moved at some point...)
+-- New
+[[
+Malachai's Mark
+Murder Mitts
+Requires Level 67, 51 Dex, 51 Int
+(80-100)% increased Evasion and Energy Shield
++(60-80) to maximum Life
++(15-25) Life gained on Kill
++(15-25) Energy Shield gained on Kill
+Grants Malachai's Endurance, Frenzy and Power for 6 seconds each, in sequence
+]],[[
+Dialla's Malefaction
+Sage's Robe
+Requires Level 37
+Gems can be Socketed in this Item ignoring Socket Colour 
+Gems Socketed in Red Sockets have +1 to Level 
+Gems Socketed in Green Sockets have +10% to Quality 
+Gems Socketed in Blue Sockets gain 25% increased Experience 
+Has no Attribute Requirements
+]],
 -- Global
 [[
 Ahn's Might
@@ -10,11 +348,12 @@ Midnight Blade
 Requires Level 68, 313 Str, 113 Dex
 40% increased Accuracy Rating
 Adds (80-100) to (160-190) Physical Damage
+19% increased Critical Strike Chance
 -1 to Maximum Frenzy Charges
-+200 Strength Requirement
-+50% Global Critical Strike Multiplier while at Maximum Frenzy Charges
-15% increased Area of Effect of Skills while you have no Frenzy Charges
-Movement Attack Skills have 40% reduced Attack Speed
+10% increased Area of Effect
++100 Strength Requirement
++50% Global Critical Strike Multiplier while you have no Frenzy Charges
++492 to Accuracy Rating while at Maximum Frenzy Charges
 ]],[[
 Allelopathy
 Sorcerer Gloves

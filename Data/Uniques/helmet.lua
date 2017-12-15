@@ -23,7 +23,7 @@ Requires Level 26, 58 Str
 +2 to Level of Socketed Minion Gems
 +(20-40) to Strength
 Minions have 20% increased maximum Life
-Your Strength is added to your Minions
+Half of your Strength is added to your Minions
 +1 to maximum number of Zombies per 300 Strength
 With 1000 or more Strength 2% of Damage dealt by your Zombies is Leeched to you as Life
 ]],[[
@@ -406,7 +406,7 @@ Requires Level 12, 16 Str, 16 Int
 Adds 1 to 13 Lightning Damage to Attacks
 (40-50)% increased Armour and Energy Shield
 +(10-20)% to all Elemental Resistances
-20% increased Elemental Resistances while on Low Life
++20% to all Elemental Resistances while on Low Life
 20% reduced Mana Cost of Skills when on Low Life
 ]],[[
 Kitava's Thirst 

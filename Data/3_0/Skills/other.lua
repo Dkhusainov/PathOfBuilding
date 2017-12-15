@@ -11,7 +11,7 @@ skills["Melee"] = {
 	hidden = true,
 	color = 4,
 	description = "Strike your foes down with a powerful blow.",
-	skillTypes = { [1] = true, [48] = true, [6] = true, [3] = true, [25] = true, [28] = true, [24] = true, },
+	skillTypes = { [1] = true, [48] = true, [69] = true, [6] = true, [3] = true, [25] = true, [28] = true, [24] = true, },
 	baseFlags = {
 		attack = true,
 		melee = true,
@@ -111,6 +111,48 @@ skills["Portal"] = {
 		[10] = { 10, },
 	},
 }
+skills["VaalBreach"] = {
+	name = "Vaal Breach",
+	gemTags = {
+		low_max_level = true,
+		active_skill = true,
+		vaal = true,
+		spell = true,
+	},
+	gemTagString = "Vaal, Spell",
+	gemStr = 33,
+	gemDex = 33,
+	gemInt = 34,
+	color = 4,
+	description = "Creates a breach, making you vulnerable to its powerful inhabitants.",
+	skillTypes = { [2] = true, [17] = true, [18] = true, [19] = true, [27] = true, [43] = true, },
+	baseFlags = {
+		spell = true,
+	},
+	baseMods = {
+		skill("castTime", 2.5), 
+		--"base_deal_no_damage" = ?
+		--"display_vaal_breach_no_drops_xp" = ?
+	},
+	qualityMods = {
+		mod("Speed", "INC", 3, ModFlag.Cast), --"base_cast_speed_+%" = 3
+	},
+	levelMods = {
+		[1] = skill("levelRequirement", nil), 
+	},
+	levels = {
+		[1] = { 10, },
+		[2] = { 10, },
+		[3] = { 10, },
+		[4] = { 10, },
+		[5] = { 10, },
+		[6] = { 10, },
+		[7] = { 10, },
+		[8] = { 10, },
+		[9] = { 10, },
+		[10] = { 10, },
+	},
+}
 skills["SupportUniqueMjolnerLightningSpellsCastOnHit"] = {
 	name = "Mjolner",
 	hidden = true,
@@ -188,12 +230,45 @@ skills["RepeatingShockwave"] = {
 		[7] = { 1, },
 	},
 }
+skills["BloodOffering"] = {
+	name = "Blood Offering",
+	hidden = true,
+	color = 3,
+	description = "Consumes a corpse, and sacrifices a portion of your life, granting your minions life regeneration based on the life sacrificed, and a bonus to damage. The skill consumes other nearby corpses, increasing the duration and life regeneration for each corpse consumed.",
+	skillTypes = { [2] = true, [5] = true, [12] = true, [36] = true, [9] = true, [49] = true, [17] = true, [19] = true, [18] = true, },
+	fromItem = true,
+	baseFlags = {
+		spell = true,
+		duration = true,
+	},
+	baseMods = {
+		skill("castTime", 1), 
+		skill("duration", 3), --"base_skill_effect_duration" = 3000
+		--"offering_skill_effect_duration_per_corpse" = 500
+		--"blood_offering_%_of_life_to_lose" = 20
+		--"blood_offering_%_of_lost_life_to_regenerate_as_life_per_second" = 35
+		--"blood_offering_life_regenerated_+%_final_per_corpse" = 5
+		mod("Damage", "INC", 50, 0, 0, { type = "GlobalEffect", effectType = "Buff" }), --"damage_+%" = 50
+		--"base_deal_no_damage" = ?
+		skill("buffMinions", true), 
+		skill("buffNotPlayer", true), 
+	},
+	qualityMods = {
+		mod("Duration", "INC", 0.5), --"skill_effect_duration_+%" = 0.5
+	},
+	levelMods = {
+		[1] = skill("levelRequirement", nil), 
+	},
+	levels = {
+		[15] = { 12, },
+	},
+}
 skills["TriggeredBoneNova"] = {
 	name = "Bone Nova",
 	hidden = true,
 	color = 4,
 	description = "A spiral of bones erupts around you, dealing physical damage.",
-	skillTypes = { [1] = true, [48] = true, [3] = true, [10] = true, [57] = true, [47] = true, [61] = true, },
+	skillTypes = { [1] = true, [48] = true, [3] = true, [68] = true, [10] = true, [57] = true, [47] = true, [61] = true, },
 	fromItem = true,
 	baseFlags = {
 		attack = true,
@@ -209,6 +284,32 @@ skills["TriggeredBoneNova"] = {
 		skill("triggered", true, { type = "SkillType", skillType = SkillType.TriggerableSpell }), --"spell_uncastable_if_triggerable" = ?
 		--"base_is_projectile" = ?
 		flag("CannotBleed"), --"cannot_cause_bleeding" = ?
+	},
+	qualityMods = {
+	},
+	levelMods = {
+		[1] = skill("levelRequirement", nil), 
+	},
+	levels = {
+		[20] = { 1, },
+	},
+}
+skills["ColdAegis"] = {
+	name = "Cold Aegis",
+	hidden = true,
+	color = 4,
+	description = "Calls forth a protective aegis which takes cold damage from hits for you until depleted. The aegis will be restored to its full value after a short delay if you stop taking cold damage from hits.",
+	skillTypes = { [2] = true, [36] = true, [42] = true, [61] = true, },
+	fromItem = true,
+	baseFlags = {
+		spell = true,
+	},
+	baseMods = {
+		skill("castTime", 1), 
+		--"aegis_unique_shield_max_value" = 1000
+		--"active_skill_display_aegis_variation" = 1
+		--"cast_on_gain_skill" = ?
+		skill("triggered", true, { type = "SkillType", skillType = SkillType.TriggerableSpell }), --"spell_uncastable_if_triggerable" = ?
 	},
 	qualityMods = {
 	},
@@ -300,6 +401,39 @@ skills["ChaosDegenAuraUnique"] = {
 	},
 	levels = {
 		[20] = { 62, },
+	},
+}
+skills["DeathWalk"] = {
+	name = "Death Walk",
+	hidden = true,
+	color = 4,
+	description = "While you walk, this skill causes corpses near your steps to explode, dealing fire damage in an area. The explosions of the corpses are not affected by modifiers to spell damage, and cannot be reflected.",
+	skillTypes = { [11] = true, [36] = true, [42] = true, [2] = true, [10] = true, [61] = true, [33] = true, },
+	fromItem = true,
+	baseFlags = {
+		cast = true,
+		area = true,
+		chaos = true,
+	},
+	baseMods = {
+		skill("castTime", 1), 
+		skill("corpseExplosionLifeMultiplier", 0.05), --"corpse_explosion_monster_life_%" = 5
+		--"cast_on_gain_skill" = ?
+		--"cannot_knockback" = ?
+		skill("triggered", true, { type = "SkillType", skillType = SkillType.TriggerableSpell }), --"spell_uncastable_if_triggerable" = ?
+		--"is_area_damage" = ?
+		--"skill_can_add_multiple_charges_per_action" = ?
+		--"damage_cannot_be_reflected" = ?
+		skill("explodeCorpse", true), 
+		skill("showAverage", true), 
+	},
+	qualityMods = {
+	},
+	levelMods = {
+		[1] = skill("levelRequirement", nil), 
+	},
+	levels = {
+		[20] = { 60, },
 	},
 }
 skills["TouchOfGod"] = {
@@ -399,6 +533,32 @@ skills["Envy"] = {
 		[15] = { 60, },
 	},
 }
+skills["FireAegis"] = {
+	name = "Fire Aegis",
+	hidden = true,
+	color = 4,
+	description = "Calls forth a protective aegis which takes fire damage from hits for you until depleted. The aegis will be restored to its full value after a short delay if you stop taking fire damage from hits.",
+	skillTypes = { [2] = true, [36] = true, [42] = true, [61] = true, },
+	fromItem = true,
+	baseFlags = {
+		spell = true,
+	},
+	baseMods = {
+		skill("castTime", 1), 
+		--"aegis_unique_shield_max_value" = 1000
+		--"active_skill_display_aegis_variation" = 0
+		--"cast_on_gain_skill" = ?
+		skill("triggered", true, { type = "SkillType", skillType = SkillType.TriggerableSpell }), --"spell_uncastable_if_triggerable" = ?
+	},
+	qualityMods = {
+	},
+	levelMods = {
+		[1] = skill("levelRequirement", nil), 
+	},
+	levels = {
+		[20] = { 1, },
+	},
+}
 skills["FireBurstOnHit"] = {
 	name = "Fire Burst",
 	hidden = true,
@@ -494,7 +654,7 @@ skills["IcestormUniqueStaff12"] = {
 	hidden = true,
 	color = 3,
 	description = "Icy bolts rain down over the targeted area. They explode when landing, dealing damage to nearby enemies and chilling them, as well as causing patches of chilled ground. Skill damage is based on Intelligence.",
-	skillTypes = { [2] = true, [10] = true, [11] = true, [12] = true, [17] = true, [18] = true, [19] = true, [26] = true, [36] = true, [34] = true, [60] = true, },
+	skillTypes = { [2] = true, [10] = true, [11] = true, [12] = true, [17] = true, [18] = true, [19] = true, [26] = true, [36] = true, [34] = true, [60] = true, [67] = true, },
 	fromItem = true,
 	baseFlags = {
 		spell = true,
@@ -645,6 +805,7 @@ skills["UniqueAnimateWeapon"] = {
 		mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", 110, ModFlag.Attack) }), --"attack_damage_+%" = 110
 		--"chance_to_cast_on_rampage_tier_%" = 100
 		mod("MinionModifier", "LIST", { mod = mod("MovementSpeed", "INC", 30) }), --"minion_movement_speed_+%" = 30
+		--"minion_grants_rampage_kill_to_parent_on_hitting_unique_enemy_%" = 25
 		mod("DisableWeapons", "FLAG", true, 0, 0, { type = "GlobalEffect", effectType = "Buff" }), 
 		mod("Condition:Onslaught", "FLAG", true, 0, 0, { type = "GlobalEffect", effectType = "Buff" }), 
 		skill("minionLevel", 59), 
@@ -716,6 +877,7 @@ skills["TriggeredSummonSpider"] = {
 		--"take_no_actions_while_parent_dead" = ?
 		--"minion_dies_when_parent_dies" = ?
 		skill("minionLevelIsEnemyLevel", true), --"display_skill_minions_level_is_corpse_level" = ?
+		--"minions_cannot_taunt_enemies" = ?
 	},
 	qualityMods = {
 	},
@@ -859,7 +1021,7 @@ skills["SummonBeastialSnake"] = {
 	color = 3,
 	description = "Summons a Bestial Snake. The Bestial Snake fires powerful chaos projectile attacks. This minion's hits cannot be evaded.",
 	skillTypes = { [36] = true, [19] = true, [9] = true, [21] = true, [26] = true, [2] = true, [18] = true, [17] = true, [49] = true, },
-	minionSkillTypes = { [1] = true, [24] = true, [25] = true, [28] = true, [3] = true, [23] = true, [48] = true, },
+	minionSkillTypes = { [1] = true, [24] = true, [25] = true, [28] = true, [3] = true, [68] = true, [23] = true, [48] = true, },
 	fromItem = true,
 	baseFlags = {
 		spell = true,
@@ -944,6 +1106,7 @@ skills["SummonEssenceSpirits"] = {
 		skill("triggered", true, { type = "SkillType", skillType = SkillType.TriggerableSpell }), --"spell_uncastable_if_triggerable" = ?
 		--"take_no_actions_while_parent_dead" = ?
 		--"minion_dies_when_parent_dies" = ?
+		--"minions_cannot_taunt_enemies" = ?
 	},
 	qualityMods = {
 	},
@@ -1178,7 +1341,7 @@ skills["VoidGaze"] = {
 	hidden = true,
 	color = 3,
 	description = "Applies a debuff to Enemies, removing some of their resistance to Chaos damage.",
-	skillTypes = { [2] = true, [50] = true, [11] = true, [18] = true, [58] = true, [12] = true, [61] = true, [36] = true, },
+	skillTypes = { [2] = true, [50] = true, [11] = true, [18] = true, [12] = true, [61] = true, [36] = true, },
 	fromItem = true,
 	baseFlags = {
 		spell = true,

@@ -96,7 +96,8 @@ function ModDBClass:EvalMod(mod, cfg)
 	local value = mod.value
 	for _, tag in ipairs(mod) do
 		if tag.type == "Multiplier" then
-			local mult = (self.multipliers[tag.var] or 0) + self:Sum("BASE", cfg, multiplierName[tag.var])
+			local base = (self.multipliers[tag.var] or 0) + self:Sum("BASE", cfg, multiplierName[tag.var])
+			local mult = m_floor(base / (tag.div or 1) + 0.0001)
 			if tag.limit or tag.limitVar then
 				local limit = tag.limit or ((self.multipliers[tag.limitVar] or 0) + self:Sum("BASE", cfg, multiplierName[tag.limitVar]))
 				mult = m_min(mult, limit)
@@ -117,7 +118,12 @@ function ModDBClass:EvalMod(mod, cfg)
 				return
 			end
 		elseif tag.type == "PerStat" then
-			local mult = m_floor((self.actor.output[tag.stat] or (cfg and cfg.skillStats and cfg.skillStats[tag.stat]) or 0) / tag.div + 0.0001)
+			local base = self.actor.output[tag.stat] or (cfg and cfg.skillStats and cfg.skillStats[tag.stat]) or 0
+			local mult = m_floor(base / (tag.div or 1) + 0.0001)
+			if tag.limit or tag.limitVar then
+				local limit = tag.limit or ((self.multipliers[tag.limitVar] or 0) + self:Sum("BASE", cfg, multiplierName[tag.limitVar]))
+				mult = m_min(mult, limit)
+			end
 			if type(value) == "table" then
 				value = copyTable(value)
 				if value.mod then
@@ -238,7 +244,11 @@ function ModDBClass:EvalMod(mod, cfg)
 				return
 			end
 		elseif tag.type == "SkillType" then
-			if not cfg or not cfg.skillTypes or not cfg.skillTypes[tag.skillType] then
+			local match = cfg and cfg.skillTypes and cfg.skillTypes[tag.skillType]
+			if tag.neg then
+				match = not match
+			end
+			if not match then
 				return
 			end
 		elseif tag.type == "SlotName" then
