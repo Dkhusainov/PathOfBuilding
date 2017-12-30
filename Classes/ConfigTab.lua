@@ -461,8 +461,8 @@ local varList = {
 			enemyModList:NewMod("SelfIgniteDuration", "MORE", -50, "Boss")
 		end
 	end },
-	{ var = "enemyIsBoss", type = "list", ifVer = "3_0", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance", list = {{val="NONE",label="No"},{val=true,label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
-		if val == true then
+	{ var = "enemyIsBoss", type = "list", ifVer = "3_0", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance", list = {{val="NONE",label="No"},{val="BOSS",label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
+		if val == "BOSS" then
 			modList:NewMod("Condition:EnemyRareOrUnique", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 			enemyModList:NewMod("CurseEffectOnSelf", "MORE", -60, "Boss")
 			enemyModList:NewMod("ElementalResist", "BASE", 30, "Boss")
