@@ -38,6 +38,8 @@ colorCodes = {
 	a = "^xFFFF30",
 	b = "^xFF5555",
 	c = "^x7F7F7F",
+	SHAPER = "^x55BBFF",
+	ELDER = "^xAA77CC",
 }
 colorCodes.STRENGTH = colorCodes.MARAUDER
 colorCodes.DEXTERITY = colorCodes.RANGER

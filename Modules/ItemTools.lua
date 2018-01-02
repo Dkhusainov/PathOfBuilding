@@ -152,13 +152,18 @@ function itemLib.parseItemRaw(item)
 	end
 	item.base = verData.itemBases[item.baseName]
 	item.type = item.base and item.base.type
+	item.sockets = { }
 	item.modLines = { }
 	item.implicitLines = 0
 	item.buffLines = 0
 	if item.base then
-		item.affixes = verData.itemMods[item.base.type] or verData.itemMods.Item
+		item.affixes = (item.base.subType and verData.itemMods[item.base.type..item.base.subType])
+			or verData.itemMods[item.base.type]
+			or verData.itemMods.Item
 		item.enchantments = verData.enchantments[item.base.type]
 		item.corruptable = item.base.type ~= "Flask"
+		item.shaperElderTags = data.specialBaseTags[item.type]
+		item.canBeShaperElder = (item.rarity ~= "UNIQUE" and item.rarity ~= "RELIC") and item.shaperElderTags
 	end
 	item.variantList = nil
 	item.prefixes = { }
@@ -168,6 +173,8 @@ function itemLib.parseItemRaw(item)
 		item.requirements.str = item.base.req.str or 0
 		item.requirements.dex = item.base.req.dex or 0
 		item.requirements.int = item.base.req.int or 0
+		local maxReq = m_max(item.requirements.str, item.requirements.dex, item.requirements.int)
+		item.defaultSocketColor = (maxReq == item.requirements.dex and "G") or (maxReq == item.requirements.int and "B") or "R"
 	end
 	local importedLevelReq
 	local flaskBuffLines = { }
@@ -196,6 +203,10 @@ function itemLib.parseItemRaw(item)
 			end
 		elseif line == "Corrupted" then
 			item.corrupted = true
+		elseif line == "Shaper Item" then
+			item.shaper = true
+		elseif line == "Elder Item" then
+			item.elder = true
 		else
 			local specName, specVal = line:match("^([%a ]+): (%x+)$")
 			if not specName then
@@ -219,7 +230,6 @@ function itemLib.parseItemRaw(item)
 					item.quality = tonumber(specVal)
 				elseif specName == "Sockets" then
 					local group = 0
-					item.sockets = { }
 					for c in specVal:gmatch(".") do
 						if c:match("[RGBWA]") then
 							t_insert(item.sockets, { color = c, group = group })
@@ -256,8 +266,12 @@ function itemLib.parseItemRaw(item)
 					importedLevelReq = tonumber(specVal)
 				elseif specName == "LevelReq" then
 					item.requirements.level = tonumber(specVal)
+				elseif specName == "Has Alt Variant" then
+					item.hasAltVariant = true
 				elseif specName == "Selected Variant" then
 					item.variant = tonumber(specVal)
+				elseif specName == "Selected Alt Variant" then
+					item.variantAlt = tonumber(specVal)
 				elseif specName == "League" then
 					item.league = specVal
 				elseif specName == "Crafted" then
@@ -357,7 +371,7 @@ function itemLib.parseItemRaw(item)
 		l = l + 1
 	end
 	if item.base and not item.requirements.level then
-		if importedLevelReq and not item.sockets then
+		if importedLevelReq and #item.sockets == 0 then
 			-- Requirements on imported items can only be trusted for items with no sockets
 			item.requirements.level = importedLevelReq
 		else
@@ -402,8 +416,22 @@ function itemLib.parseItemRaw(item)
 			end
 		end
 	end
+	if item.base and item.base.socketLimit then
+		if #item.sockets == 0 then
+			for i = 1, item.base.socketLimit do
+				t_insert(item.sockets, {
+					color = item.defaultSocketColor,
+					group = 0,
+				})
+			end
+		end
+	end
+	item.abyssalSocketCount = 0
 	if item.variantList then
 		item.variant = m_min(#item.variantList, item.variant or item.defaultVariant or #item.variantList)
+		if item.hasAltVariant then
+			item.variantAlt = m_min(#item.variantList, item.variantAlt or item.defaultVariant or #item.variantList)
+		end
 	end
 	if not item.quality then
 		itemLib.normaliseQuality(item)
@@ -424,7 +452,7 @@ end
 function itemLib.getModSpawnWeight(item, mod, extraTags)
 	if item.base then
 		for i, key in ipairs(mod.weightKey) do
-			if item.base.tags[key] or (extraTags and extraTags[key]) then
+			if item.base.tags[key] or (extraTags and extraTags[key]) or (item.shaperElderTags and (item.shaper and item.shaperElderTags.shaper == key) or (item.elder and item.shaperElderTags.elder == key)) then
 				return mod.weightVal[i]
 			end
 		end
@@ -451,6 +479,12 @@ function itemLib.createItemRaw(item)
 	if item.unreleased then
 		t_insert(rawLines, "Unreleased: true")
 	end
+	if item.shaper then
+		t_insert(rawLines, "Shaper Item")
+	end
+	if item.elder then
+		t_insert(rawLines, "Elder Item")
+	end
 	if item.crafted then
 		t_insert(rawLines, "Crafted: true")
 		for i, affix in ipairs(item.prefixes or { }) do
@@ -468,11 +502,15 @@ function itemLib.createItemRaw(item)
 			t_insert(rawLines, "Variant: "..variantName)
 		end
 		t_insert(rawLines, "Selected Variant: "..item.variant)
+		if item.hasAltVariant then
+			t_insert(rawLines, "Has Alt Variant: true")
+			t_insert(rawLines, "Selected Alt Variant: "..item.variantAlt)
+		end
 	end
 	if item.quality then
 		t_insert(rawLines, "Quality: "..item.quality)
 	end
-	if item.sockets then
+	if item.sockets and #item.sockets > 0 then
 		local line = "Sockets: "
 		for i, socket in pairs(item.sockets) do
 			line = line .. socket.color
@@ -580,6 +618,12 @@ function itemLib.craftItem(item)
 	itemLib.parseItemRaw(item)
 end
 
+function itemLib.checkModLineVariant(item, modLine)
+	return not modLine.variantList
+		or modLine.variantList[item.variant]
+		or (item.hasAltVariant and modLine.variantList[item.variantAlt])
+end
+
 -- Return the name of the slot this item is equipped in
 function itemLib.getPrimarySlotForItem(item)
 	if item.base.weapon then
@@ -638,15 +682,30 @@ function itemLib.buildItemModListForSlotNum(item, baseList, slotNum)
 					add = false
 					break
 				end
-			elseif tag.type == "SocketedIn" then
-				tag.slotName = slotName
-			elseif tag.type == "Condition" and tag.var == "XHandAttack" then
-				tag.var = (slotNum == 1) and "MainHandAttack" or "OffHandAttack"
+			end
+			for k, v in pairs(tag) do
+				if type(v) == "string" then
+					tag[k] = v:gsub("{SlotName}", slotName)
+							  :gsub("{Hand}", (slotNum == 1) and "MainHand" or "OffHand")
+				end
 			end
 		end
 		if add then
 			mod.sourceSlot = slotName
 			modList:AddMod(mod)
+		end
+	end
+	if #item.sockets > 0 then
+		local multiName = {
+			R = "Multiplier:RedSocketIn"..slotName,
+			G = "Multiplier:GreenSocketIn"..slotName,
+			B = "Multiplier:BlueSocketIn"..slotName,
+			W = "Multiplier:WhiteSocketIn"..slotName,
+		}
+		for _, socket in ipairs(item.sockets) do
+			if multiName[socket.color] then
+				modList:NewMod(multiName[socket.color], "BASE", 1, "Item Sockets")
+			end
 		end
 	end
 	if item.base.weapon then
@@ -790,7 +849,7 @@ function itemLib.buildItemModList(item)
 	item.rangeLineList = { }
 	item.modSource = "Item:"..(item.id or -1)..":"..item.name
 	for _, modLine in ipairs(item.modLines) do
-		if not modLine.extra and (not modLine.variantList or modLine.variantList[item.variant]) then
+		if not modLine.extra and itemLib.checkModLineVariant(item, modLine) then
 			if modLine.range then
 				local line = itemLib.applyRange(modLine.line:gsub("\n"," "), modLine.range)
 				local list, extra = modLib.parseMod[item.targetVersion](line)
@@ -832,6 +891,54 @@ function itemLib.buildItemModList(item)
 			})
 		end
 	end
+	local socketCount = sumLocal(baseList, "SocketCount", "BASE", 0)
+	item.abyssalSocketCount = sumLocal(baseList, "AbyssalSocketCount", "BASE", 0)
+	item.selectableSocketCount = m_max(item.base.socketLimit or 0, #item.sockets) - item.abyssalSocketCount
+	if sumLocal(baseList, "NoSockets", "FLAG", 0) then
+		-- Remove all sockets
+		wipeTable(item.sockets)
+		item.selectableSocketCount = 0
+	elseif socketCount > 0 then
+		-- Force the socket count to be equal to the stated number
+		item.selectableSocketCount = socketCount
+		local group = 0
+		for i = 1, m_max(socketCount, #item.sockets) do
+			if i > socketCount then
+				item.sockets[i] = nil
+			elseif not item.sockets[i] then
+				item.sockets[i] = {
+					color = item.defaultSocketColor,
+					group = group
+				}
+			else
+				group = item.sockets[i].group
+			end
+		end
+	elseif item.abyssalSocketCount > 0 then
+		-- Ensure that there are the correct number of abyssal sockets present
+		local newSockets = { }
+		local group = 0
+		if item.sockets then
+			for i, socket in ipairs(item.sockets) do
+				if socket.color ~= "A" then
+					t_insert(newSockets, socket)
+					group = socket.group
+					if #newSockets >= item.selectableSocketCount then
+						break
+					end
+				end
+			end
+		end
+		for i = 1, item.abyssalSocketCount do
+			group = group + 1
+			t_insert(newSockets, {
+				color = "A",
+				group = group
+			})
+		end
+		item.sockets = newSockets
+	end
+	item.socketedJewelEffectModifier = 1 + sumLocal(baseList, "SocketedJewelEffect", "INC", 0) / 100
 	if item.name == "Tabula Rasa, Simple Robe" or item.name == "Skin of the Loyal, Simple Robe" or item.name == "Skin of the Lords, Simple Robe" then
 		-- Hack to remove the energy shield
 		baseList:NewMod("ArmourData", "LIST", { key = "EnergyShield", value = 0 })
@@ -845,4 +952,3 @@ function itemLib.buildItemModList(item)
 		item.modList = itemLib.buildItemModListForSlotNum(item, baseList)
 	end
 end
-
