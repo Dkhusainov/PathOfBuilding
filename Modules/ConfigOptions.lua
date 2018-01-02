@@ -9,7 +9,7 @@ local m_max = math.max
 
 return {
 	-- Section: General options
-	{ section = "General", col = 1 },
+	{ section = "General", col = 1, order = 5 },
 	{ var = "resistancePenalty", type = "list", label = "Resistance penalty:", ifVer = "3_0", list = {{val=0,label="None"},{val=-30,label="Act 5 (-30%)"},{val=nil,label="Act 10 (-60%)"}} },
 	{ var = "enemyLevel", type = "number", label = "Enemy Level:", tooltip = "This overrides the default enemy level used to estimate your hit and evade chances.\nThe default level is your character level, capped at 84, which is the same value\nused in-game to calculate the stats on the character sheet." },
 	{ var = "enemyPhysicalHit", type = "number", label = "Enemy Physical Hit Damage:", tooltip = "This overrides the default damage amount used to estimate your physical damage reduction from armour.\nThe default is 1.5 times the enemy's base damage, which is the same value\nused in-game to calculate the estimate shown on the character sheet." },
@@ -37,7 +37,7 @@ return {
 	{ var = "igniteMode", type = "list", label = "Ignite calculation mode:", tooltip = "Controls how the base damage for ignite is calculated:\nAverage Damage: Ignite is based on the average damage dealt, factoring in crits and non-crits.\nCrit Damage: Ignite is based on crit damage only.", list = {{val="AVERAGE",label="Average Damage"},{val="CRIT",label="Crit Damage"}} },
 
 	-- Section: Skill-specific options
-	{ section = "Skill Options", col = 2 },
+	{ section = "Skill Options", col = 2, order = 3 },
 	{ label = "Charged Dash:", ifSkill = "Charged Dash" },
 	{ var = "chargedDashTravelDistance", type = "number", label = "Travel distance:", ifSkill = "Charged Dash", tooltip = "Sets the travel distance used to calculate the distance damage bonus.\nThe maximum distance is 60 units.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ChargedDashDistance", "BASE", m_max(0, m_min(val, 60)) / 60, "Config")
@@ -75,7 +75,7 @@ return {
 	end },
 
 	-- Section: Map modifiers/curses
-	{ section = "Map Modifiers and Player Debuffs", col = 2 },
+	{ section = "Map Modifiers and Player Debuffs", col = 2, order = 4 },
 	{ label = "Map Prefix Modifiers:" },
 	{ var = "enemyHasPhysicalReduction", type = "list", label = "Enemy Physical Damage reduction:", tooltip = "'Armoured'", list = {{val=0,label="None"},{val=20,label="20% (Low tier)"},{val=30,label="30% (Mid tier)"},{val=40,label="40% (High tier)"}}, apply = function(val, modList, enemyModList)	
 		enemyModList:NewMod("PhysicalDamageReduction", "BASE", val, "Config")
@@ -205,7 +205,7 @@ return {
 	end },
 
 	-- Section: Combat options
-	{ section = "When In Combat", col = 1 },
+	{ section = "When In Combat", col = 1, order = 1 },
 	{ var = "usePowerCharges", type = "check", label = "Do you use Power Charges?", apply = function(val, modList, enemyModList)
 		modList:NewMod("UsePowerCharges", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -390,7 +390,7 @@ return {
 	end },
 
 	-- Section: Effective DPS options
-	{ section = "For Effective DPS", col = 1 },
+	{ section = "For Effective DPS", col = 1, order = 2 },
 	{ var = "critChanceLucky", type = "check", label = "Is your Crit Chance Lucky?", apply = function(val, modList, enemyModList)
 		modList:NewMod("CritChanceLucky", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
@@ -474,8 +474,8 @@ return {
 			enemyModList:NewMod("SelfIgniteDuration", "MORE", -50, "Boss")
 		end
 	end },
-	{ var = "enemyIsBoss", type = "list", ifVer = "3_0", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance", list = {{val="NONE",label="No"},{val=true,label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
-		if val == true then
+	{ var = "enemyIsBoss", type = "list", ifVer = "3_0", label = "Is the enemy a Boss?", tooltip = "Standard Boss adds the following modifiers:\n60% less Effect of your Curses\n+30% to enemy Elemental Resistances\n+15% to enemy Chaos Resistance\n\nShaper/Guardian adds the following modifiers:\n80% less Effect of your Curses\n+40% to enemy Elemental Resistances\n+25% to enemy Chaos Resistance", list = {{val="NONE",label="No"},{val="BOSS",label="Standard Boss"},{val="SHAPER",label="Shaper/Guardian"}}, apply = function(val, modList, enemyModList)
+		if val == "BOSS" then
 			modList:NewMod("Condition:EnemyRareOrUnique", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 			enemyModList:NewMod("CurseEffectOnSelf", "MORE", -60, "Boss")
 			enemyModList:NewMod("ElementalResist", "BASE", 30, "Boss")
