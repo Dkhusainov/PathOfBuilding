@@ -41,6 +41,7 @@ local PassiveSpecClass = common.NewClass("PassiveSpec", "UndoHandler", function(
 	self.jewels = { }
 
 	self:SelectClass(0)
+	self:SelectAscendClass(1)
 end)
 
 function PassiveSpecClass:Load(xml, dbFileName)
