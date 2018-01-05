@@ -85,6 +85,18 @@ function ItemSlotClass:AddItem(item)
 	end
 end
 
+function ItemSlotClass:ResolveAbyssJewels()
+	-- Update Abyssal Sockets
+	local abyssalSocketCount = 0
+	if self.selItemId > 0 then
+		local selItem = self.itemsTab.items[self.selItemId]
+		abyssalSocketCount = selItem.abyssalSocketCount or 0
+	end
+	for i, abyssalSocket in ipairs(self.abyssalSocketList) do
+		abyssalSocket.inactive = i > abyssalSocketCount
+	end
+end
+
 function ItemSlotClass:Populate()
 	wipeTable(self.items)
 	wipeTable(self.list)

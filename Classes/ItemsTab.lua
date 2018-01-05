@@ -129,6 +129,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 			-- Add Abyssal Socket slots
 			for i = 1, 2 do
 				local abyssal = common.New("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 0, self, slotName.." Abyssal Socket "..i, "Abyssal #"..i)
+				abyssal.inactive = true
 				prevSlot = abyssal
 				abyssal.parentSlot = slot
 				t_insert(self.controls, abyssal)
