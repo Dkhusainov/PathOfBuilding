@@ -148,10 +148,9 @@ function itemLib.parseItemRaw(item)
 		end
 	end
 	if item.baseName ~= nil then
-		baseLoader:loadTable(item.baseName)
+		item.base = verData.itemBases[item.baseName]
+		item.type = item.base.type
 	end
-	item.base = verData.itemBases[item.baseName]
-	item.type = item.base and item.base.type
 	item.sockets = { }
 	item.modLines = { }
 	item.implicitLines = 0

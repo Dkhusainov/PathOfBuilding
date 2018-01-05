@@ -149,9 +149,7 @@ function SkillsTabClass:Load(xml, fileName)
 			for _, child in ipairs(node) do
 				local gem = { }
 				gem.nameSpec = child.attrib.nameSpec or ""
-				local key = child.attrib.skillId
-				if key then
-					skillLoader:loadTable(key)
+				if child.attrib.skillId then
 					local skill = self.build.data.skills[child.attrib.skillId]
 					if skill and self.build.data.gems[skill.name] then
 						gem.nameSpec = skill.name
@@ -435,6 +433,7 @@ function SkillsTabClass:UpdateGemSlots()
 	end
 end
 
+--[[
 -- Find the skill gem matching the given specification
 function SkillsTabClass:FindSkillGem(nameSpec)
 	-- Search for gem name using increasingly broad search patterns
@@ -461,6 +460,7 @@ function SkillsTabClass:FindSkillGem(nameSpec)
 	end
 	return "Unrecognised gem name '"..nameSpec.."'"
 end
+]]
 
 -- Processes the given socket group, filling in information that will be used for display or calculations
 function SkillsTabClass:ProcessSocketGroup(socketGroup)

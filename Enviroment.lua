@@ -26,6 +26,8 @@ function printTable(t, depth)
     io.close(file)
 end
 
+
+function printTableJson(t) print(json.encode(t)) end
 function tableToJson(t)
     return json.encode(t)
 end
@@ -122,7 +124,6 @@ end
 
 --plcaeholder
 modCacheLoader = { loadByLine = function() return nil end }
-skillLoader = { loadByLine = function() return nil end }
 
 LoadModule("Api")
 LoadModule("Modules/Common")

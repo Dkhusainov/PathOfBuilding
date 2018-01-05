@@ -586,9 +586,6 @@ function ItemsTabClass:Load(xml, dbFileName)
 			itemLib.buildItemModList(item)
 			self.items[item.id] = item
 			t_insert(self.itemOrderList, item.id)
-			if (item.rarity == "UNIQUE") then
-				skillLoader:loadSkillsForUnique(item.name)
-			end
 		elseif node.elem == "Slot" then
 			local slot = self.slots[node.attrib.name or ""]
 			if slot then

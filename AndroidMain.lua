@@ -53,8 +53,27 @@ end
 
 --LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
 modCacheLoader = {}
-skillLoader = {}
 baseLoader = {}
+
+function setupLoaders(loaders)
+
+    local addLoaderToTable = function(dataTable, loaderName)
+        local loader = loaders[loaderName]
+        local meta = {
+            __index = function (t,k)
+                return loader:get(k)
+            end
+        }
+        setmetatable(dataTable, meta)
+    end
+
+    addLoaderToTable(data[targetVersion].gems, "skill")
+    addLoaderToTable(data[targetVersion].skills, "skill")
+    addLoaderToTable(data[targetVersion].itemBases, "base")
+
+    modCacheLoader = loaders["mod"]
+    baseLoader = loaders["base"]
+end
 
 build = LoadModule("Modules/Build", launch, main)
 build.buildFlag = false

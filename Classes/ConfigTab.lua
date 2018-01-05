@@ -246,21 +246,6 @@ function ConfigTabClass:Load(xml, fileName)
 			end
 		end
 	end
-	local starsWith = function(s,text)
-		return string.sub(s,1,string.len(text))==text
-	end
-	for _, varData in ipairs(varList) do
-		if varData.apply
-				and varData.var
-				and (not varData.ifVer or varData.ifVer == self.build.targetVersion)
-				and varData.type == "number"
-				and self.input[varData.var]
-				and self.input[varData.var] ~= 0
-				and starsWith(varData.var, "playerCursedWith") then
-			local name = string.sub(varData.label,1,varData.label:len()-1)
-			skillLoader:loadByName(name)
-		end
-	end
 	self:BuildModList()
 	self:UpdateControls()
 	self:ResetUndo()

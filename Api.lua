@@ -23,10 +23,7 @@ local function processMod(grantedEffect, mod)
     end
 end
 
-function addSkill(key, grantedEffect)
-    if not data[liveTargetVersion].skills[key] then
-        data[liveTargetVersion].skills[key] = grantedEffect
-
+function processLoadedSkill(key, grantedEffect)
         grantedEffect.id = key
         -- Add sources for skill mods, and check for global effects
         for _, list in pairs({grantedEffect.baseMods, grantedEffect.qualityMods, grantedEffect.levelMods}) do
@@ -42,13 +39,11 @@ function addSkill(key, grantedEffect)
         end
 
         if grantedEffect.gemTags then
-            data[liveTargetVersion].gems[grantedEffect.name] = grantedEffect
             grantedEffect.defaultLevel = (grantedEffect.levels[20] and 20) or (grantedEffect.levels[3][2] and 3) or 1
         end
-    end
 end
 
-function createUnique(raw)
+function processLoadedUnique(raw)
     local newItem = itemLib.makeItemFromRaw(liveTargetVersion, "Rarity: Unique\n"..raw)
     itemLib.normaliseQuality(newItem)
     return newItem
