@@ -1269,8 +1269,8 @@ local regenTypes = {
 	["maximum mana and energy shield"] = { "ManaRegen", "EnergyShieldRegen" },
 }
 -- Build active skill name lookup
-skillNameList = { }
-preSkillNameList = {}
+local skillNameList = skillNameList or { }
+local preSkillNameList = preSkillNameList or {}
 for skillName, grantedEffect in pairs(data["3_0"].gems) do
 	if not grantedEffect.hidden and not grantedEffect.support then
 		skillNameList[" "..skillName:lower().." "] = { tag = { type = "SkillName", skillName = skillName } }

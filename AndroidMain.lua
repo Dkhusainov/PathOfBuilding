@@ -11,15 +11,20 @@ local serialized = ...
 serpent = require("serpent")
 local ok, tree = serpent.load(serialized.tree)
 
+local deserializeToGlobal = function(name)
+    local err, result = serpent.load(serialized[name])
+    _G[name] = result
+end
+
 -- ModParser
 -- Build active skill name lookup
-_, skillNameList = serpent.load(serialized.skillNameList)
-_, preSkillNameList = serpent.load(serialized.preSkillNameList)
+deserializeToGlobal("skillNameList")
+deserializeToGlobal("preSkillNameList")
 
 -- ItemsTab
 -- Build lists of item bases, separated by type
-_, baseLists = serpent.load(serialized.baseLists)
-_, baseTypeList = serpent.load(serialized.baseTypeList)
+deserializeToGlobal("baseLists")
+deserializeToGlobal("baseTypeList")
 
 itemsTabDelegate = {}
 
