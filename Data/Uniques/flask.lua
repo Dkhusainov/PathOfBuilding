@@ -264,6 +264,6 @@ Creates a Smoke Cloud on Use
 50% increased Charges used
 {variant:1}(50-70)% increased Damage Over Time during Flask Effect
 {variant:2}(25-40)% increased Damage Over Time during Flask Effect
-Grants level 21 Despair Curse Aura during Flask Effect
+Grants Level 21 Despair Curse Aura during Flask Effect
 ]],
 }
