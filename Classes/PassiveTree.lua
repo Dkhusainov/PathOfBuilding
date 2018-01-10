@@ -33,13 +33,14 @@ local function getFile(URL)
 	return #page > 0 and page
 end
 
-local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVersion)
+local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVersion, tree)
 	self.targetVersion = targetVersion
 
 	MakeDir("TreeData")
 
 	ConPrintf("Loading passive tree data...")
-	local treeText = LoadModule("TreeData/"..targetVersion.."/tree")
+	--local treeText = LoadModule("TreeData/"..targetVersion.."/tree")
+	local treeText = tree
     for k, v in pairs(treeText) do
         self[k] = v
     end
