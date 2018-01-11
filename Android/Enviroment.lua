@@ -8,9 +8,11 @@
 local t_insert = table.insert
 
 local _, _, settings = ...
-inspect = require("inspect")
-json = require("json")
-serpent = require("serpent")
+if (DEBUG) then
+    inspect = require("Android/inspect")
+    json = require("Android/json")
+end
+
 function printTable(t, depth)
     local file = io.open("debug.txt", "w")
     io.output(file)
@@ -125,7 +127,7 @@ end
 --plcaeholder
 modCacheLoader = { loadByLine = function() return nil end }
 
-LoadModule("Api")
+LoadModule("Android/Api")
 LoadModule("Modules/Common")
 LoadModule("Modules/Data", launch)
 LoadModule("Modules/ModTools", launch)
