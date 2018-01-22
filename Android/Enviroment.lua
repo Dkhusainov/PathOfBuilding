@@ -7,7 +7,10 @@
 --
 local t_insert = table.insert
 
-local _, _, settings = ...
+local settings = ...
+DEBUG = settings.debug
+
+serpent = require("Android/serpent")
 if (DEBUG) then
     inspect = require("Android/inspect")
     json = require("Android/json")
@@ -67,9 +70,9 @@ targetVersion = "3_0"
 targetVersionList = { "3_0" }
 
 launch = {
-    loadSkills = settings and settings.loadSkills or false,
-    loadBases = settings and settings.loadBases or false,
-    loadUniques = false,
+    loadSkills = settings.loadSkills,
+    loadBases = settings.loadBases,
+    loadUniques = settings.loadBases,
     devMode = false,
     ShowErrMsg = function(title, msg) end
 }
@@ -126,6 +129,7 @@ end
 
 --plcaeholder
 modCacheLoader = { loadByLine = function() return nil end }
+baseLoader = { all = function() return {} end }
 
 LoadModule("Android/Api")
 LoadModule("Modules/Common")

@@ -6,10 +6,8 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-local serialized, debug = ...
-DEBUG = debug or true
+local serialized = ...
 
-serpent = require("Android/serpent")
 local ok, tree = serpent.load(serialized.tree)
 
 local deserializeToGlobal = function(name)
@@ -28,8 +26,6 @@ deserializeToGlobal("baseLists")
 deserializeToGlobal("baseTypeList")
 
 itemsTabDelegate = {}
-
-require("Android/Enviroment")
 
 --local ok, tree = serpent.load(serialized.tree)
 main.tree[liveTargetVersion] = tree
@@ -85,3 +81,5 @@ end
 function saveBuild()
     return build:SaveDB()
 end
+
+serpent = nil
