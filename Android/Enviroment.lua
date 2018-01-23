@@ -179,3 +179,17 @@ local classList = {
 for _, className in pairs(classList) do
     LoadModule("Classes/"..className, launch, main)
 end
+
+if (launch.loadUniques) then
+    for type, typeList in pairs(data.uniques) do
+        for _, raw in pairs(typeList) do
+            local newItem = itemLib.makeItemFromRaw(targetVersion, "Rarity: Unique\n"..raw)
+            if newItem then
+                itemLib.normaliseQuality(newItem)
+                main.uniqueDB[targetVersion].list[newItem.name] = newItem
+            else
+                ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
+            end
+        end
+    end
+end

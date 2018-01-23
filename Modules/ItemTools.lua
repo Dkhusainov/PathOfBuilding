@@ -112,7 +112,14 @@ function itemLib.parseItemRaw(item)
 	end
 	item.namePrefix = ""
 	item.nameSuffix = ""
-	local itemBases = baseLoader:all()
+
+	local itemBases
+	if (launch.loadBases) then
+		itemBases = data[targetVersion].itemBases
+	else
+		itemBases = baseLoader:all()
+	end
+
 	if item.rarity == "NORMAL" or item.rarity == "MAGIC" then
 		for baseName, baseData in pairs(itemBases) do
 			local s, e = item.name:find(baseName, 1, true)
