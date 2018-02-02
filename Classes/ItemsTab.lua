@@ -46,7 +46,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.itemOrderList = { }
 
 	-- Build lists of item bases, separated by type
-	self.baseLists = baseLists or { }
+	self.baseLists = { }
 	for name, base in pairs(self.build.data.itemBases) do
 		if not base.hidden then
 			local type = base.type
@@ -57,10 +57,9 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 			t_insert(self.baseLists[type], { label = name:gsub(" %(.+%)",""), name = name, base = base })
 		end
 	end
-	self.baseTypeList = baseTypeList or { }
+	self.baseTypeList = { }
 	for type, list in pairs(self.baseLists) do
 		t_insert(self.baseTypeList, type)
-		if (launch.loadBases) then
 		table.sort(list, function(a, b)
 			if a.base.req and b.base.req then
 				if a.base.req.level == b.base.req.level then
@@ -76,7 +75,6 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 				return a.name < b.name
 			end
 		end)
-		end
 	end
 	table.sort(self.baseTypeList)
 
@@ -1662,7 +1660,11 @@ function ItemsTabClass:AddItemSetTooltip(tooltip, itemSet)
 	end
 end
 
-function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
+function ItemsTabClass:generateTooltip(tooltip, item)
+	self:AddItemTooltip(tooltip, item, nil, true, true)
+end
+
+function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode, generate)
 	-- Item name
 	local rarityCode = colorCodes[item.rarity]
 	tooltip.center = true
@@ -1856,6 +1858,8 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			end
 		end
 	end
+
+	if generate then return end
 
 	-- Corrupted item label
 	if item.corrupted then

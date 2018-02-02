@@ -20,22 +20,18 @@ end
 deserializeToGlobal("skillNameList")
 deserializeToGlobal("preSkillNameList")
 
--- ItemsTab
--- Build lists of item bases, separated by type
-deserializeToGlobal("baseLists")
-deserializeToGlobal("baseTypeList")
-
-itemsTabDelegate = {}
-
---local ok, tree = serpent.load(serialized.tree)
 main.tree[liveTargetVersion] = tree
 local meta = getmetatable(common.New("ModList"))
 for _, node in ipairs(tree.nodes) do
     setmetatable(node.modList, meta)
 end
 
---LoadModule("Data/"..liveTargetVersion.."/ModCache", modLib.parseModCache[liveTargetVersion])
-modCacheLoader = {}
+itemsTabDelegate = {
+    PopulateSlots = function() return nil end
+}
+modCacheLoader = {
+    loadByLine = function() return nil end
+}
 baseLoader = {}
 
 function setupLoaders(loaders)
