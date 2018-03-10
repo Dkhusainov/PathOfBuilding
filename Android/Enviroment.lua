@@ -81,6 +81,7 @@ main = {
     tree = {},
     uniqueDB = { },
     rareDB = { },
+    accountSessionIDs = {},
     showThousandsSidebar = false,
     lastShowThousandsSidebar = false,
     --todo show dialogs
@@ -173,7 +174,8 @@ local classList = {
     "ConfigTab",
     "SkillsTab",
     "ItemsTab",
-    "CalcsTab"
+    "CalcsTab",
+    "ImportTab"
 }
 
 for _, className in pairs(classList) do

@@ -497,7 +497,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	-- Initialise build components
 	self.data = data[self.targetVersion]
 	self.tree = main.tree[self.targetVersion]
---	self.importTab = common.New("ImportTab", self)
+	self.importTab = common.New("ImportTab", self)
 --	self.notesTab = common.New("NotesTab", self)
 	self.configTab = common.New("ConfigTab", self)
 	self.itemsTab = common.New("ItemsTab", self)

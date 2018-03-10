@@ -14,6 +14,7 @@ local ImportTabClass = common.NewClass("ImportTab", "ControlHost", "Control", fu
 
 	self.build = build
 
+    self.ImportEvent = { invoke = function() end }
 	self.charImportMode = build.targetVersion == liveTargetVersion and "GETACCOUNTNAME" or "VERSIONWARNING"
 	self.charImportStatus = "Idle"
 	self.controls.sectionCharImport = common.New("SectionControl", {"TOPLEFT",self,"TOPLEFT"}, 10, 18, 600, 230, "Character Import")
@@ -26,7 +27,7 @@ If possible, change the game version in the Configuration tab before importing.]
 		return self.charImportMode == "VERSIONWARNING"
 	end
 	self.controls.charImportVersionWarningGo = common.New("ButtonControl", {"TOPLEFT",self.controls.charImportVersionWarning,"TOPLEFT"}, 0, 70, 80, 20, "Continue", function()
-		self.charImportMode = "GETACCOUNTNAME"
+		self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 	end)
 	self.controls.charImportStatusLabel = common.New("LabelControl", {"TOPLEFT",self.controls.sectionCharImport,"TOPLEFT"}, 6, 14, 200, 16, function()
 		return "^7Character import status: "..self.charImportStatus
@@ -49,7 +50,7 @@ If possible, change the game version in the Configuration tab before importing.]
 		end)
 	end
 	self.controls.accountNameGo = common.New("ButtonControl", {"LEFT",self.controls.accountName,"RIGHT"}, 8, 0, 60, 20, "Start", function()
-		self.controls.sessionInput.buf = ""
+		--self.controls.sessionInput.buf = ""
 		self:DownloadCharacterList()
 	end)
 	self.controls.accountNameGo.enabled = function()
@@ -81,7 +82,7 @@ You can get this from your web browser's cookies while logged into the Path of E
 		self:DownloadCharacterList()
 	end)
 	self.controls.sessionCancel = common.New("ButtonControl", {"LEFT",self.controls.sessionRetry,"RIGHT"}, 8, 0, 60, 20, "Cancel", function()
-		self.charImportMode = "GETACCOUNTNAME"
+		self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 		self.charImportStatus = "Idle"
 	end)
 	self.controls.sessionInput = common.New("EditControl", {"TOPLEFT",self.controls.sessionRetry,"BOTTOMLEFT"}, 0, 8, 350, 20, "", "POESESSID", "%X", 32)
@@ -128,7 +129,7 @@ You can get this from your web browser's cookies while logged into the Path of E
 	self.controls.charImportItemsClearItems.tooltipText = "Delete all equipped items when importing."
 	self.controls.charBanditNote = common.New("LabelControl", {"TOPLEFT",self.controls.charImportHeader,"BOTTOMLEFT"}, 0, 50, 200, 14, "^7Tip: After you finish importing a character, make sure you update the bandit choices,\nas these cannot be imported.")
 	self.controls.charDone = common.New("ButtonControl", {"TOPLEFT",self.controls.charImportHeader,"BOTTOMLEFT"}, 0, 90, 60, 20, "Done", function()
-		self.charImportMode = "GETACCOUNTNAME"
+		self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 		self.charImportStatus = "Idle"
 	end)
 
@@ -251,38 +252,39 @@ function ImportTabClass:Draw(viewPort, inputEvents)
 end
 
 function ImportTabClass:DownloadCharacterList()
-	self.charImportMode = "DOWNLOADCHARLIST"
+	self.charImportMode = "DOWNLOADCHARLIST" self.ImportEvent:invoke()
 	self.charImportStatus = "Retrieving character list..."
 	local accountName = self.controls.accountName.buf
 	local sessionID = #self.controls.sessionInput.buf == 32 and self.controls.sessionInput.buf or main.accountSessionIDs[accountName]
 	launch:DownloadPage("https://www.pathofexile.com/character-window/get-characters?accountName="..accountName, function(page, errMsg)
 		if errMsg == "Response code: 403" then
 			self.charImportStatus = colorCodes.NEGATIVE.."Account profile is private."
-			self.charImportMode = "GETSESSIONID"
+			self.charImportMode = "GETSESSIONID" self.ImportEvent:invoke()
 			return
 		elseif errMsg == "Response code: 404" then
 			self.charImportStatus = colorCodes.NEGATIVE.."Account name is incorrect."
-			self.charImportMode = "GETACCOUNTNAME"
+			self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 			return
 		elseif errMsg then
 			self.charImportStatus = colorCodes.NEGATIVE.."Error retrieving character list, try again ("..errMsg:gsub("\n"," ")..")"
-			self.charImportMode = "GETACCOUNTNAME"
+			self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 			return
 		end
 		local charList, errMsg = self:ProcessJSON(page)
 		if errMsg then
 			self.charImportStatus = colorCodes.NEGATIVE.."Error processing character list, try again later"
-			self.charImportMode = "GETACCOUNTNAME"
+			self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 			return
 		end
 		--ConPrintTable(charList)
 		if #charList == 0 then
 			self.charImportStatus = colorCodes.NEGATIVE.."The account has no characters to import."
-			self.charImportMode = "GETACCOUNTNAME"
+			self.charImportMode = "GETACCOUNTNAME" self.ImportEvent:invoke()
 			return
 		end
 		-- GGG's character API has an issue where for /get-characters the account name is not case-sensitive, but for /get-passive-skills and /get-items it is.
 		-- This workaround grabs the profile page and extracts the correct account name from one of the URLs.
+        --[[
 		launch:DownloadPage("https://www.pathofexile.com/account/view-profile/"..accountName, function(page, errMsg)
 			if errMsg then
 				self.charImportStatus = colorCodes.NEGATIVE.."Error retrieving character list, try again ("..errMsg:gsub("\n"," ")..")"
@@ -297,6 +299,7 @@ function ImportTabClass:DownloadCharacterList()
 			end
 			self.controls.accountName:SetText(realAccountName)
 			accountName = realAccountName
+			]]
 			self.charImportStatus = "Character list successfully retrieved."
 			self.charImportMode = "SELECTCHAR"
 			main.lastAccountName = accountName
@@ -310,22 +313,25 @@ function ImportTabClass:DownloadCharacterList()
 					char = char,
 				})
 			end
+            self.ImportEvent:invoke()
+            --[[
 			table.sort(self.controls.charSelect.list, function(a,b)
 				return a.char.name:lower() < b.char.name:lower()
 			end)
 		end, sessionID and "POESESSID="..sessionID)
+    ]]
 	end, sessionID and "POESESSID="..sessionID)
 end
 
 function ImportTabClass:DownloadPassiveTree()
-	self.charImportMode = "IMPORTING"
+	self.charImportMode = "IMPORTING" self.ImportEvent:invoke()
 	self.charImportStatus = "Retrieving character passive tree..."
 	local accountName = self.controls.accountName.buf
 	local sessionID = #self.controls.sessionInput.buf == 32 and self.controls.sessionInput.buf or main.accountSessionIDs[accountName]
 	local charSelect = self.controls.charSelect
 	local charData = charSelect.list[charSelect.selIndex].char
 	launch:DownloadPage("https://www.pathofexile.com/character-window/get-passive-skills?accountName="..accountName.."&character="..charData.name, function(page, errMsg)
-		self.charImportMode = "SELECTCHAR"
+		self.charImportMode = "SELECTCHAR" self.ImportEvent:invoke()
 		if errMsg then
 			self.charImportStatus = colorCodes.NEGATIVE.."Error importing character data, try again ("..errMsg:gsub("\n"," ")..")"
 			return
@@ -342,7 +348,7 @@ function ImportTabClass:DownloadPassiveTree()
 		--ConPrintTable(charPassiveData)
 		if self.controls.charImportTreeClearJewels.state then
 			for _, slot in pairs(self.build.itemsTab.slots) do
-				if slot.selItemId ~= 0 and slot.nodeId then
+				if slot.selItemId and slot.selItemId ~= 0 and slot.nodeId then
 					self.build.itemsTab:DeleteItem(self.build.itemsTab.items[slot.selItemId])
 				end
 			end
@@ -365,14 +371,14 @@ function ImportTabClass:DownloadPassiveTree()
 end
 
 function ImportTabClass:DownloadItems()
-	self.charImportMode = "IMPORTING"
+	self.charImportMode = "IMPORTING" self.ImportEvent:invoke()
 	self.charImportStatus = "Retrieving character items..."
 	local accountName = self.controls.accountName.buf
 	local sessionID = #self.controls.sessionInput.buf == 32 and self.controls.sessionInput.buf or main.accountSessionIDs[accountName]
 	local charSelect = self.controls.charSelect
 	local charData = charSelect.list[charSelect.selIndex].char
 	launch:DownloadPage("https://www.pathofexile.com/character-window/get-items?accountName="..accountName.."&character="..charData.name, function(page, errMsg)
-		self.charImportMode = "SELECTCHAR"
+		self.charImportMode = "SELECTCHAR" self.ImportEvent:invoke()
 		if errMsg then
 			self.charImportStatus = colorCodes.NEGATIVE.."Error importing character data, try again ("..errMsg:gsub("\n"," ")..")"
 			return
@@ -387,7 +393,7 @@ function ImportTabClass:DownloadItems()
 		end
 		if self.controls.charImportItemsClearItems.state then
 			for _, slot in pairs(self.build.itemsTab.slots) do
-				if slot.selItemId ~= 0 and not slot.nodeId then
+				if slot.selItemId and slot.selItemId ~= 0 and not slot.nodeId then
 					self.build.itemsTab:DeleteItem(self.build.itemsTab.items[slot.selItemId])
 				end
 			end
@@ -491,13 +497,13 @@ function ImportTabClass:ImportItem(itemData, sockets, slotName)
 		end
 	else
 		item.name = itemLib.sanitiseItemText(itemData.typeLine)
-		for baseName, baseData in pairs(self.build.data.itemBases) do
+		for baseName, baseData in pairs(baseLoader:all()) do
 			local s, e = item.name:find(baseName, 1, true)
 			if s then
 				item.baseName = baseName
 				item.namePrefix = item.name:sub(1, s - 1)
 				item.nameSuffix = item.name:sub(e + 1)
-				item.type = baseData.type
+				--item.type = baseData.type
 				break
 			end
 		end
@@ -517,6 +523,7 @@ function ImportTabClass:ImportItem(itemData, sockets, slotName)
 		return
 	end
 
+    item.type = item.base.type
 	-- Import item data
 	item.uniqueID = itemData.id
 	item.shaper = itemData.shaper
@@ -732,11 +739,11 @@ function ImportTabClass:OpenPastebinImportPopup()
 end
 
 function ImportTabClass:ProcessJSON(json)
-	local func, errMsg = loadstring("return "..jsonToLua(json))
+	local func, errMsg = load("return "..jsonToLua(json))
 	if errMsg then
 		return nil, errMsg
 	end
-	setfenv(func, { }) -- Sandbox the function just in case
+	--setfenv(func, { }) -- Sandbox the function just in case
 	local data = func()
 	if type(data) ~= "table" then
 		return nil, "Return type is not a table"

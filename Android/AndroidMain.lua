@@ -26,6 +26,17 @@ for _, node in ipairs(tree.nodes) do
     setmetatable(node.modList, meta)
 end
 
+
+launch.DownloadPage = function(_, url, callback, cookies)
+    local input = {}
+    table.insert(input, url)
+    table.insert(input, callback)
+    table.insert(input, cookies)
+    httpDelegate:DownloadPage(input)
+end
+
+httpDelegate = {}
+
 itemsTabDelegate = {
     PopulateSlots = function() return nil end
 }

@@ -252,7 +252,6 @@ function PassiveSpecClass:SelectAscendClass(ascendClassId)
 	self:BuildAllDependsAndPaths()
 end
 
-function PassiveSpecClass:ResetNodes() end
 
 -- Determines if the given class's start node is connected to the current class's start node
 --[[ Attempts to find a path between the nodes which doesn't pass through any ascendancy nodes (i.e Ascendant)
@@ -278,17 +277,17 @@ function PassiveSpecClass:IsClassConnected(classId)
 	end
 	return false
 end
-
+]]
 -- Clear the allocated status of all non-class-start nodes
 function PassiveSpecClass:ResetNodes()
 	for id, node in pairs(self.nodes) do
-		if node.type ~= "classStart" and node.type ~= "ascendClassStart" then
-			node.alloc = false
+		--if node.type ~= "classStart" and node.type ~= "ascendClassStart" then
+		--	node.alloc = false
 			self.allocNodes[id] = nil
-		end
+		--end
 	end
 end
-
+--[[
 -- Allocate the given node, if possible, and all nodes along the path to the node
 -- An alternate path to the node may be provided, otherwise the default path will be used
 -- The path must always contain the given node, as will be the case for the default path
