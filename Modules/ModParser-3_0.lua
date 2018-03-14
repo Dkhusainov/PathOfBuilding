@@ -1407,6 +1407,8 @@ for skillName, grantedEffect in pairs(data["3_0"].gems) do
 		end
 	end
 end
+_G["_skillNameList"] = skillNameList
+_G["_preSkillNameList"] = preSkillNameList
 
 -- Radius jewels that modify other nodes
 local function getSimpleConv(srcList, dst, type, remove, factor)

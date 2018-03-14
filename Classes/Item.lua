@@ -61,6 +61,12 @@ function ItemClass:ParseRaw(raw)
 	end
 	self.namePrefix = ""
 	self.nameSuffix = ""
+	local itemBases
+	if (launch.loadBases) then
+		itemBases = data[targetVersion].itemBases
+	else
+		itemBases = baseLoader:all()
+	end
 	if self.rarity == "NORMAL" or self.rarity == "MAGIC" then
 		for baseName, baseData in pairs(verData.itemBases) do
 			local s, e = self.name:find(baseName, 1, true)
@@ -68,7 +74,7 @@ function ItemClass:ParseRaw(raw)
 				self.baseName = baseName
 				self.namePrefix = self.name:sub(1, s - 1)
 				self.nameSuffix = self.name:sub(e + 1)
-				self.type = baseData.type
+				--self.type = baseData.type
 				break
 			end
 		end
@@ -91,11 +97,14 @@ function ItemClass:ParseRaw(raw)
 			self.baseName = self.rawLines[l]
 			self.title = self.name
 			self.name = self.title .. ", " .. self.baseName:gsub(" %(.+%)","")
-			self.type = verData.itemBases[self.baseName].type
+			--self.type = verData.itemBases[self.baseName].type
 			l = l + 1
 		end
 	end
-	self.base = verData.itemBases[self.baseName]
+	if self.baseName ~= nil then
+		self.base = verData.itemBases[self.baseName]
+		self.type = self.base.type
+	end
 	self.sockets = { }
 	self.modLines = { }
 	self.implicitLines = 0
