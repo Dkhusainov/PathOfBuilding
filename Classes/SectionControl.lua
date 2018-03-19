@@ -10,7 +10,7 @@ local SectionClass = common.NewClass("SectionControl", "Control", function(self,
 	self.Control(anchor, x, y, width, height)
 	self.label = label
 end)
-
+--[[
 function SectionClass:Draw()
 	local x, y = self:GetPos()
 	local width, height = self:GetSize()
@@ -29,3 +29,4 @@ function SectionClass:Draw()
 	SetDrawColor(1, 1, 1)
 	DrawString(x + 9, y - 6, "LEFT", 14, "VAR", label)
 end
+]]

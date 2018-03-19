@@ -62,7 +62,7 @@ function ListClass:GetColumnOffset(column)
 		return 0
 	end
 end
-
+--[[
 function ListClass:IsMouseOver()
 	if not self:IsShown() then
 		return
@@ -339,3 +339,4 @@ function ListClass:OnKeyUp(key)
 	end
 	return self
 end
+]]

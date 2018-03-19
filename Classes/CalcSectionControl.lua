@@ -46,7 +46,7 @@ local CalcSectionClass = common.NewClass("CalcSectionControl", function(self, ca
 	end
 	]]
 end)
-
+--[[
 function CalcSectionClass:IsMouseOver()
 	if not self:IsShown() then
 		return
@@ -280,3 +280,4 @@ function CalcSectionClass:OnKeyUp(key)
 	end
 	return
 end
+]]

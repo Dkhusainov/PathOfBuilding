@@ -105,7 +105,7 @@ end
 function EditClass:SelectAll()
 	self.caret = #self.buf + 1
 	self.sel = 1
-	self:ScrollCaretIntoView()
+	--self:ScrollCaretIntoView()
 end
 
 function EditClass:ReplaceSel(text)
@@ -122,7 +122,7 @@ function EditClass:ReplaceSel(text)
 	self.buf = newBuf
 	self.caret = left + #text
 	self.sel = nil
-	self:ScrollCaretIntoView()
+	--self:ScrollCaretIntoView()
 	self.blinkStart = GetTime()
 	if self.changeFunc then
 		self.changeFunc(self.buf)
@@ -142,14 +142,14 @@ function EditClass:Insert(text)
 	self.buf = newBuf
 	self.caret = self.caret + #text
 	self.sel = nil
-	self:ScrollCaretIntoView()
+	--self:ScrollCaretIntoView()
 	self.blinkStart = GetTime()
 	if self.changeFunc then
 		self.changeFunc(self.buf)
 	end
 	self:AddUndoState()
 end
-
+--[[
 function EditClass:UpdateScrollBars()
 	local width, height = self:GetSize()
 	local textHeight = self.lineHeight or (height - 4)
@@ -607,7 +607,7 @@ function EditClass:OnChar(key)
 	end
 	return self
 end
-
+]]
 function EditClass:CreateUndoState()
 	local state = {
 		buf = self.buf,
@@ -621,7 +621,7 @@ function EditClass:RestoreUndoState(state)
 	self.buf = state.buf
 	self.caret = state.caret
 	self.sel = nil
-	self:ScrollCaretIntoView()
+	--self:ScrollCaretIntoView()
 	if self.changeFunc then
 		self.changeFunc(self.buf)
 	end

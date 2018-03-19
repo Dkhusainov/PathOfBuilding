@@ -16,7 +16,7 @@ local SliderClass = common.NewClass("SliderControl", "Control", "TooltipHost", f
 	self.val = 0
 	self.changeFunc = changeFunc
 end)
-
+--[[
 function SliderClass:IsMouseOver()
 	if not self:IsShown() then
 		return false
@@ -161,3 +161,4 @@ function SliderClass:OnKeyUp(key)
 		end
 	end
 end
+]]

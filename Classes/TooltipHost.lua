@@ -9,7 +9,7 @@ local TooltipHostClass = common.NewClass("TooltipHost", function(self, tooltipTe
 	self.tooltip = common.New("Tooltip")
 	self.tooltipText = tooltipText
 end)
-
+--[[
 function TooltipHostClass:DrawTooltip(x, y, width, height, viewPort, ...)
 	if self.tooltipFunc then
 		self.tooltipFunc(self.tooltip, ...)
@@ -23,3 +23,4 @@ function TooltipHostClass:DrawTooltip(x, y, width, height, viewPort, ...)
 		end
 	end
 end
+]]

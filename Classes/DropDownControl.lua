@@ -52,7 +52,7 @@ function DropDownClass:SetSel(newSel)
 		end
 	end
 end
-
+--[[
 function DropDownClass:ScrollSelIntoView()
 	local width, height = self:GetSize()
 	local scrollBar = self.controls.scrollBar
@@ -297,3 +297,4 @@ function DropDownClass:OnKeyUp(key)
 	end
 	return self.dropped and self
 end
+]]

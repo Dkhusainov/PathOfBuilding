@@ -26,7 +26,7 @@ function ButtonClass:SetImage(path)
 		self.image = nil
 	end
 end
-
+--[[
 function ButtonClass:IsMouseOver()
 	if not self:IsShown() then
 		return false
@@ -117,3 +117,4 @@ function ButtonClass:OnKeyUp(key)
 	end
 	self.clicked = false
 end
+]]

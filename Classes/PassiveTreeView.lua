@@ -64,7 +64,7 @@ function PassiveTreeViewClass:Save(xml)
 		showStatDifferences = tostring(self.showStatDifferences),
 	}
 end
-
+--[[
 function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	local tree = build.tree
 	local spec = build.spec
@@ -374,7 +374,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			end
 			if node.type == "Socket" then
 				-- Node is a jewel socket, retrieve the socketed jewel (if present) so we can display the correct art
-				base = tree.assets[node.overlay[state]]
+				base = tree.assets[node.overlay[state]
 				local socket, jewel = build.itemsTab:GetSocketAndJewelForNodeID(nodeId)
 				if node.alloc and jewel then
 					if jewel.baseName == "Crimson Jewel" then
@@ -542,7 +542,7 @@ function PassiveTreeViewClass:Zoom(level, viewPort)
 	self.zoomX = relX + (self.zoomX - relX) * factor
 	self.zoomY = relY + (self.zoomY - relY) * factor
 end
-
+]]
 function PassiveTreeViewClass:DoesNodeMatchSearchStr(node)
 	if node.type == "ClassStart" or node.type == "Mastery" then
 		return

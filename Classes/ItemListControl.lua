@@ -88,7 +88,7 @@ function ItemListClass:AddValueTooltip(tooltip, index, itemId)
 		self.itemsTab:AddItemTooltip(tooltip, item)
 	end
 end
-
+--[[
 function ItemListClass:GetDragValue(index, itemId)
 	return "Item", self.itemsTab.items[itemId]
 end
@@ -107,7 +107,7 @@ end
 function ItemListClass:OnOrderChange()
 	self.itemsTab:AddUndoState()
 end
-
+]]
 function ItemListClass:ClickItem(itemId)
 	self:OnSelClick(0, itemId, true)
 end

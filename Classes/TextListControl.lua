@@ -16,7 +16,7 @@ local TextListClass = common.NewClass("TextListControl", "Control", "ControlHost
 	self.columns = columns or { { x = 0, align = "LEFT" } }
 	self.list = list or { }
 end)
-
+--[[
 function TextListClass:IsMouseOver()
 	if not self:IsShown() then
 		return
@@ -73,3 +73,4 @@ function TextListClass:OnKeyUp(key)
 		return self
 	end
 end
+]]

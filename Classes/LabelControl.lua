@@ -12,8 +12,9 @@ local LabelClass = common.NewClass("LabelControl", "Control", function(self, anc
 		return DrawStringWidth(self:GetProperty("height"), "VAR", self:GetProperty("label"))
 	end
 end)
-
+--[[
 function LabelClass:Draw()
 	local x, y = self:GetPos()
 	DrawString(x, y, "LEFT", self:GetProperty("height"), "VAR", self:GetProperty("label"))
 end
+]]

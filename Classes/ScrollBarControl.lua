@@ -68,7 +68,7 @@ end
 function ScrollBarClass:GetKnobPosForOffset()
 	return self.knobTravel * (self.offset / self.offsetMax)
 end
-
+--[[
 function ScrollBarClass:IsMouseOver()
 	if not self:IsShown() then
 		return false
@@ -314,3 +314,4 @@ function ScrollBarClass:OnKeyUp(key)
 		self:Scroll(-1)
 	end
 end
+]]

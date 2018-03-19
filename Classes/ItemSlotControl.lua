@@ -126,7 +126,7 @@ function ItemSlotClass:Populate()
 		abyssalSocket.inactive = i > abyssalSocketCount
 	end
 end
-
+--[[
 function ItemSlotClass:CanReceiveDrag(type, value)
 	return type == "Item" and self.itemsTab:IsItemValidForSlot(value, self.slotName)
 end
@@ -183,3 +183,4 @@ function ItemSlotClass:OnKeyDown(key)
 	end
 	return self.DropDownControl:OnKeyDown(key)
 end
+]]

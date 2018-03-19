@@ -172,19 +172,19 @@ for _, targetVersion in ipairs(targetVersionList) do
 
 	-- Load item modifiers
 	verData.itemMods = {
-		Item = dataModule("ModItem"),
-		Flask = dataModule("ModFlask"),
-		Jewel = dataModule("ModJewel"),
-		JewelAbyss = targetVersion ~= "2_6" and dataModule("ModJewelAbyss") or { },
+		--Item = dataModule("ModItem"),
+		--Flask = dataModule("ModFlask"),
+		--Jewel = dataModule("ModJewel"),
+		--JewelAbyss = targetVersion ~= "2_6" and dataModule("ModJewelAbyss") or { },
 	}
-	verData.corruptedMods = dataModule("ModCorrupted")
-	verData.masterMods = dataModule("ModMaster")
+	--verData.corruptedMods = dataModule("ModCorrupted")
+	--verData.masterMods = dataModule("ModMaster")
 	verData.enchantments = {
 		Helmet = dataModule("EnchantmentHelmet"),
 		Boots = dataModule("EnchantmentBoots"),
 		Gloves = dataModule("EnchantmentGloves"),
 	}
-	verData.essences = dataModule("Essence")
+	--verData.essences = dataModule("Essence")
 
 	-- Load skills
 	verData.skills = { }

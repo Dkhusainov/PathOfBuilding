@@ -11,7 +11,7 @@ local CheckBoxClass = common.NewClass("CheckBoxControl", "Control", "TooltipHost
 	self.label = label
 	self.changeFunc = changeFunc
 end)
-
+--[[
 function CheckBoxClass:IsMouseOver()
 	if not self:IsShown() then
 		return false
@@ -92,3 +92,4 @@ function CheckBoxClass:OnKeyUp(key)
 	end
 	self.clicked = false
 end
+]]

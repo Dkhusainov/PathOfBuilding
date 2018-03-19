@@ -20,7 +20,7 @@ function ControlHostClass:SelectControl(newSelControl)
 		self.selControl:SetFocus(true)
 	end
 end
-
+--[[
 function ControlHostClass:GetMouseOverControl()
 	for _, control in pairs(self.controls) do
 		if control.IsMouseOver and control:IsMouseOver() then
@@ -78,3 +78,4 @@ function ControlHostClass:DrawControls(viewPort)
 		end
 	end
 end
+]]

@@ -165,7 +165,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 
 	-- All items list
 	self.controls.itemList = common.New("ItemListControl", {"TOPLEFT",self.slotAnchor,"TOPRIGHT"}, 20, -20, 360, 308, self)
-
+	--[[
 	-- Database selector
 	self.controls.selectDBLabel = common.New("LabelControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 14, 0, 16, "^7Import from:")
 	self.controls.selectDBLabel.shown = function()
@@ -190,7 +190,7 @@ local ItemsTabClass = common.NewClass("ItemsTab", "UndoHandler", "ControlHost", 
 	self.controls.rareDB.shown = function()
 		return not self.controls.selectDBLabel:IsShown() or self.controls.selectDB.selIndex == 2
 	end
-
+	]]
 	-- Create/import item
 	self.controls.craftDisplayItem = common.New("ButtonControl", {"TOPLEFT",self.controls.itemList,"TOPRIGHT"}, 20, 0, 120, 20, "Craft item...", function()
 		self:CraftItem()
@@ -210,7 +210,8 @@ You can Control + Click an item to equip it, or drag it onto the slot.
 This will also add it to your build if it's from the unique/template list.
 If there's 2 slots an item can go in, holding Shift will put it in the second.)
 ]]
-	self.controls.sharedItemList = common.New("SharedItemListControl", {"TOPLEFT",self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 142, 360, 308, self)
+	--todo
+	--self.controls.sharedItemList = common.New("SharedItemListControl", {"TOPLEFT",self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 142, 360, 308, self)
 
 	-- Display item
 	self.displayItemTooltip = common.New("Tooltip")
@@ -499,6 +500,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 	self.controls.scrollBarH = common.New("ScrollBarControl", nil, 0, 0, 0, 18, 100, "HORIZONTAL", true)
 	self.controls.scrollBarV = common.New("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
 
+	--[[
 	-- Initialise drag target lists
 	t_insert(self.controls.itemList.dragTargetList, self.controls.sharedItemList)
 	t_insert(self.controls.itemList.dragTargetList, build.controls.mainSkillMinion)
@@ -516,7 +518,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 		t_insert(self.controls.rareDB.dragTargetList, slot)
 		t_insert(self.controls.sharedItemList.dragTargetList, slot)
 	end
-
+	]]
 	-- Initialise item sets
 	self.itemSets = { }
 	self.itemSetOrderList = { 1 }

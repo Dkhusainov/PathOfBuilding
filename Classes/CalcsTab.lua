@@ -138,7 +138,7 @@ Effective DPS: Curses and enemy properties (such as resistances and status condi
 		self:NewSection(unpack(section))
 	end
 
-	self.controls.breakdown = common.New("CalcBreakdownControl", self)
+	--self.controls.breakdown = common.New("CalcBreakdownControl", self)//todo
 
 --	self.controls.scrollBar = common.New("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 end)

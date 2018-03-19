@@ -198,7 +198,7 @@ function GemSelectClass:UpdateGem(setText, addUndo)
 	end
 	self.gemChangeFunc(self.gemName, addUndo and self.gemName ~= self.initialBuf)
 end
-
+--[[
 function GemSelectClass:ScrollSelIntoView()
 	local width, height = self:GetSize()
 	local scrollBar = self.controls.scrollBar
@@ -251,7 +251,7 @@ function GemSelectClass:Draw(viewPort)
 		SetDrawLayer(nil, 5)
 		local cursorX, cursorY = GetCursorPos()
 		self.hoverSel = mOverComp == "DROP" and math.floor((cursorY - y - height + scrollBar.offset) / (height - 4)) + 1
-		if self.hoverSel and not self.skillsTab.build.data.gems[self.list[self.hoverSel]] then
+		if self.hoverSel and not self.skillsTab.build.data.gems[self.list[self.hoverSel] then
 			self.hoverSel = nil
 		end
 		SetViewport(x + 2, y + height + 2, width - 4, dropHeight)
@@ -264,7 +264,7 @@ function GemSelectClass:Draw(viewPort)
 				DrawImage(nil, 0, y, width - 4, height - 4)
 			end
 			SetDrawColor(1, 1, 1)
-			local grantedEffect = self.skillsTab.build.data.gems[self.list[index]]
+			local grantedEffect = self.skillsTab.build.data.gems[self.list[index]
 			if grantedEffect then
 				if grantedEffect.color == 1 then
 					SetDrawColor(colorCodes.STRENGTH)
@@ -280,13 +280,13 @@ function GemSelectClass:Draw(viewPort)
 					local gem = { grantedEffect = grantedEffect }
 					for _, activeSkill in ipairs(self.skillsTab.displayGroup.displaySkillList) do
 						if calcLib.gemCanSupport(gem, activeSkill) then
-							SetDrawColor(self.sortCache.dpsColor[self.list[index]])
+							SetDrawColor(self.sortCache.dpsColor[self.list[index])
 							main:DrawCheckMark(width - 4 - height / 2 - (scrollBar.enabled and 18 or 0), y + (height - 4) / 2, (height - 4) * 0.8)
 							break
 						end
 					end
 				elseif grantedEffect.hasGlobalEffect then
-					SetDrawColor(self.sortCache.dpsColor[self.list[index]])
+					SetDrawColor(self.sortCache.dpsColor[self.list[index])
 					DrawString(width - 4 - height / 2 - (scrollBar.enabled and 18 or 0), y - 2, "CENTER_X", height, "VAR", "+")
 				end
 			end
@@ -298,7 +298,7 @@ function GemSelectClass:Draw(viewPort)
 			if calcFunc then
 				self.tooltip:Clear()
 				local gemList = self.skillsTab.displayGroup.gemList
-				local grantedEffect = self.skillsTab.build.data.gems[self.list[self.hoverSel]]
+				local grantedEffect = self.skillsTab.build.data.gems[self.list[self.hoverSel]
 				local oldGem
 				if gemList[self.index] then
 					oldGem = copyTable(gemList[self.index], true)
@@ -410,7 +410,7 @@ function GemSelectClass:OnKeyDown(key, doubleClick)
 			return
 		end
 		if key == "LEFTBUTTON" then
-			if self.hoverSel and self.skillsTab.build.data.gems[self.list[self.hoverSel]] then
+			if self.hoverSel and self.skillsTab.build.data.gems[self.list[self.hoverSel] then
 				self.dropped = false
 				self.selIndex = self.hoverSel
 				self:SetText(self.list[self.selIndex])
@@ -481,3 +481,4 @@ function GemSelectClass:OnKeyUp(key)
 	local newSel = self.EditControl:OnKeyUp(key)
 	return newSel == self.EditControl and self or newSel
 end
+]]

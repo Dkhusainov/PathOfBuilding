@@ -82,7 +82,7 @@ function common.New(className, ...)
 		error("Class '"..className.."' has no constructor")
 	end
 	local object = setmetatable({ }, class)
-	object.Object = object
+	--object.Object = object
 	if class._parents then
 		-- Add parent and superparent class proxies
 		object._parentInit = { }
@@ -119,6 +119,7 @@ function common.New(className, ...)
 			end
 		end
 	end
+	object._parentInit = nil
 	return object
 end
 

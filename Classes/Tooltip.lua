@@ -7,8 +7,6 @@ local launch, main = ...
 
 local ipairs = ipairs
 local t_insert = table.insert
-local m_max = math.max
-local m_floor = math.floor
 local s_gmatch = string.gmatch
 
 local TooltipClass = common.NewClass("Tooltip", function(self)
@@ -64,7 +62,7 @@ end
 function TooltipClass:AddSeparator(size)
 	t_insert(self.lines, { text = "", size = size })
 end
-
+--[[
 function TooltipClass:GetSize()
 	local ttW, ttH = 0, 0
 	for i, data in ipairs(self.lines) do
@@ -132,3 +130,4 @@ function TooltipClass:Draw(x, y, w, h, viewPort)
 	end
 	return ttW, ttH
 end
+]]
