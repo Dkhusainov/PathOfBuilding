@@ -403,9 +403,10 @@ function CalcsTabClass:BuildOutput()
 
 	self.mainEnv = self.calcs.buildOutput(self.build, "MAIN")
 	self.mainOutput = self.mainEnv.player.output
+	--[[
 	self.calcsEnv = self.calcs.buildOutput(self.build, "CALCS")
 	self.calcsOutput = self.calcsEnv.player.output
-
+	]]
 	if self.displayData then
 		self.controls.breakdown:SetBreakdownData()
 		self.controls.breakdown:SetBreakdownData(self.displayData, self.displayPinned)
