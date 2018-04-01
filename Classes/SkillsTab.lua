@@ -215,7 +215,7 @@ function SkillsTabClass:Save(xml)
 	end
 	self.modFlag = false
 end
-
+--[[
 function SkillsTabClass:Draw(viewPort, inputEvents)
 	self.x = viewPort.x
 	self.y = viewPort.y
@@ -243,7 +243,7 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 
 	self:DrawControls(viewPort)
 end
-
+]]
 function SkillsTabClass:CopySocketGroup(socketGroup)
 	local skillText = ""
 	if socketGroup.label:match("%S") then

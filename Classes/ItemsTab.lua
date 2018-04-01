@@ -623,7 +623,7 @@ function ItemsTabClass:Save(xml)
 	end
 	self.modFlag = false
 end
-
+--[[
 function ItemsTabClass:Draw(viewPort, inputEvents)
 	self.x = viewPort.x
 	self.y = viewPort.y
@@ -723,6 +723,7 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 		self.controls.scrollBarV:Draw(viewPort)
 	end
 end
+]]
 
 -- Creates a new item set
 function ItemsTabClass:NewItemSet(itemSetId)

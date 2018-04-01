@@ -304,6 +304,7 @@ function ConfigTabClass:UpdateControls()
 	end
 end
 
+--[[
 function ConfigTabClass:Draw(viewPort, inputEvents)
 	self.x = viewPort.x
 	self.y = viewPort.y
@@ -386,6 +387,7 @@ function ConfigTabClass:Draw(viewPort, inputEvents)
 
 	self:DrawControls(viewPort)
 end
+]]
 
 function ConfigTabClass:BuildModList()
 	local modList = common.New("ModList")

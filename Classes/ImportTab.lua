@@ -241,6 +241,7 @@ You can get this from your web browser's cookies while logged into the Path of E
 	end
 end)
 
+--[[
 function ImportTabClass:Draw(viewPort, inputEvents)
 	self.x = viewPort.x
 	self.y = viewPort.y
@@ -253,6 +254,7 @@ function ImportTabClass:Draw(viewPort, inputEvents)
 
 	self:DrawControls(viewPort)
 end
+]]
 
 function ImportTabClass:DownloadCharacterList()
 	self.charImportMode = "DOWNLOADCHARLIST" self.ImportEvent:invoke()

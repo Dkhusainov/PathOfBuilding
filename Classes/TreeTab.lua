@@ -91,6 +91,7 @@ local TreeTabClass = common.NewClass("TreeTab", "ControlHost", function(self, bu
 	end
 end)
 
+--[[
 function TreeTabClass:Draw(viewPort, inputEvents)
 	self.anchorControls.x = viewPort.x + 4
 	self.anchorControls.y = viewPort.y + viewPort.height - 24
@@ -133,7 +134,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	self:DrawControls(viewPort)
 end
-
+]]
 function TreeTabClass:Load(xml, dbFileName)
 	self.specList = { }
 	if xml.elem == "Spec" then

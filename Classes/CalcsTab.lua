@@ -199,6 +199,7 @@ function CalcsTabClass:Save(xml)
 	self.modFlag = false
 end
 
+--[[
 function CalcsTabClass:Draw(viewPort, inputEvents)
 	self.x = viewPort.x
 	self.y = viewPort.y
@@ -319,7 +320,7 @@ function CalcsTabClass:Draw(viewPort, inputEvents)
 		self.controls.breakdown:SetBreakdownData()
 	end
 end
-
+]]
 function CalcsTabClass:NewSection(width, ...)
 	local section = common.New("CalcSectionControl", self, width * self.colWidth + 8 * (width - 1), ...)
 	section.widthCols = width
