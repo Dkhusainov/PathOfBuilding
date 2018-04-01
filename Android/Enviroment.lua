@@ -158,6 +158,7 @@ local classList = {
     "ItemListControl",
     --"SharedItemListControl",
     --"ItemDBControl",
+    "ModStore",
     "ModDB",
     "ModList",
     "SkillList",

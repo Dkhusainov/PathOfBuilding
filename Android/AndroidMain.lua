@@ -7,9 +7,10 @@
 --
 
 local tree = main.tree[liveTargetVersion]
-local meta = getmetatable(common.New("ModList"))
+local modList = common.New("ModList")
 for _, node in ipairs(tree.nodes) do
-    setmetatable(node.modList, meta)
+    setmetatable(node.modList, getmetatable(modList))
+    setmetatable(node.modList.ModStore, getmetatable(modList.ModStore))
 end
 
 launch.DownloadPage = function(_, url, callback, cookies)

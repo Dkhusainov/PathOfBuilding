@@ -241,7 +241,7 @@ function ConfigTabClass:GetSectionConfigs(name)
 				r.spinners[i] = data
 			elseif data.type == "check"  then
 				r.checkboxes[i] = data
-			elseif data.type == "number"  then
+			elseif data.type == "count" or data.type == "integer" then
 				r.numbers[i] = data
 			else
 				r.labels[i] = data
