@@ -315,7 +315,7 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 		self.displayItem.shaper = (index == 2)
 		self.displayItem.elder = (index == 3)
 		if self.displayItem.crafted then
-			for i = 1, 6 do
+			for i = 1, self.displayItem.affixLimit do
 				-- Force affix selectors to update
 				local drop = self.controls["displayItemAffix"..i]
 				drop.selFunc(drop.selIndex, drop.list[drop.selIndex])
@@ -466,7 +466,6 @@ If there's 2 slots an item can go in, holding Shift will put it in the second.)
 
 	-- Section: Custom modifiers
 	self.controls.displayItemSectionCustom = common.New("Control", {"TOPLEFT",self.controls.displayItemSectionAffix,"BOTTOMLEFT"}, 0, 0, 0, function()
-		local ret = 0
 		return self.controls.displayItemAddCustom:IsShown() and 28 + self.displayItem.customCount * 22 or 0
 	end)
 	self.controls.displayItemAddCustom = common.New("ButtonControl", {"TOPLEFT",self.controls.displayItemSectionCustom,"TOPLEFT"}, 0, 0, 120, 20, "Add modifier...", function()
@@ -1428,6 +1427,7 @@ function ItemsTabClass:EnchantDisplayItem()
 	controls.labyrinthLabel = common.New("LabelControl", {"TOPRIGHT",nil,"TOPLEFT"}, 95, 45, 0, 16, "^7Labyrinth:")
 	controls.labyrinth = common.New("DropDownControl", {"TOPLEFT",nil,"TOPLEFT"}, 100, 45, 100, 18, labyrinthList, function(index, value)
 		buildEnchantmentList()
+		controls.enchantment:SetSel(m_min(controls.enchantment.selIndex, #enchantmentList))
 	end)
 	controls.enchantmentLabel = common.New("LabelControl", {"TOPRIGHT",nil,"TOPLEFT"}, 95, 70, 0, 16, "^7Enchantment:")
 	controls.enchantment = common.New("DropDownControl", {"TOPLEFT",nil,"TOPLEFT"}, 100, 70, 440, 18, enchantmentList)
@@ -1536,7 +1536,7 @@ function ItemsTabClass:AddCustomModifierToDisplayItem()
 			end)
 		elseif sourceId == "PREFIX" or sourceId == "SUFFIX" then
 			for _, mod in pairs(self.displayItem.affixes) do
-				if sourceId:lower() == mod.type:lower() and self.displayItem:GetModSpawnWeight(self.displayItem) > 0 then
+				if sourceId:lower() == mod.type:lower() and self.displayItem:GetModSpawnWeight(mod) > 0 then
 					t_insert(modList, {
 						label = mod.affix .. "   ^8[" .. table.concat(mod, "/") .. "]",
 						mod = mod,
