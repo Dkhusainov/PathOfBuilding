@@ -1382,10 +1382,10 @@ local regenTypes = {
 }
 
 -- Build active skill name lookup
-local skillNameList = skillNameList or {
-    [" corpse cremation " ] = { tag = { type = "SkillName", skillName = "Cremation" } }, -- Sigh.
+local skillNameList = {
+	[" corpse cremation " ] = { tag = { type = "SkillName", skillName = "Cremation" } }, -- Sigh.
 }
-local preSkillNameList = preSkillNameList or {}
+local preSkillNameList = { }
 for skillName, grantedEffect in pairs(data["3_0"].gems) do
 	if not grantedEffect.hidden and not grantedEffect.support then
 		skillNameList[" "..skillName:lower().." "] = { tag = { type = "SkillName", skillName = skillName } }
@@ -1407,8 +1407,6 @@ for skillName, grantedEffect in pairs(data["3_0"].gems) do
 		end
 	end
 end
-_G["_skillNameList"] = skillNameList
-_G["_preSkillNameList"] = preSkillNameList
 
 -- Radius jewels that modify other nodes
 local function getSimpleConv(srcList, dst, type, remove, factor)

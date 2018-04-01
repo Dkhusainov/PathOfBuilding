@@ -11,7 +11,7 @@
 -----------------Skills
 
 local function processMod(grantedEffect, mod)
-    mod.source = "Skill:"..grantedEffect.id
+    mod.source = grantedEffect.modSource
     if type(mod.value) == "table" and mod.value.mod then
         mod.value.mod.source = "Skill:"..grantedEffect.id
     end
@@ -23,8 +23,10 @@ local function processMod(grantedEffect, mod)
     end
 end
 
+
 function processLoadedSkill(key, grantedEffect)
         grantedEffect.id = key
+        grantedEffect.modSource = "Skill:"..key
         -- Add sources for skill mods, and check for global effects
         for _, list in pairs({grantedEffect.baseMods, grantedEffect.qualityMods, grantedEffect.levelMods}) do
             for _, mod in pairs(list) do
@@ -44,15 +46,9 @@ function processLoadedSkill(key, grantedEffect)
 end
 
 function processLoadedUnique(raw)
-    local newItem = itemLib.makeItemFromRaw(liveTargetVersion, "Rarity: Unique\n"..raw)
-    itemLib.normaliseQuality(newItem)
+    local newItem = common.New("Item", targetVersion, "Rarity: Unique\n"..raw)
+    newItem:normaliseQuality()
     return newItem
---    if newItem then
---        itemLib.normaliseQuality(newItem)
---        main.uniqueDB[liveTargetVersion].list[newItem.name] = newItem
---    else
---        ConPrintf("Unique DB unrecognised item of type '%s':\n%s", type, raw)
---    end
 end
 
 -----------------GemSearch--------------

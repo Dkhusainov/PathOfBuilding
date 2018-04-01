@@ -58,7 +58,7 @@ local function makeSkillDataMod(dataKey, dataValue, ...)
 	return makeSkillMod("SkillData", "LIST", { key = dataKey, value = dataValue }, 0, 0, ...)
 end
 local function processMod(grantedEffect, mod)
-	mod.source = "Skill:"..grantedEffect.id
+	mod.source = grantedEffect.modSource
 	if type(mod.value) == "table" and mod.value.mod then
 		mod.value.mod.source = "Skill:"..grantedEffect.id
 	end
@@ -150,9 +150,7 @@ data.specialBaseTags = {
 -- Uniques
 data.uniques = { }
 for _, type in pairs(itemTypes) do
-	if (launch.loadUniques) then
-		data.uniques[type] = LoadModule("Data/Uniques/"..type)
-	end
+	data.uniques[type] = LoadModule("Data/Uniques/"..type)
 end
 LoadModule("Data/New")
 
@@ -172,29 +170,28 @@ for _, targetVersion in ipairs(targetVersionList) do
 
 	-- Load item modifiers
 	verData.itemMods = {
-		--Item = dataModule("ModItem"),
-		--Flask = dataModule("ModFlask"),
-		--Jewel = dataModule("ModJewel"),
-		--JewelAbyss = targetVersion ~= "2_6" and dataModule("ModJewelAbyss") or { },
+		Item = dataModule("ModItem"),
+		Flask = dataModule("ModFlask"),
+		Jewel = dataModule("ModJewel"),
+		JewelAbyss = targetVersion ~= "2_6" and dataModule("ModJewelAbyss") or { },
 	}
-	--verData.corruptedMods = dataModule("ModCorrupted")
-	--verData.masterMods = dataModule("ModMaster")
+	verData.corruptedMods = dataModule("ModCorrupted")
+	verData.masterMods = dataModule("ModMaster")
 	verData.enchantments = {
 		Helmet = dataModule("EnchantmentHelmet"),
 		Boots = dataModule("EnchantmentBoots"),
 		Gloves = dataModule("EnchantmentGloves"),
 	}
-	--verData.essences = dataModule("Essence")
+	verData.essences = dataModule("Essence")
 
 	-- Load skills
 	verData.skills = { }
 	for _, type in pairs(skillTypes) do
-		if (launch.loadSkills) then
-			dataModule("Skills/"..type, verData.skills, makeSkillMod, makeFlagMod, makeSkillDataMod)
-		end
+		dataModule("Skills/"..type, verData.skills, makeSkillMod, makeFlagMod, makeSkillDataMod)
 	end
 	for skillId, grantedEffect in pairs(verData.skills) do
 		grantedEffect.id = skillId
+		grantedEffect.modSource = "Skill:"..skillId
 		-- Add sources for skill mods, and check for global effects
 		for _, list in pairs({grantedEffect.baseMods, grantedEffect.qualityMods, grantedEffect.levelMods}) do
 			for _, mod in pairs(list) do
@@ -243,9 +240,7 @@ for _, targetVersion in ipairs(targetVersionList) do
 	-- Item bases
 	verData.itemBases = { }
 	for _, type in pairs(itemTypes) do
-		if (launch.loadBases) then
-            dataModule("Bases/"..type, verData.itemBases)
-		end
+		dataModule("Bases/"..type, verData.itemBases)
 	end
 
 	-- Build lists of item bases, separated by type

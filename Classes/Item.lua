@@ -62,7 +62,7 @@ function ItemClass:ParseRaw(raw)
 	self.namePrefix = ""
 	self.nameSuffix = ""
 	local itemBases
-	if (launch.loadBases) then
+	if (launch.generator) then
 		itemBases = data[targetVersion].itemBases
 	else
 		itemBases = baseLoader:all()

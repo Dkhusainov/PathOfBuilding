@@ -6,26 +6,11 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-local serialized = ...
-
-local ok, tree = serpent.load(serialized.tree)
-
-local deserializeToGlobal = function(name)
-    local err, result = serpent.load(serialized[name])
-    _G[name] = result
-end
-
--- ModParser
--- Build active skill name lookup
-deserializeToGlobal("skillNameList")
-deserializeToGlobal("preSkillNameList")
-
-main.tree[liveTargetVersion] = tree
+local tree = main.tree[liveTargetVersion]
 local meta = getmetatable(common.New("ModList"))
 for _, node in ipairs(tree.nodes) do
     setmetatable(node.modList, meta)
 end
-
 
 launch.DownloadPage = function(_, url, callback, cookies)
     local input = {}
@@ -37,9 +22,6 @@ end
 
 httpDelegate = {}
 
-itemsTabDelegate = {
-    PopulateSlots = function() return nil end
-}
 modCacheLoader = {
     loadByLine = function() return nil end
 }
@@ -60,19 +42,12 @@ function setupLoaders(loaders)
     addLoaderToTable(data[targetVersion].gems, "skill")
     addLoaderToTable(data[targetVersion].skills, "skill")
     addLoaderToTable(data[targetVersion].itemBases, "base")
+    addLoaderToTable(data[targetVersion].minions, "minions")
 
     modCacheLoader = loaders["mod"]
     baseLoader = loaders["base"]
 end
 
-build = LoadModule("Modules/Build", launch, main)
-build.buildFlag = false
-function initBuild(name, xml)
-    build:Init("dbFileName", name, xml, liveTargetVersion)
-    build:OnFrame()
-end
 function saveBuild()
     return build:SaveDB()
 end
-
-serpent = nil

@@ -394,7 +394,7 @@ function PassiveTreeClass:dump()
 		node.x = nil
 		node.y = nil
 	end
-	return serpent.dump(self)
+	return self
 end
 
 -- Checks if a given image is present and downloads it from the given URL if it isn't there

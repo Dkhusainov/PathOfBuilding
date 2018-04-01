@@ -6,15 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 local t_insert = table.insert
-
-local settings = ...
-DEBUG = settings.debug
-
-serpent = require("Android/serpent")
-if (DEBUG) then
-    inspect = require("Android/inspect")
-    json = require("Android/json")
-end
+local generator = ...
 
 function printTable(t, depth)
     local file = io.open("debug.txt", "w")
@@ -70,9 +62,7 @@ targetVersion = "3_0"
 targetVersionList = { "3_0" }
 
 launch = {
-    loadSkills = settings.loadSkills,
-    loadBases = settings.loadBases,
-    loadUniques = settings.loadBases,
+    generator = generator,
     devMode = false,
     ShowErrMsg = function(title, msg) end
 }
@@ -90,6 +80,7 @@ main = {
 }
 main.uniqueDB[liveTargetVersion] = { list = { } }
 main.rareDB[liveTargetVersion] = { list = { } }
+main.tree[liveTargetVersion] = { nodes = {} }
 
 function main:StatColor(stat, base, limit)
     if limit and stat > limit then
@@ -131,6 +122,7 @@ end
 --plcaeholder
 modCacheLoader = { loadByLine = function() return nil end }
 baseLoader = { all = function() return {} end }
+itemsTabDelegate = { PopulateSlots = function() return nil end }
 
 LoadModule("Android/Api")
 LoadModule("Modules/Common")
@@ -182,7 +174,7 @@ for _, className in pairs(classList) do
     LoadModule("Classes/"..className, launch, main)
 end
 
-if (launch.loadUniques) then
+if (generator) then
     for type, typeList in pairs(data.uniques) do
         for _, raw in pairs(typeList) do
             local newItem = common.New("Item", targetVersion, "Rarity: Unique\n"..raw)
@@ -194,4 +186,11 @@ if (launch.loadUniques) then
             end
         end
     end
+end
+
+build = LoadModule("Modules/Build", launch, main)
+build.buildFlag = false
+function initBuild(name, xml)
+    build:Init("dbFileName", name, xml, liveTargetVersion)
+    build:OnFrame()
 end

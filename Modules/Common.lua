@@ -25,7 +25,7 @@ common.base64 = require("base64")
 common.classes = { }
 local function addSuperParents(class, parent)
 	for _, superParent in pairs(parent._parents) do
-		class._superParents[superParent] = true
+		t_insert(class._superParents, superParent)
 		if superParent._parents then
 			addSuperParents(class, superParent)
 		end
@@ -86,7 +86,7 @@ function common.New(className, ...)
 	if class._parents then
 		-- Add parent and superparent class proxies
 		object._parentInit = { }
-		for parent in pairs(class._superParents) do
+		for _, parent in pairs(class._superParents) do
 			object[parent._className] = setmetatable({ }, {
 				__index = function(self, key)
 					local v = rawget(object, key)
@@ -113,7 +113,7 @@ function common.New(className, ...)
 	class._constructor(object, ...)
 	if class._parents then
 		-- Check that the contructors for all parent and superparent classes have been called
-		for parent in pairs(class._superParents) do
+		for _, parent in pairs(class._superParents) do
 			if parent._constructor and not object._parentInit[parent] then
 				error("Parent class '"..parent._className.."' of class '"..className.."' must be initialised")
 			end
