@@ -22,6 +22,7 @@ launch.DownloadPage = function(_, url, callback, cookies)
 end
 
 httpDelegate = {}
+eventBusDelegate = {}
 
 modCacheLoader = {
     loadByLine = function() return nil end
@@ -47,8 +48,4 @@ function setupLoaders(loaders)
 
     modCacheLoader = loaders["mod"]
     baseLoader = loaders["base"]
-end
-
-function saveBuild()
-    return build:SaveDB()
 end

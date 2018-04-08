@@ -38,6 +38,8 @@ local GemSelectClass = common.NewClass("GemSelectControl", "EditControl", functi
 		self:BuildList(self.buf)
 --		self:UpdateGem()
 	end
+
+	self.gemCount = skillsTab.build.dataGemCount
 end)
 
 function GemSelectClass:BuildList(buf)
@@ -132,7 +134,12 @@ function GemSelectClass:UpdateSortCache()
 	end
 	local calcFunc, calcBase = self.skillsTab.build.calcsTab:GetMiscCalculator(self.build)
 	local baseDPS = calcBase.Minion and calcBase.Minion.CombinedDPS or calcBase.CombinedDPS
+	local i = 0
+	local total = self.gemCount
 	for name, grantedEffect in pairs(gems) do
+		i = i + 1
+		local progress = i / total * 100
+		eventBusDelegate:progressEvent(progress)
 		if sortCache.canSupport[name] or grantedEffect.hasGlobalEffect then
 			local gemList = self.skillsTab.displayGroup.gemList
 			local oldGem

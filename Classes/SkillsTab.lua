@@ -36,12 +36,13 @@ local SkillsTabClass = common.NewClass("SkillsTab", "UndoHandler", "ControlHost"
 
 	self.socketGroupList = { }
 
-	self.sortGemsByDPS = false
+	self.sortGemsByDPS = true
 
 	-- Socket group list
 	self.controls.groupList = common.New("SkillList", {"TOPLEFT",self,"TOPLEFT"}, 20, 24, 360, 300, self)
 --	self.controls.groupTip = common.New("LabelControl", {"TOPLEFT",self.controls.groupList,"BOTTOMLEFT"}, 0, 8, 0, 14, "^7Tip: You can copy/paste socket groups using Ctrl+C and Ctrl+V.")
 
+	--[[
 	-- Gem options
 	self.controls.optionSection = common.New("SectionControl", {"TOPLEFT",self.controls.groupList,"BOTTOMLEFT"}, 0, 50, 250, 100, "Gem Options")
 	self.controls.sortGemsByDPS = common.New("CheckBoxControl", {"TOPLEFT",self.controls.groupList,"BOTTOMLEFT"}, 150, 70, 20, "Sort gems by DPS:", function(state)
@@ -57,6 +58,7 @@ local SkillsTabClass = common.NewClass("SkillsTab", "UndoHandler", "ControlHost"
 	end)
 	self.controls.defaultQualityLabel = common.New("LabelControl", {"RIGHT",self.controls.defaultQuality,"LEFT"}, -4, 0, 0, 16, "^7Default gem quality:")
 
+	]]
 	-- Socket group details
 	self.anchorGroupDetail = common.New("Control", {"TOPLEFT",self.controls.groupList,"TOPRIGHT"}, 20, 0, 0, 0)
 	self.anchorGroupDetail.shown = function()
@@ -132,10 +134,12 @@ function SkillsTabClass:Load(xml, fileName)
 	self.defaultGemQuality = tonumber(xml.attrib.defaultGemQuality)
 	self.controls.defaultLevel:SetText(self.defaultGemLevel or "")
 	self.controls.defaultQuality:SetText(self.defaultGemQuality or "")
+	--[[
 	if xml.attrib.sortGemsByDPS then
 		self.sortGemsByDPS = xml.attrib.sortGemsByDPS == "true"
 	end
 	self.controls.sortGemsByDPS.state = self.sortGemsByDPS
+	]]
 	for _, node in ipairs(xml) do
 		if node.elem == "Skill" then
 			local socketGroup = { }

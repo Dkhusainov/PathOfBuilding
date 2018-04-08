@@ -589,6 +589,15 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	--]]
 
 	self.abortSave = false
+	self:customInit()
+end
+
+function buildMode:customInit()
+	local gemCount = 0
+	for _,_ in pairs(self.data.gems) do
+		gemCount = gemCount + 1
+	end
+	self.dataGemCount = gemCount
 end
 
 function buildMode:CanExit(mode)

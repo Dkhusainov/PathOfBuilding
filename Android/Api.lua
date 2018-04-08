@@ -61,7 +61,8 @@ function getSearchResult(self)
             name = name,
             okSign = false,
             plusSign = false,
-            signColor = colorCodes.NORMAL
+            signColor = colorCodes.NORMAL,
+            color = colorCodes.NORMAL
         }
         local grantedEffect = self.skillsTab.build.data.gems[name]
         if grantedEffect then
