@@ -20,7 +20,8 @@ function TooltipClass:Clear()
 		wipeTable(self.updateParams)
 	end
 	self.center = false
-	self.color = { 0.5, 0.3, 0 }
+	--self.color = { 0.5, 0.3, 0 }
+	self.color = colorCodes.TOOLTIP_DEFAULT_BORDER
 end
 
 function TooltipClass:CheckForUpdate(...)

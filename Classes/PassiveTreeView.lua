@@ -20,9 +20,9 @@ local PassiveTreeViewClass = common.NewClass("PassiveTreeView", function(self)
 	self.ring:Load("Assets/ring.png", "CLAMP")
 	self.highlightRing = NewImageHandle()
 	self.highlightRing:Load("Assets/small_ring.png", "CLAMP")
-
-	self.tooltip = common.New("Tooltip")
 ]]
+	self.tooltip = common.New("Tooltip")
+
 	self.zoomLevel = 3
 	self.zoom = 1.2 ^ self.zoomLevel
 	self.zoomX = 0
@@ -542,7 +542,7 @@ function PassiveTreeViewClass:Zoom(level, viewPort)
 	self.zoomX = relX + (self.zoomX - relX) * factor
 	self.zoomY = relY + (self.zoomY - relY) * factor
 end
-]]
+
 function PassiveTreeViewClass:DoesNodeMatchSearchStr(node)
 	if node.type == "ClassStart" or node.type == "Mastery" then
 		return
@@ -578,7 +578,7 @@ function PassiveTreeViewClass:DoesNodeMatchSearchStr(node)
 		return true
 	end
 end
-
+]]
 function PassiveTreeViewClass:AddNodeName(tooltip, node, build)
 	tooltip:AddLine(24, "^7"..node.dn..(launch.devModeAlt and " ["..node.id.."]" or ""))
 	if node.type == "Socket" then
@@ -601,8 +601,9 @@ function PassiveTreeViewClass:AddNodeName(tooltip, node, build)
 	end
 end
 
-function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
+function PassiveTreeViewClass:AddNodeTooltip(node, build)
 	-- Special case for sockets
+	local tooltip = self.tooltip
 	if node.type == "Socket" and node.alloc then
 		local socket, jewel = build.itemsTab:GetSocketAndJewelForNodeID(node.id)
 		if jewel then
@@ -611,10 +612,12 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 			self:AddNodeName(tooltip, node, build)
 		end
 		tooltip:AddSeparator(14)
+		--[[
 		if socket:IsEnabled() then
 			tooltip:AddLine(14, colorCodes.TIP.."Tip: Right click this socket to go to the items page and choose the jewel for this socket.")
 		end
 		tooltip:AddLine(14, colorCodes.TIP.."Tip: Hold Shift to hide this tooltip.")
+		]]
 		return
 	end
 	
@@ -631,8 +634,8 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	if node.sd[1] then
 		tooltip:AddLine(16, "")
 		for i, line in ipairs(node.sd) do
-			if node.mods[i].list then
-				if launch.devModeAlt then
+			if launch.devModeAlt then
+				if node.mods[i].list then
 					-- Modifier debugging info
 					local modStr
 					for _, mod in pairs(node.mods[i].list) do
@@ -646,7 +649,8 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 					end
 				end
 			end
-			tooltip:AddLine(16, ((node.mods[i].extra or not node.mods[i].list) and colorCodes.UNSUPPORTED or colorCodes.MAGIC)..line)
+			tooltip:AddLine(16, colorCodes.MAGIC..line)
+			--tooltip:AddLine(16, ((node.mods[i].extra or not node.mods[i].list) and colorCodes.UNSUPPORTED or colorCodes.MAGIC)..line)
 		end
 	end
 
@@ -689,14 +693,20 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 		if count == 0 then
 			tooltip:AddLine(14, string.format("^7No changes from %s this node%s.", node.alloc and "unallocating" or "allocating", pathLength > 1 and " or the nodes leading to it" or ""))
 		end
-		tooltip:AddLine(14, colorCodes.TIP.."Tip: Press Ctrl+D to disable the display of stat differences.")
+		--tooltip:AddLine(14, colorCodes.TIP.."Tip: Press Ctrl+D to disable the display of stat differences.")
 	else
-		tooltip:AddSeparator(14)
-		tooltip:AddLine(14, colorCodes.TIP.."Tip: Press Ctrl+D to enable the display of stat differences.")
+		--tooltip:AddSeparator(14)
+		--tooltip:AddLine(14, colorCodes.TIP.."Tip: Press Ctrl+D to enable the display of stat differences.")
 	end
 
 	-- Pathing distance
 	tooltip:AddSeparator(14)
+	local count = (#self.tracePath)
+	if not node.alloc then
+		tooltip:AddLine(14, "^7"..count .. " points to node")
+	else
+		tooltip:AddLine(14, "^7"..count.. " points gained from unallocating these nodes")
+	end
 	if node.path and #node.path > 0 then
 		if self.traceMode and isValueInArray(self.tracePath, node) then
 			tooltip:AddLine(14, "^7"..#self.tracePath .. " nodes in trace path")
@@ -710,7 +720,7 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 		end
 	end
 	if node.type == "Socket" then
-		tooltip:AddLine(14, colorCodes.TIP.."Tip: Hold Shift to hide this tooltip.")
+		--tooltip:AddLine(14, colorCodes.TIP.."Tip: Hold Shift to hide this tooltip.")
 	end
 	if node.depends and #node.depends > 1 then
 		tooltip:AddSeparator(14)

@@ -38,6 +38,7 @@ colorCodes = {
 	a = "^xFFFF30",
 	b = "^xFF5555",
 	c = "^x7F7F7F",
+	TOOLTIP_DEFAULT_BORDER = "^x804D00",
 	SHAPER = "^x55BBFF",
 	ELDER = "^xAA77CC",
 }
