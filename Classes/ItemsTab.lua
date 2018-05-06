@@ -1950,6 +1950,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode, generate)
 		end)
 
 		-- Add comparisons for each slot
+		--[[
 		for _, slot in pairs(compareSlots) do
 			local selItem = self.items[slot.selItemId]
 			local output = calcFunc({ repSlotName = slot.slotName, repItem = item ~= selItem and item })
@@ -1961,6 +1962,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode, generate)
 			end
 			self.build:AddStatComparesToTooltip(tooltip, calcBase, output, header)
 		end
+		]]
 	end
 
 	if launch.devModeAlt then
