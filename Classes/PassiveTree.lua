@@ -370,7 +370,7 @@ function PassiveTreeClass:dump()
 		setmetatable(node.modList, nil)
 		setmetatable(node.modList.ModStore, nil)
 		node.modList.Object = nil
-		node.mods= nil
+		--node.mods= nil
 		node.out = nil
 		node.g = nil
 		node.group = nil
