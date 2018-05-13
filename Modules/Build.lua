@@ -349,8 +349,8 @@ function buildMode:Init(dbFileName, buildName, buildXML, targetVersion)
 	self.xmlSectionList = {}
 	if buildXML then
 		if self:LoadDB(buildXML, "Unnamed build") then
-			self:CloseBuild()
-			return
+		--	self:CloseBuild()
+		--	return
 		end
 		self.modFlag = true
 	else
