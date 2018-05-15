@@ -349,14 +349,14 @@ function ImportTabClass:DownloadPassiveTree()
 end
 
 function ImportTabClass:DownloadItems()
-	self.charImportMode = "IMPORTING"
+	self.charImportMode = "IMPORTING" self.ImportEvent:invoke()
 	self.charImportStatus = "Retrieving character items..."
 	local accountName = self.controls.accountName.buf
 	local sessionID = #self.controls.sessionInput.buf == 32 and self.controls.sessionInput.buf or main.accountSessionIDs[accountName]
 	local charSelect = self.controls.charSelect
 	local charData = charSelect.list[charSelect.selIndex].char
 	launch:DownloadPage("https://www.pathofexile.com/character-window/get-items?accountName="..accountName.."&character="..charData.name, function(page, errMsg)
-		self.charImportMode = "SELECTCHAR"
+		self.charImportMode = "SELECTCHAR" self.ImportEvent:invoke()
 		if errMsg then
 			self.charImportStatus = colorCodes.NEGATIVE.."Error importing character data, try again ("..errMsg:gsub("\n"," ")..")"
 			return
