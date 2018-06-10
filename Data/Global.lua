@@ -11,8 +11,11 @@ colorCodes = {
 	UNIQUE = "^xAF6025",
 	RELIC = "^x60C060",
 	GEM = "^x1AA29B",
+	PROPHECY = "^xB54BFF",
+	CURRENCY = "^xAA9E82",
 	CRAFTED = "^xB8DAF1",
 	CUSTOM = "^x5CF0BB",
+	SOURCE = "^x88FFFF",
 	UNSUPPORTED = "^xF05050",
 	WARNING = "^xFF9922",
 	TIP = "^x80A080",
@@ -100,6 +103,7 @@ KeywordFlag.Ailment =	0x080000
 KeywordFlag.Poison =	0x100000
 KeywordFlag.Bleed =		0x200000
 KeywordFlag.Ignite =	0x400000
+KeywordFlag.Burning =	0x800000
 
 -- Active skill types, used in ActiveSkills.dat and GrantedEffects.dat
 -- Had to reverse engineer this, not sure what all of the values mean
@@ -175,4 +179,5 @@ SkillType = {
 	SkillCanMirageArcher = 69, -- Skill can be supported by Mirage Archer
 	Type70 = 70, -- Excludes Volley from Vaal Fireball and Vaal Spark
 	Type71 = 71, -- Excludes Volley from Spectral Shield Throw
+	Type72 = 72, -- Excludes Summon Phantasm on Kill from Manifest Dancing Dervish
 }

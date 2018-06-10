@@ -209,6 +209,22 @@ function calcs.offence(env, actor)
 			end
 		end
 	end
+	if modDB:Sum("FLAG", nil, "LightRadiusAppliesToAccuracy") then
+		-- Light Radius conversion from Corona Solaris
+		for i, mod in ipairs(modDB.mods.LightRadius or { }) do
+			if mod.type == "INC" then
+				modDB:NewMod("Accuracy", "INC", mod.value, mod.source, mod.flags, mod.keywordFlags, unpack(mod))
+			end
+		end
+	end
+	if modDB:Sum("FLAG", nil, "CastSpeedAppliesToTrapThrowingSpeed") then
+		-- Cast Speed conversion from Slavedriver's Hand
+		for i, mod in ipairs(modDB.mods.Speed or { }) do
+			if mod.type == "INC" and (mod.flags == 0 or band(mod.flags, ModFlag.Cast) ~= 0) then
+				modDB:NewMod("TrapThrowingSpeed", "INC", mod.value, mod.source, band(mod.flags, bnot(ModFlag.Cast), bnot(ModFlag.Attack)), mod.keywordFlags, unpack(mod))
+			end
+		end
+	end
 
 	local isAttack = skillFlags.attack
 
@@ -283,10 +299,11 @@ function calcs.offence(env, actor)
 				breakdown.AreaOfEffectRadius = breakdown.area(baseRadius, output.AreaOfEffectMod, output.AreaOfEffectRadius)
 			end
 			if skillData.radiusSecondary then
+				output.AreaOfEffectModSecondary = calcLib.mod(modDB, skillCfg, "AreaOfEffect", "AreaOfEffectSecondary")
 				baseRadius = skillData.radiusSecondary + (skillData.radiusExtra or 0)
-				output.AreaOfEffectRadiusSecondary = m_floor(baseRadius * m_sqrt(output.AreaOfEffectMod))
+				output.AreaOfEffectRadiusSecondary = m_floor(baseRadius * m_sqrt(output.AreaOfEffectModSecondary))
 				if breakdown then
-					breakdown.AreaOfEffectRadiusSecondary = breakdown.area(baseRadius, output.AreaOfEffectMod, output.AreaOfEffectRadiusSecondary)
+					breakdown.AreaOfEffectRadiusSecondary = breakdown.area(baseRadius, output.AreaOfEffectModSecondary, output.AreaOfEffectRadiusSecondary)
 				end
 			end
 		end
@@ -296,7 +313,7 @@ function calcs.offence(env, actor)
 	end
 	if skillFlags.trap then
 		local baseSpeed = 1 / modDB:Sum("BASE", skillCfg, "TrapThrowingTime")
-		output.TrapThrowingSpeed = baseSpeed * calcLib.mod(modDB, skillCfg, "TrapThrowingSpeed")
+		output.TrapThrowingSpeed = baseSpeed * calcLib.mod(modDB, skillCfg, "TrapThrowingSpeed") * output.ActionSpeedMod
 		output.TrapThrowingTime = 1 / output.TrapThrowingSpeed
 		if breakdown then
 			breakdown.TrapThrowingTime = { }
@@ -305,17 +322,21 @@ function calcs.offence(env, actor)
 				base = s_format("%.2f ^8(base throwing speed)", baseSpeed),
 				{ "%.2f ^8(increased/reduced throwing speed)", 1 + modDB:Sum("INC", skillCfg, "TrapThrowingSpeed") / 100 },
 				{ "%.2f ^8(more/less throwing speed)", modDB:Sum("MORE", skillCfg, "TrapThrowingSpeed") },
+				{ "%.2f ^8(action speed modifier)",  output.ActionSpeedMod },
 				total = s_format("= %.2f ^8per second", output.TrapThrowingSpeed),
 			})
 		end
 		output.ActiveTrapLimit = modDB:Sum("BASE", skillCfg, "ActiveTrapLimit")
-		output.TrapCooldown = (skillData.trapCooldown or skillData.cooldown or 4) / calcLib.mod(modDB, skillCfg, "CooldownRecovery")
-		if breakdown then
-			breakdown.TrapCooldown = {
-				s_format("%.2fs ^8(base)", skillData.trapCooldown or skillData.cooldown or 4),
-				s_format("/ %.2f ^8(increased/reduced cooldown recovery)", 1 + modDB:Sum("INC", skillCfg, "CooldownRecovery") / 100),
-				s_format("= %.2fs", output.TrapCooldown)
-			}
+		local baseCooldown = skillData.trapCooldown or skillData.cooldown
+		if baseCooldown then
+			output.TrapCooldown = baseCooldown / calcLib.mod(modDB, skillCfg, "CooldownRecovery")
+			if breakdown then
+				breakdown.TrapCooldown = {
+					s_format("%.2fs ^8(base)", skillData.trapCooldown or skillData.cooldown or 4),
+					s_format("/ %.2f ^8(increased/reduced cooldown recovery)", 1 + modDB:Sum("INC", skillCfg, "CooldownRecovery") / 100),
+					s_format("= %.2fs", output.TrapCooldown)
+				}
+			end
 		end
 		local areaMod = calcLib.mod(modDB, skillCfg, "TrapTriggerAreaOfEffect")
 		output.TrapTriggerRadius = 10 * m_sqrt(areaMod)
@@ -334,7 +355,7 @@ function calcs.offence(env, actor)
 	end
 	if skillFlags.mine then
 		local baseSpeed = 1 / modDB:Sum("BASE", skillCfg, "MineLayingTime")
-		output.MineLayingSpeed = baseSpeed * calcLib.mod(modDB, skillCfg, "MineLayingSpeed")
+		output.MineLayingSpeed = baseSpeed * calcLib.mod(modDB, skillCfg, "MineLayingSpeed") * output.ActionSpeedMod
 		output.MineLayingTime = 1 / output.MineLayingSpeed
 		if breakdown then
 			breakdown.MineLayingTime = { }
@@ -343,6 +364,7 @@ function calcs.offence(env, actor)
 				base = s_format("%.2f ^8(base laying speed)", baseSpeed),
 				{ "%.2f ^8(increased/reduced laying speed)", 1 + modDB:Sum("INC", skillCfg, "MineLayingSpeed") / 100 },
 				{ "%.2f ^8(more/less laying speed)", modDB:Sum("MORE", skillCfg, "MineLayingSpeed") },
+				{ "%.2f ^8(action speed modifier)",  output.ActionSpeedMod },
 				total = s_format("= %.2f ^8per second", output.MineLayingSpeed),
 			})
 		end
@@ -355,7 +377,7 @@ function calcs.offence(env, actor)
 	end
 	if skillFlags.totem then
 		local baseSpeed = 1 / modDB:Sum("BASE", skillCfg, "TotemPlacementTime")
-		output.TotemPlacementSpeed = baseSpeed * calcLib.mod(modDB, skillCfg, "TotemPlacementSpeed")
+		output.TotemPlacementSpeed = baseSpeed * calcLib.mod(modDB, skillCfg, "TotemPlacementSpeed") * output.ActionSpeedMod
 		output.TotemPlacementTime = 1 / output.TotemPlacementSpeed
 		if breakdown then
 			breakdown.TotemPlacementTime = { }
@@ -364,6 +386,7 @@ function calcs.offence(env, actor)
 				base = s_format("%.2f ^8(base placement speed)", baseSpeed),
 				{ "%.2f ^8(increased/reduced placement speed)", 1 + modDB:Sum("INC", skillCfg, "TotemPlacementSpeed") / 100 },
 				{ "%.2f ^8(more/less placement speed)", modDB:Sum("MORE", skillCfg, "TotemPlacementSpeed") },
+				{ "%.2f ^8(action speed modifier)",  output.ActionSpeedMod },
 				total = s_format("= %.2f ^8per second", output.TotemPlacementSpeed),
 			})
 		end
@@ -437,7 +460,7 @@ function calcs.offence(env, actor)
 
 	-- Run skill setup function
 	do
-		local setupFunc = mainSkill.activeGem.grantedEffect.setupFunc
+		local setupFunc = mainSkill.activeEffect.grantedEffect.setupFunc
 		if setupFunc then
 			setupFunc(actor, output)
 		end
@@ -924,8 +947,11 @@ function calcs.offence(env, actor)
 						if skillFlags.projectile then
 							taken = taken + enemyDB:Sum("INC", nil, "ProjectileDamageTaken")
 						end
+						if skillFlags.trap or skillFlags.mine then
+							taken = taken + enemyDB:Sum("INC", nil, "TrapMineDamageTaken")
+						end
 						local effMult = (1 + taken / 100)
-						if not isElemental[damageType] or not modDB:Sum("FLAG", cfg, "IgnoreElementalResistances", "Ignore"..damageType.."Resistance") then
+						if not isElemental[damageType] or not (modDB:Sum("FLAG", cfg, "IgnoreElementalResistances", "Ignore"..damageType.."Resistance") or enemyDB:Sum("FLAG", nil, "SelfIgnore"..damageType.."Resistance")) then
 							effMult = effMult * (1 - (resist - pen) / 100)
 						end
 						min = min * effMult
@@ -1190,7 +1216,7 @@ function calcs.offence(env, actor)
 		skillTypes = skillCfg.skillTypes,
 		slotName = skillCfg.slotName,
 		flags = bor(ModFlag.Dot, skillData.dotIsSpell and ModFlag.Spell or 0, skillData.dotIsArea and ModFlag.Area or 0, skillData.dotIsProjectile and ModFlag.Projectile or 0),
-		keywordFlags = skillCfg.keywordFlags
+		keywordFlags = band(skillCfg.keywordFlags, bnot(KeywordFlag.Hit)),
 	}
 	mainSkill.dotCfg = dotCfg
 	output.TotalDot = 0
@@ -1203,6 +1229,11 @@ function calcs.offence(env, actor)
 		end
 		if baseVal > 0 then
 			skillFlags.dot = true
+			if damageType == "Fire" then
+				dotCfg.keywordFlags = bor(dotCfg.keywordFlags, KeywordFlag.Burning)
+			else
+				dotCfg.keywordFlags = band(dotCfg.keywordFlags, bnot(KeywordFlag.Burning))
+			end
 			local effMult = 1
 			if env.mode_effective then
 				local resist = 0
@@ -1645,7 +1676,7 @@ function calcs.offence(env, actor)
 					skillTypes = skillCfg.skillTypes,
 					slotName = skillCfg.slotName,
 					flags = bor(ModFlag.Dot, ModFlag.Ailment),
-					keywordFlags = bor(band(skillCfg.keywordFlags, bnot(KeywordFlag.Hit)), KeywordFlag.Ignite, KeywordFlag.Ailment),
+					keywordFlags = bor(band(skillCfg.keywordFlags, bnot(KeywordFlag.Hit)), KeywordFlag.Ignite, KeywordFlag.Ailment, KeywordFlag.Burning),
 					skillCond = { },
 				}
 			end
@@ -1711,7 +1742,7 @@ function calcs.offence(env, actor)
 					s_format("Ignite mode: %s ^8(can be changed in the Configuration tab)", igniteMode == "CRIT" and "Crit Damage" or "Average Damage")
 				}
 			end
-			local baseVal = calcAilmentDamage("Ignite", sourceHitDmg, sourceCritDmg) * 0.4
+			local baseVal = calcAilmentDamage("Ignite", sourceHitDmg, sourceCritDmg) * 0.5
 			if baseVal > 0 then
 				skillFlags.ignite = true
 				local effMult = 1
@@ -1740,7 +1771,7 @@ function calcs.offence(env, actor)
 					end
 				end
 				if breakdown then
-					t_insert(breakdown.IgniteDPS, "x 0.4 ^8(ignite deals 40% per second)")
+					t_insert(breakdown.IgniteDPS, "x 0.5 ^8(ignite deals 50% per second)")
 					t_insert(breakdown.IgniteDPS, s_format("= %.1f", baseVal, 1))
 					breakdown.multiChain(breakdown.IgniteDPS, {
 						label = "Ignite DPS:",
@@ -1851,7 +1882,7 @@ function calcs.offence(env, actor)
 		end
 
 		-- Calculate knockback chance/distance
-		output.KnockbackChance = m_min(100, output.KnockbackChanceOnHit * (1 - output.CritChance / 100) + output.KnockbackChanceOnCrit * output.CritChance / 100)
+		output.KnockbackChance = m_min(100, output.KnockbackChanceOnHit * (1 - output.CritChance / 100) + output.KnockbackChanceOnCrit * output.CritChance / 100 + enemyDB:Sum("BASE", nil, "SelfKnockbackChance"))
 		if output.KnockbackChance > 0 then
 			output.KnockbackDistance = round(4 * calcLib.mod(modDB, cfg, "EnemyKnockbackDistance"))
 			if breakdown then
