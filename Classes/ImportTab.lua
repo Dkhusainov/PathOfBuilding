@@ -353,7 +353,6 @@ function ImportTabClass:DownloadCharacterList()
 			end
 			self.lastCharList = charList
 			self:BuildCharacterList()
-		end, sessionID and "POESESSID="..sessionID)
 	end, sessionID and "POESESSID="..sessionID)
 end
 
