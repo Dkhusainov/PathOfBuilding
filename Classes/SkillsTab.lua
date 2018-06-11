@@ -503,7 +503,6 @@ function SkillsTabClass:UpdateGemSlots()
 	end
 end
 
---[[
 -- Find the skill gem matching the given specification
 function SkillsTabClass:FindSkillGem(nameSpec)
 	-- Search for gem name using increasingly broad search patterns
@@ -530,7 +529,6 @@ function SkillsTabClass:FindSkillGem(nameSpec)
 	end
 	return "Unrecognised gem name '"..nameSpec.."'"
 end
-]]
 
 -- Processes the given socket group, filling in information that will be used for display or calculations
 function SkillsTabClass:ProcessSocketGroup(socketGroup)

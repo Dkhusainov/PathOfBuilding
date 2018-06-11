@@ -13,6 +13,7 @@ for _, node in ipairs(tree.nodes) do
     setmetatable(node.modList.ModStore, getmetatable(modList.ModStore))
 end
 
+common.sha1 = require("sha1")
 launch.DownloadPage = function(_, url, callback, cookies)
     local input = {}
     table.insert(input, url)
@@ -23,6 +24,7 @@ end
 
 httpDelegate = {}
 eventBusDelegate = {}
+debugDelegate = {}
 
 modCacheLoader = {
     loadByLine = function() return nil end
@@ -41,7 +43,6 @@ function setupLoaders(loaders)
         setmetatable(dataTable, meta)
     end
 
-    addLoaderToTable(data[targetVersion].gems, "skill")
     addLoaderToTable(data[targetVersion].skills, "skill")
     addLoaderToTable(data[targetVersion].itemBases, "base")
     addLoaderToTable(data[targetVersion].minions, "minions")

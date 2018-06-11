@@ -45,26 +45,30 @@ function processLoadedSkill(key, grantedEffect)
         end
 end
 
-function processLoadedUnique(raw)
-    local newItem = common.New("Item", targetVersion, "Rarity: Unique\n"..raw)
-    newItem:normaliseQuality()
-    return newItem
-end
-
 -----------------GemSearch--------------
 --GemSelectControl//function GemSelectClass:Draw(viewPort)
 function getSearchResult(self)
+    if (#self.list == 1 and self.list[1] == "") then
+        return {}
+    end
+
     local result = {}
     local t_insert = table.insert
-    for _, name in ipairs(self.list) do
+    local gems = self.skillsTab.build.data.gems
+    local displaySkillList = self.skillsTab.displayGroup.displaySkillList
+    local dpsColor = self.sortCache.dpsColor
+    for _, gemId in ipairs(self.list) do
+        local gem = gems[gemId]
+        local gemData = self.gems[gemId]
+        local grantedEffect = gem.grantedEffect
         local searchResultItem = {
-            name = name,
+            name = gemData.name,
+            gemId = gemId,
             okSign = false,
             plusSign = false,
             signColor = colorCodes.NORMAL,
             color = colorCodes.NORMAL
         }
-        local grantedEffect = self.skillsTab.build.data.gems[name]
         if grantedEffect then
             if grantedEffect.color == 1 then
                 searchResultItem.color = colorCodes.STRENGTH
@@ -74,19 +78,18 @@ function getSearchResult(self)
                 searchResultItem.color = colorCodes.INTELLIGENCE
             end
         end
-        if grantedEffect and self.skillsTab.sortGemsByDPS then
-            if grantedEffect.support and self.skillsTab.displayGroup.displaySkillList then
-                local gem = { grantedEffect = grantedEffect }
-                for _, activeSkill in ipairs(self.skillsTab.displayGroup.displaySkillList) do
-                    if calcLib.gemCanSupport(gem, activeSkill) then
+        if grantedEffect then
+            if grantedEffect.support and displaySkillList then
+                for _, activeSkill in ipairs(displaySkillList) do
+                    if calcLib.canGrantedEffectSupportActiveSkill(grantedEffect, activeSkill) then
                         searchResultItem.okSign = true
-                        searchResultItem.signColor = self.sortCache.dpsColor[name]
+                        searchResultItem.signColor = dpsColor[gemId]
                         break
                     end
                 end
             elseif grantedEffect.hasGlobalEffect then
                 searchResultItem.plusSign = true
-                searchResultItem.signColor = self.sortCache.dpsColor[name]
+                searchResultItem.signColor = dpsColor[gemId]
             end
         end
         t_insert(result, searchResultItem)

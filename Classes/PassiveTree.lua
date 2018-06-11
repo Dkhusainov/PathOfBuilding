@@ -366,7 +366,7 @@ function PassiveTreeClass:dump()
 	self.groups = nil
 	self.connectors = nil
 	self.skillSprites = nil
-	for _, node in ipairs(self.nodes) do
+	for _, node in pairs(self.nodes) do
 		setmetatable(node.modList, nil)
 		setmetatable(node.modList.ModStore, nil)
 		node.modList.Object = nil

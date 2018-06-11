@@ -20,7 +20,6 @@ common = { }
 --common.curl = require("lcurl.safe")
 common.xml = require("xml")
 common.base64 = require("base64")
-common.sha1 = require("sha1")
 
 -- Class library
 common.classes = { }
@@ -263,7 +262,8 @@ function prettyPrintTable(tbl, pre)
 		if type(tbl[name]) == "table" then
 			prettyPrintTable(tbl[name], pre .. name .. ".")
 		else
-			ConPrintf("%s%s = %s", pre, name, tostring(tbl[name]))
+			local msg = pre .. "." ..  name .. " = " tostring(tbl[name])
+			print(msg)
 		end
 	end
 end

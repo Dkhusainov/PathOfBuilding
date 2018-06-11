@@ -8,27 +8,6 @@
 local t_insert = table.insert
 local generator = ...
 
-function printTable(t, depth)
-    local file = io.open("debug.txt", "w")
-    io.output(file)
-    io.write("\n")
-    local options = {
-        depth = depth or 10,
-        --        process = true
-    }
-    local result = inspect.inspect(t, options)
-    print(result)
-    io.write(result)
-    io.write("\n")
-    io.close(file)
-end
-
-
-function printTableJson(t) print(json.encode(t)) end
-function tableToJson(t)
-    return json.encode(t)
-end
-
 -- all the hacks for luaj to work
 bit = bit32
 function MakeDir(a) end
