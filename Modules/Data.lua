@@ -149,11 +149,12 @@ data.specialBaseTags = {
 
 -- Uniques
 data.uniques = { }
+if launch.generator then
 for _, type in pairs(itemTypes) do
 	data.uniques[type] = LoadModule("Data/Uniques/"..type)
 end
 LoadModule("Data/New")
-
+end
 ---------------------------
 -- Version-specific Data --
 ---------------------------
@@ -162,6 +163,11 @@ for _, targetVersion in ipairs(targetVersionList) do
 	local verData = setmetatable({ }, { __index = data })
 	data[targetVersion] = verData
 	local function dataModule(mod, ...)
+		for _, skip in ipairs(launch.skipData) do
+			if not launch.generator and string.find(mod, skip) then
+				return
+			end
+		end
 		return LoadModule("Data/"..targetVersion.."/"..mod, ...)
 	end
 

@@ -6,10 +6,8 @@
 -- To change this template use File | Settings | File Templates.
 --
 local t_insert = table.insert
-local generator = ...
+local generator, skipData = ...
 
--- all the hacks for luaj to work
-bit = bit32
 function MakeDir(a) end
 function IsKeyDown() return false end
 function DrawStringWidth() return 0 end
@@ -27,13 +25,6 @@ function ConPrintf(text, ...)
     print(text)
 end
 
-function unpack (t, i)
-    i = i or 1
-    if t[i] ~= nil then
-        return t[i], unpack(t, i + 1)
-    end
-end
-
 --POB stuff
 defaultTargetVersion = "3_0"
 liveTargetVersion = "3_0"
@@ -42,6 +33,7 @@ targetVersionList = { "3_0" }
 
 launch = {
     generator = generator,
+    skipData = skipData,
     devMode = false,
     ShowErrMsg = function(title, msg) end
 }
