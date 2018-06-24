@@ -42,7 +42,7 @@ main = {
     tree = {},
     uniqueDB = { },
     rareDB = { },
-    accountSessionIDs = {},
+    gameAccounts = {},
     showThousandsSidebar = false,
     lastShowThousandsSidebar = false,
     --todo show dialogs

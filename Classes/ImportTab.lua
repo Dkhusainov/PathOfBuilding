@@ -378,6 +378,7 @@ function ImportTabClass:BuildCharacterList(league)
 			end
 		end
 	end
+	self.ImportEvent:invoke()
 end
 
 function ImportTabClass:DownloadPassiveTree()
