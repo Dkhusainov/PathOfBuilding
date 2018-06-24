@@ -201,23 +201,7 @@ function PassiveSpecClass:EncodeURL(prefix)
 			t_insert(a, id % 256)
 		end
 	end
-	--https://www.lua.org/pil/11.6.html
-	local function addString (stack, s)
-		table.insert(stack, s)    -- push 's' into the the stack
-		for i=#stack-1, 1, -1 do
-			if string.len(stack[i]) > string.len(stack[i+1]) then
-				break
-			end
-			stack[i] = stack[i] .. table.remove(stack)
-		end
-	end
-
-	local str = { "" }
-	for _, id in pairs(a) do
-		addString(str, string.char(id))
-	end
-	str = table.concat(str)
-	return (prefix or "")..common.base64.encode(str):gsub("+","-"):gsub("/","_")
+	return (prefix or "")..common.base64.encode(string.char(unpack(a))):gsub("+","-"):gsub("/","_")
 end
 
 -- Change the current class, preserving currently allocated nodes if they connect to the new class's starting node
