@@ -68,7 +68,7 @@ function ItemClass:ParseRaw(raw)
 		itemBases = baseLoader:all()
 	end
 	if self.rarity == "NORMAL" or self.rarity == "MAGIC" then
-		for baseName, baseData in pairs(verData.itemBases) do
+		for baseName, baseData in pairs(itemBases) do
 			local s, e = self.name:find(baseName, 1, true)
 			if s then
 				self.baseName = baseName
