@@ -815,7 +815,10 @@ end
 
 -- Update the item lists for all the slot controls
 function ItemsTabClass:PopulateSlots()
-	itemsTabDelegate:PopulateSlots(self)
+	--itemsTabDelegate:PopulateSlots(self)
+	for _, slot in pairs(self.slots) do
+		slot:Populate()
+	end
 end
 
 -- Updates the status and position of the socket controls
