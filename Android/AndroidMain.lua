@@ -13,7 +13,6 @@ for _, node in ipairs(tree.nodes) do
     setmetatable(node.modList.ModStore, getmetatable(modList.ModStore))
 end
 
-common.sha1 = require("sha1")
 launch.DownloadPage = function(_, url, callback, cookies)
     local input = {}
     table.insert(input, url)
@@ -25,11 +24,16 @@ end
 httpDelegate = {}
 eventBusDelegate = {}
 debugDelegate = {}
+sha1Delegate = {}
 
 modCacheLoader = {
     loadByLine = function() return nil end
 }
 baseLoader = {}
+
+common.sha1 = function(input)
+    return sha1Delegate:sha1(input)
+end
 
 function setupLoaders(loaders)
 
