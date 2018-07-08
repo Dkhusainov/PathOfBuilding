@@ -42,6 +42,7 @@ main = {
     tree = {},
     uniqueDB = { },
     rareDB = { },
+    popups = {},
     gameAccounts = {},
     showThousandsSidebar = false,
     lastShowThousandsSidebar = false,

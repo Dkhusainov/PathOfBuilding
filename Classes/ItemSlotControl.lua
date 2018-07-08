@@ -27,9 +27,7 @@ local ItemSlotClass = common.NewClass("ItemSlotControl", "DropDownControl", func
 		return not self.inactive
 	end
 	self.itemsTab = itemsTab
-	self.items = {}
-	self.items[1] = 0
-	self.list[1] = { label = "None" }
+	self.items = { }
 	self.slotName = slotName
 	self.slotNum = tonumber(slotName:match("%d+"))
 	if slotName:match("Flask") then
@@ -74,6 +72,7 @@ function ItemSlotClass:SetSelItemId(selItemId)
 	end
 end
 
+--[[Deprecated
 function ItemSlotClass:AddItem(item)
 	t_insert(self.items, item.id)
 	t_insert(self.list, { label = item.name, color = colorCodes[item.rarity] })
@@ -96,17 +95,17 @@ function ItemSlotClass:ResolveAbyssJewels()
 		abyssalSocket.inactive = i > abyssalSocketCount
 	end
 end
-
+-]]
 function ItemSlotClass:Populate()
 	wipeTable(self.items)
 	wipeTable(self.list)
 	self.items[1] = 0
-	self.list[1] = { label = "None" }
+	self.list[1] = "None"
 	self.selIndex = 1
 	for _, item in pairs(self.itemsTab.items) do
 		if self.itemsTab:IsItemValidForSlot(item, self.slotName) then
 			t_insert(self.items, item.id)
-			t_insert(self.list, { label = item.name, color = colorCodes[item.rarity] })
+			t_insert(self.list, colorCodes[item.rarity]..item.name)
 			if item.id == self.selItemId then
 				self.selIndex = #self.list
 			end
