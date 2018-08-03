@@ -39,8 +39,6 @@ local GemSelectClass = common.NewClass("GemSelectControl", "EditControl", functi
 		self:BuildList(self.buf)
 --		self:UpdateGem()
 	end
-
-	self.gemCount = skillsTab.build.dataGemCount
 end)
 
 function GemSelectClass:BuildList(buf)
@@ -131,7 +129,7 @@ function GemSelectClass:UpdateSortCache()
 		end
 	end
     local i = 0
-	local total = self.gemCount
+	local total = self.skillsTab.build.dataGemCount
 	local calcFunc, calcBase = self.skillsTab.build.calcsTab:GetMiscCalculator(self.build)
 	local baseDPS = calcBase.Minion and calcBase.Minion.CombinedDPS or calcBase.CombinedDPS
 	for gemId, gemData in pairs(self.gems) do
