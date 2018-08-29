@@ -598,6 +598,7 @@ function ItemsTabClass:Save(xml)
 	for _, id in ipairs(self.itemOrderList) do
 		local item = self.items[id]
 		local child = { elem = "Item", attrib = { id = tostring(id), variant = item.variant and tostring(item.variant), variantAlt = item.variantAlt and tostring(item.variantAlt) } }
+		item:BuildAndParseRaw()
 		t_insert(child, item.raw)
 		for id, modLine in ipairs(item.modLines) do
 			if modLine.range then
@@ -1911,7 +1912,10 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode, generate)
 		local effectInc = modDB:Sum("INC", nil, "FlaskEffect")
 		if item.base.flask.life or item.base.flask.mana then
 			local rateInc = modDB:Sum("INC", nil, "FlaskRecoveryRate")
-			local instantPerc = flaskData.instantPerc > 0 and m_min(flaskData.instantPerc + effectInc, 100) or 0
+			local instantPerc = flaskData.instantPerc
+			if self.build.targetVersion == "2_6" and instantPerc > 0 then
+				instantPerc = m_min(instantPerc + effectInc, 100)
+			end
 			if item.base.flask.life then
 				local lifeInc = modDB:Sum("INC", nil, "FlaskLifeRecovery")
 				local lifeRateInc = modDB:Sum("INC", nil, "FlaskLifeRecoveryRate")
