@@ -21,7 +21,10 @@ LoadModule("Modules/CalcDefence-"..targetVersion, calcs)
 LoadModule("Modules/CalcOffence-"..targetVersion, calcs)
 
 -- Print various tables to the console
-local function infoDump(env, output)
+local function infoDump(env)
+	if env.modDB.parent then
+		env.modDB.parent:Print()
+	end
 	env.modDB:Print()
 	if env.minion then
 		ConPrintf("=== Minion Mod DB ===")
@@ -38,6 +41,7 @@ local function infoDump(env, output)
 	ConPrintf("Mod: %s", modLib.formatFlags(mainSkill.skillCfg.flags, ModFlag))
 	ConPrintf("Keyword: %s", modLib.formatFlags(mainSkill.skillCfg.keywordFlags, KeywordFlag))
 	ConPrintf("=== Main Skill Mods ===")
+	mainSkill.skillModList.parent:Print()
 	mainSkill.skillModList:Print()
 	ConPrintf("== Aux Skills ==")
 	for i, aux in ipairs(env.auxSkillList) do
@@ -46,8 +50,6 @@ local function infoDump(env, output)
 			ConPrintf("  %s %d/%d", skillEffect.grantedEffect.name, skillEffect.level, skillEffect.quality)
 		end
 	end
---	ConPrintf("== Conversion Table ==")
---	prettyPrintTable(env.player.conversionTable)
 	ConPrintf("== Output Table ==")
 	prettyPrintTable(env.player.output)
 end
@@ -58,11 +60,11 @@ local function getCalculator(build, fullInit, modFunc)
 	local env = calcs.initEnv(build, "CALCULATOR")
 
 	-- Save a copy of the initial mod database
-	local initModDB = common.New("ModDB")
+	local initModDB = new("ModDB")
 	initModDB:AddDB(env.modDB)
 	initModDB.conditions = copyTable(env.modDB.conditions)
 	initModDB.multipliers = copyTable(env.modDB.multipliers)
-	local initEnemyDB = common.New("ModDB")
+	local initEnemyDB = new("ModDB")
 	initEnemyDB:AddDB(env.enemyDB)
 	initEnemyDB.conditions = copyTable(env.enemyDB.conditions)
 	initEnemyDB.multipliers = copyTable(env.enemyDB.multipliers)
@@ -71,17 +73,18 @@ local function getCalculator(build, fullInit, modFunc)
 	calcs.perform(env)
 	local baseOutput = env.player.output
 
+	env.modDB.parent = initModDB
+	env.enemyDB.parent = initEnemyDB
+
 	return function(...)
-		-- Restore initial mod database
-		env.modDB.mods = wipeTable(env.modDB.mods)
-		env.modDB:AddDB(initModDB)
-		env.modDB.conditions = copyTable(initModDB.conditions)
-		env.modDB.multipliers = copyTable(initModDB.multipliers)
-		env.enemyDB.mods = wipeTable(env.enemyDB.mods)
-		env.enemyDB:AddDB(initEnemyDB)
-		env.enemyDB.conditions = copyTable(initEnemyDB.conditions)
-		env.enemyDB.multipliers = copyTable(initEnemyDB.multipliers)
-		
+		-- Remove mods added during the last pass
+		wipeTable(env.modDB.mods)
+		wipeTable(env.modDB.conditions)
+		wipeTable(env.modDB.multipliers)
+		wipeTable(env.enemyDB.mods)
+		wipeTable(env.enemyDB.conditions)
+		wipeTable(env.enemyDB.multipliers)
+
 		-- Call function to make modifications to the enviroment
 		modFunc(env, ...)
 		
@@ -242,22 +245,22 @@ function calcs.buildOutput(build, mode)
 		if output.CrabBarriers > 0 then
 			t_insert(combatList, s_format("%d Crab Barriers", output.CrabBarriers))
 		end
-		if env.modDB:Sum("FLAG", nil, "Fortify") then
+		if env.modDB:Flag(nil, "Fortify") then
 			t_insert(combatList, "Fortify")
 		end
-		if env.modDB:Sum("FLAG", nil, "Onslaught") then
+		if env.modDB:Flag(nil, "Onslaught") then
 			t_insert(combatList, "Onslaught")
 		end
-		if env.modDB:Sum("FLAG", nil, "UnholyMight") then
+		if env.modDB:Flag(nil, "UnholyMight") then
 			t_insert(combatList, "Unholy Might")
 		end
-		if env.modDB:Sum("FLAG", nil, "Tailwind") then
+		if env.modDB:Flag(nil, "Tailwind") then
 			t_insert(combatList, "Tailwind")
 		end
-		if env.modDB:Sum("FLAG", nil, "Adrenaline") then
+		if env.modDB:Flag(nil, "Adrenaline") then
 			t_insert(combatList, "Adrenaline")
 		end
-		if env.modDB:Sum("FLAG", nil, "HerEmbrace") then
+		if env.modDB:Flag(nil, "HerEmbrace") then
 			t_insert(combatList, "Her Embrace")
 		end
 		for name in pairs(env.buffs) do
@@ -325,16 +328,16 @@ function calcs.buildOutput(build, mode)
 			if output.Minion.EnduranceCharges > 0 then
 				t_insert(combatList, s_format("%d Endurance Charges", output.Minion.EnduranceCharges))
 			end
-			if env.minion.modDB:Sum("FLAG", nil, "Fortify") then
+			if env.minion.modDB:Flag(nil, "Fortify") then
 				t_insert(combatList, "Fortify")
 			end
-			if env.minion.modDB:Sum("FLAG", nil, "Onslaught") then
+			if env.minion.modDB:Flag(nil, "Onslaught") then
 				t_insert(combatList, "Onslaught")
 			end
-			if env.minion.modDB:Sum("FLAG", nil, "UnholyMight") then
+			if env.minion.modDB:Flag(nil, "UnholyMight") then
 				t_insert(combatList, "Unholy Might")
 			end
-			if env.minion.modDB:Sum("FLAG", nil, "Tailwind") then
+			if env.minion.modDB:Flag(nil, "Tailwind") then
 				t_insert(combatList, "Tailwind")
 			end
 			for name in pairs(env.minionBuffs) do

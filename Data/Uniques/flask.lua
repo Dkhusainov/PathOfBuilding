@@ -40,10 +40,13 @@ Your Skills have no Mana Cost during Flask effect
 ]],[[
 Zerphi's Last Breath
 Grand Mana Flask
+Variant: {2_6}Pre 3.5.0
+Variant: Current
 League: Perandus
 Requires Level 18
 50% increased Charges used
-Skills used during Flask effect grant 800% of Mana Cost as Life
+{variant:1}Skills used during Flask effect grant 800% of Mana Cost as Life
+{variant:2}Skills used during Flask effect grant (450-600)% of Mana Cost as Life over 4 Seconds
 ]],
 -- Flask: Hybrid
 [[
@@ -51,14 +54,16 @@ Divination Distillate
 Large Hybrid Flask
 Variant: Pre 1.1.0
 Variant: Pre 2.2.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Requires Level 30
 (40-60)% increased Rarity of Items found during Flask effect
 {variant:1}(20-25)% increased Quantity of Items found during Flask effect
-{variant:2,3}(12-18)% increased Quantity of Items found during Flask effect
+{variant:2,3,4}(12-18)% increased Quantity of Items found during Flask effect
 25% increased Light Radius during Flask effect
 {variant:1,2}+6% to all maximum Elemental Resistances during Flask effect
 {variant:3}+4% to all maximum Elemental Resistances during Flask effect
+{variant:4}+50% to all Elemental Resistances during Flask Effect
 ]],[[
 The Writhing Jar
 Hallowed Hybrid Flask
@@ -190,6 +195,27 @@ Creates a Smoke Cloud on Use
 Gain Unholy Might during Flask Effect
 Immunity to Ignite during Flask effect
 Removes Burning on use
+]],[[
+Soul Catcher
+Quartz Flask
+League: Incursion
+Source: Drops from unique{The Vaal Omnitect}
+Upgrade: Upgrades to unique{Soul Ripper} via currency{Vial of the Ghost}
+Requires Level 27
+Cannot gain Mana during effect
+Vaal Skills deal (60-100)% increased Damage during effect
+Vaal Skills have 25% reduced Soul Cost during effect
+Vaal Skills used during effect have (20-40)% reduced Soul Gain Prevention Duration
+]],[[
+Soul Ripper
+Quartz Flask
+League: Incursion
+Source: Upgraded from unique{Soul Catcher} via currency{Vial of the Ghost}
+Requires Level 27
+100% increased Charges used
+Vaal Skills deal (30-40)% more Damage during effect
+Vaal Skills used during effect do not apply Soul Gain Prevention
+Gains no Charges During effect of any Soul Ripper Flask
 ]],[[
 Taste of Hate
 Sapphire Flask

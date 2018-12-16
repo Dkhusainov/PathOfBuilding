@@ -5,8 +5,6 @@
 -- Responsible for downloading and loading the passive tree data and assets
 -- Also pre-calculates and pre-parses most of the data need to use the passive tree, including the node modifiers
 --
-local launch, main = ...
-
 local pairs = pairs
 local ipairs = ipairs
 local t_insert = table.insert
@@ -33,7 +31,7 @@ local function getFile(URL)
 	return #page > 0 and page
 end
 
-local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVersion, tree)
+local PassiveTreeClass = newClass("PassiveTree", function(self, targetVersion, tree)
 	self.targetVersion = targetVersion
 
 	MakeDir("TreeData")
@@ -70,6 +68,8 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 		self[k] = v
 	end
 
+	local cdnRoot = targetVersion == "2_6" and "" or "https://web.poecdn.com"
+
 	self.size = m_min(self.max_x - self.min_x, self.max_y - self.min_y) * 1.1
 ]]
 	-- Build maps of class name -> class table
@@ -92,7 +92,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 	--[[
 	ConPrintf("Loading passive tree assets...")
 	for name, data in pairs(self.assets) do
-		self:LoadImage(name..".png", data[0.3835] or data[1], data, not name:match("[OL][ri][bn][ie][tC]") and "ASYNC" or nil)--, not name:match("[OL][ri][bn][ie][tC]") and "MIPMAP" or nil)
+		self:LoadImage(name..".png", cdnRoot..(data[0.3835] or data[1]), data, not name:match("[OL][ri][bn][ie][tC]") and "ASYNC" or nil)--, not name:match("[OL][ri][bn][ie][tC]") and "MIPMAP" or nil)
 	end
 
 	-- Load sprite sheets and build sprite map
@@ -103,7 +103,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 		local sheet = spriteSheets[maxZoom.filename]
 		if not sheet then
 			sheet = { }
-			self:LoadImage(maxZoom.filename:gsub("%?%x+$",""), self.imageRoot.."build-gen/passive-skill-sprite/"..maxZoom.filename, sheet, "CLAMP")--, "MIPMAP")
+			self:LoadImage(maxZoom.filename:gsub("%?%x+$",""), cdnRoot..self.imageRoot.."build-gen/passive-skill-sprite/"..maxZoom.filename, sheet, "CLAMP")--, "MIPMAP")
 			spriteSheets[maxZoom.filename] = sheet
 		end
 		for name, coords in pairs(maxZoom.coords) do
@@ -296,7 +296,7 @@ local PassiveTreeClass = common.NewClass("PassiveTree", function(self, targetVer
 		end
 
 		-- Build unified list of modifiers from all recognised modifier lines
-		node.modList = common.New("ModList")
+		node.modList = new("ModList")
 		for _, mod in pairs(node.mods) do
 			if mod.list and not mod.extra then
 				for i, mod in ipairs(mod.list) do

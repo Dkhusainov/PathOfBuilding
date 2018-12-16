@@ -82,10 +82,14 @@ Curse Enemies with level 5 Vulnerability on Block
 ]],[[
 Cane of Unravelling
 Ezomyte Staff
+Variant: Pre 3.5.0
+Variant: Current
 Requires Level: 62
 18% Chance to Block 
 +2 to Level of Socketed Chaos Gems
-(60ï¿½80)% increased Chaos Damage
+{variant:1}(60–80)% increased Chaos Damage
+{variant:2}(20–30)% increased Chaos Damage
+{variant:2}+(40-55)% to Non-Ailment Chaos Damage over Time Multiplier
 2% increased Cast Speed per Power Charge
 Gain a Power Charge after spending a total of 200 Mana
 2 Mana Regenerated per Second per Power Charge
@@ -95,11 +99,11 @@ Maelstrom Staff
 Source: Drops from unique{The Elder} (Uber)
 Requires Level 64
 20% Chance to Block
-Adds (270ï¿½300) to (340ï¿½380) Physical Damage
-Adds (376ï¿½400) to (568ï¿½600) Physical Damage to Spells
+Adds (270–300) to (340–380) Physical Damage
+Adds (376–400) to (568–600) Physical Damage to Spells
 +1 to Maximum Siphoning Charges per Elder or Shaper Item Equipped
 25% chance to gain a Siphoning Charge when you use a Skill
-Adds (12ï¿½14) to (15ï¿½16) Physical Damage to Attacks and Spells per Siphoning Charge
+Adds (12–14) to (15–16) Physical Damage to Attacks and Spells per Siphoning Charge
 Gain 4% of Non-Chaos Damage as extra Chaos Damage per Siphoning Charge
 1% additional Physical Damage Reduction from Hits per Siphoning Charge
 0.2% of Damage Leeched as Life per Siphoning Charge
@@ -107,20 +111,23 @@ Take 150 Physical Damage per Second per Siphoning Charge if you've used a Skill 
 Elder Item
 ]],[[
 Duskdawn
-MaelstrÃ¶m Staff
+Maelström Staff
 Source: Vendor recipe
 Variant: Pre 2.6.0
+Variant: Pre 3.5.0
 Variant: Current
 Requires Level 64, 113 Str, 113 Int
 Implicits: 2
-{variant:1}18% Chance to Block
-{variant:2}20% Chance to Block
-4% Chance to Block
+{variant:1}18% Chance to Block Attack Damage while wielding a Staff
+{variant:2,3}20% Chance to Block Attack Damage while wielding a Staff
+{variant:1,2}4% Chance to Block Attack Damage while wielding a Staff
+{variant:3}10% Chance to Block Attack Damage while wielding a Staff
 (60-80)% increased Critical Strike Chance for Spells
 Gain (10-20)% of Elemental Damage as Extra Chaos Damage
 +1% to Critical Strike Multiplier per 1% Block Chance
 +60% to Critical Strike Multiplier if you've dealt a Non-Critical Strike Recently
-120% increased Spell Damage if you've dealt a Critical Strike Recently
+{variant:1,2}120% increased Spell Damage if you've dealt a Critical Strike Recently
+{variant:3}(120-150)% increased Spell Damage if you've dealt a Critical Strike Recently
 ]],[[
 Dying Breath
 Coiled Staff
@@ -184,9 +191,18 @@ Requires Level 32
 Socketed Gems are Supported by Level 16 Trap
 Socketed Gems are Supported by Level 16 Cluster Trap
 Socketed Gems are Supported by Level 16 Trap and Mine Damage
-(10ï¿½20)% increased maximum Mana
-(10ï¿½20)% increased maximum Life
-(40ï¿½50)% increased Damage
+(10–20)% increased maximum Mana
+(10–20)% increased maximum Life
+(40–50)% increased Damage
+]],[[
+The Grey Spire
+Judgement Staff
+Requires Level 68
++18% Chance to Block Attack Damage while wielding a Staff
+Has no Sockets
+(250–300)% increased Global Damage
+(20–30)% increased Attack Speed
++(1–4)% to all maximum Resistances
 ]],[[
 Hegemony's Era
 Judgement Staff
@@ -205,13 +221,17 @@ Adds (180-190) to (190-220) Physical Damage
 ]],[[
 Martyr of Innocence
 Highborn Staff
+Variant: Pre 3.5.0
+Variant: Current
 Requires Level 52, 89 Str, 89 Int
 18% Chance to Block
 (12-16)% Chance to Block
 Adds (350-400) to (500-600) Fire Damage
-Adds (130-150) to (200-250) Fire Damage to Spells
+{variant:1}Adds (130-150) to (200-250) Fire Damage to Spells
+{variant:2}Adds (230-250) to (300-350) Fire Damage to Spells
 Grants level 15 Vengeance Skill
-100% increased Fire Damage if you have been Hit Recently
+{variant:1}100% increased Fire Damage if you have been Hit Recently
+{variant:2}100% increased Fire Damage
 Immune to Freeze and Chill while Ignited
 Damage Penetrates 15% of Fire Resistance if you have Blocked Recently
 ]],[[
@@ -284,7 +304,7 @@ Implicits: 2
 +2 to Level of Socketed Fire Gems
 {variant:1,2}(30-50)% increased Spell Damage
 {variant:1,2}(20-40)% increased Fire Damage
-{variant:3}(70-90)% increased Fire Damage
+{variant:3}(70–90)% increased Fire Damage
 10% increased Cast Speed
 70% increased Burning Damage
 ]],[[
@@ -314,6 +334,17 @@ Implicits: 2
 Socketed Gems fire 4 additional Projectiles
 Socketed Gems fire Projectiles in a Nova
 ]],[[
+Soulwrest
+Ezomyte Staff
+Requires Level 62
++18% Chance to Block Attack Damage while wielding a Staff
+Trigger Level 20 Summon Phantasm Skill when you Consume a Corpse
+(100–140)% increased Spell Damage
+(25–30)% increased Cast Speed
+(80–100)% increased Mana Regeneration Rate
+Minions deal (45–51) to (66–78) additional Physical Damage
+If you Consumed a Corpse Recently, you and nearby Allies regenerate 5% of Life per second
+]],[[
 The Stormheart
 Royal Staff
 Upgrade: Upgrades to unique{The Stormwall} via prophecy{The Storm Spire}
@@ -337,16 +368,16 @@ Source: Upgraded from unique{The Stormheart} via prophecy{The Storm Spire}
 Requires Level 60
 18% Chance to Block
 15% Chance to Block
-Adds (242-260) to (268-285) Physical Damage
-(20-35)% increased Critical Strike Chance
+Adds (242–260) to (268–285) Physical Damage
+(20–35)% increased Critical Strike Chance
 50% of Physical Damage Converted to Cold Damage
 50% of Physical Damage Converted to Lightning Damage
 Cannot be Shocked while Chilled
-(30-40)% chance to Chill Attackers for 4 seconds on Block
-(30-40)% chance to Shock Attackers for 4 seconds on Block
+(30–40)% chance to Chill Attackers for 4 seconds on Block
+(30–40)% chance to Shock Attackers for 4 seconds on Block
 ]],[[
 Taryn's Shiver
-MaelstrÃ¶m Staff
+Maelström Staff
 Variant: Pre 2.0.0
 Variant: Pre 2.6.0
 Variant: Current

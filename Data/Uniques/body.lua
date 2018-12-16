@@ -18,7 +18,7 @@ Requires Level 30
 Adds 2 to 4 Physical Damage to Attacks
 +2000 to Armour
 +(12-20) to maximum Life
--2 Physical Damage taken from Attacks
+−2 Physical Damage taken from Attacks
 40% of Melee Physical Damage taken reflected to Attacker
 ]],[[
 The Brass Dome
@@ -68,9 +68,9 @@ Golden Plate
 Requires Level 56, 106 Str
 (10-15)% increased Quantity of Items found
 (30-50)% increased Rarity of Items found
--10% to Fire Resistance
+−10% to Fire Resistance
 +(20-30)% to Cold Resistance
--20% to Lightning Resistance
+−20% to Lightning Resistance
 20% reduced Movement Speed
 30% reduced Strength Requirement
 ]],[[
@@ -87,6 +87,7 @@ Has no Sockets
 Lioneye's Vision
 Crusader Plate
 Variant: {2_6}Pre 3.0.0
+Variant: Pre 3.5.0
 Variant: Current
 Requires Level 59, 160 Str
 (200-250)% increased Armour
@@ -94,7 +95,8 @@ Requires Level 59, 160 Str
 0.4% of Physical Attack Damage Leeched as Mana
 Socketed Gems are Supported by level 15 Pierce
 {variant:1}+20% chance to be Pierced by Projectiles
-{variant:2}Projectiles Pierce you
+{variant:2,3}Projectiles Pierce you
+{Variant:3}+160 Dexterity Requirement
 ]],[[
 Iron Heart
 Crusader Plate
@@ -106,6 +108,17 @@ Requires Level 59
 Cannot Block Spells 
 Strength's Damage Bonus instead grants 3% increased Melee Physical Damage per 10 Strength
 ]],[[
+The Iron Fortress
+Crusader Plate
+Source: Upgraded from unique{Iron Heart} via prophecy{Battle Hardened}
+Requires Level 68
++1% Chance to Block Attack Damage per 50 Strength
+Chance to Block Spell Damage is Unlucky
++(60–120) to Strength
+(80–100)% increased Armour
+10% reduced Movement Speed
+Strength's Damage Bonus instead grants 3% increased Melee Physical Damage per 10 Strength
+]],[[
 Solaris Lorica
 Copper Plate
 Variant: Pre 2.6.0
@@ -115,7 +128,7 @@ Requires Level 17, 53 Str
 (60-80)% increased Armour
 25% increased Light Radius
 Chaos Damage does not bypass Energy Shield
-{variant:1}-10 Chaos Damage taken
+{variant:1}−10 Chaos Damage taken
 {variant:2}-(30-40) Chaos Damage taken
 {variant:2}25% reduced Chaos Damage Taken Over Time
 ]],
@@ -132,7 +145,7 @@ Requires Level 17, 53 Dex
 +(40-50)% to Fire Resistance
 Cannot be Ignited
 (10-15)% increased Physical Damage with Ranged Weapons
--(5-7) Physical Damage taken from Attacks
+−(5-7) Physical Damage taken from Attacks
 ]],[[
 Briskwrap
 Strapped Leather
@@ -218,18 +231,20 @@ Zodiac Leather
 Variant: Pre 1.0.0
 Variant: Pre 2.0.0
 Variant: Pre 2.6.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Requires Level 65, 197 Dex
 {variant:1,2,3}+(20-30) to Dexterity
-{variant:4}+(40-50) to Dexterity
+{variant:4.5}+(40-50) to Dexterity
 {variant:1,2,3}Adds 13 to 24 Cold Damage to Attacks
 {variant:4}Adds (50-60) to (70-80) Cold Damage to Attacks
+{variant:5}Adds (173-188) to (240-262) Cold Damage to Bow Attacks
 {variant:1}(80-120)% increased Evasion Rating
-{variant:2,3,4}(140-220)% increased Evasion Rating
+{variant:2,3,4,5}(140-220)% increased Evasion Rating
 25% increased Chill Duration on Enemies
 {variant:1,2}Acrobatics
-{variant:3,4}10% chance to Dodge Attacks
-{variant:3,4}10% chance to Dodge Spell Damage
+{variant:3,4,5}10% chance to Dodge Attacks
+{variant:3,4,5}10% chance to Dodge Spell Damage
 ]],[[
 Kintsugi
 Exquisite Leather
@@ -253,8 +268,8 @@ Requires Level 59, 160 Dex
 +(26-40)% to Cold Resistance
 +(11-25)% to Lightning Resistance
 25% reduced Movement Speed
-1% increased Movement Speed per 450 Evasion Rating, up to 100%
--(50-40) Physical Damage taken when hit by Animals
+1% increased Movement Speed per 600 Evasion Rating, up to 75%
+−(50-40) Physical Damage taken when hit by Animals
 ]],[[
 The Rat Cage
 Sharkskin Tunic
@@ -264,7 +279,7 @@ Variant: Current
 Requires Level 56, 152 Dex
 (100-120)% increased Evasion Rating
 +(160-200) to maximum Life
-{variant:1}-5% to maximum Fire Resistance
+{variant:1}−5% to maximum Fire Resistance
 {variant:2}-50% to Fire Resistance
 15% increased Movement Speed
 20% increased Fire Damage taken
@@ -303,19 +318,19 @@ Variant: Rhoa
 Variant: Snake
 Variant: Ursa
 Requires Level 62, 170 Dex
-{variant:1}Grants level 20 Summon Beastial Rhoa Skill
-{variant:2}Grants level 20 Summon Beastial Snake Skill
-{variant:3}Grants level 20 Summon Beastial Ursa Skill
+{variant:1}Grants level 20 Summon Bestial Rhoa Skill
+{variant:2}Grants level 20 Summon Bestial Snake Skill
+{variant:3}Grants level 20 Summon Bestial Ursa Skill
 +(300-400) to Accuracy Rating
 (130-150)% increased Evasion Rating
 +(90-100) to maximum Life
 Projectile Attack Skills have (40-60)% increased Critical Strike Chance
-{variant:1}Projectiles from Attacks have 20% chance to Maim on Hit while you have a Beastial Minion
-{variant:2}Projectiles from Attacks have 20% chance to Poison on Hit while you have a Beastial Minion
-{variant:3}Projectiles from Attacks have 20% chance to inflict Bleeding on Hit while you have a Beastial Minion
-{variant:1}(10-15)% increased Attack and Movement Speed while you have a Beastial Minion
-{variant:2}Adds (13-19)-(23-29) Chaos Damage to Attacks while you have a Beastial Minion
-{variant:3}Adds (11-16)-(21-25) Physical Damage to Attacks while you have a Beastial Minion
+{variant:1}Projectiles from Attacks have 20% chance to Maim on Hit while you have a Bestial Minion
+{variant:2}Projectiles from Attacks have 20% chance to Poison on Hit while you have a Bestial Minion
+{variant:3}Projectiles from Attacks have 20% chance to inflict Bleeding on Hit while you have a Bestial Minion
+{variant:1}(10-15)% increased Attack and Movement Speed while you have a Bestial Minion
+{variant:2}Adds (13-19)-(23-29) Chaos Damage to Attacks while you have a Bestial Minion
+{variant:3}Adds (11-16)-(21-25) Physical Damage to Attacks while you have a Bestial Minion
 ]],
 -- Body: Energy Shield
 [[
@@ -327,7 +342,7 @@ Requires Level 68, 194 Int
 40% increased Spell Damage
 (110-130)% increased Energy Shield
 {variant:1}+(50-65) to maximum Energy Shield
-{variant:2}+(15-25) to maximum Energy Shield
+{variant:2}+(15–25) to maximum Energy Shield
 10% increased Area of Effect of Area Skills
 5% increased Damage taken
 (30-40)% increased Energy Shield Recovery Rate
@@ -348,7 +363,7 @@ Variant: {2_6}Pre 3.0.0
 Variant: Current
 Requires Level 56, 152 Int
 {variant:1}(250-300)% increased Energy Shield
-{variant:2}(150-200)% increased Energy Shield
+{variant:2}(150–200)% increased Energy Shield
 Minions cannot be Blinded
 Minions have 15% chance to Blind Enemies on hit
 Socketed Minion Gems are Supported by Level 16 Life Leech
@@ -377,7 +392,7 @@ Socketed Gems are Supported by level 15 Added Chaos Damage
 {variant:1}(125-150)% increased Energy Shield
 {variant:2}(180-220)% increased Energy Shield
 {variant:3,4}(280-320)% increased Energy Shield
-{variant:5}(210-250)% increased Energy Shield
+{variant:5}(210–250)% increased Energy Shield
 {variant:1,2,3}Blood Magic
 {variant:4,5}Socketed Gems have Blood Magic
 ]],[[
@@ -392,14 +407,16 @@ Has no Attribute Requirements
 ]],[[
 Doedre's Skin
 Widowsilk Robe
-Requires Level: 65
+Variant: Pre 3.5.0
+Variant: Current
+Requires Level 65
 Socketed Curse Gems are Supported by Level 20 Blasphemy 
 Grants Level 20 Summon Doedre's Effigy Skill
 Socketed Curse Skills are Triggered by Doedre's Effigy when Summoned
 Socketed Curse Skills ignore Curse Limit 
 +(30–40) to Intelligence 
 (130–150)% increased Energy Shield 
-(25–33)% reduced Effect of your Curses
+{variant:1}(25–33)% reduced Effect of your Curses
 ]],[[
 Fenumus' Shroud
 Widowsilk Robe
@@ -422,7 +439,7 @@ Requires Level 65, 187 Int
 (25-35)% increased Fire Damage
 100% increased Global Critical Strike Chance
 {variant:1}(190-230)% increased Energy Shield
-{variant:2}(120-160)% increased Energy Shield
+{variant:2}(120–160)% increased Energy Shield
 15% of Fire Damage Converted to Chaos Damage
 {variant:1}100% increased Spell Damage taken when on Low Mana
 {variant:2}25% increased Spell Damage taken when on Low Mana
@@ -448,7 +465,7 @@ Requires Level 62, 180 Int
 (3-10)% increased Spell Damage
 {variant:1}(200-250)% increased Energy Shield
 {variant:2}(140-200)% increased Energy Shield
-{variant:3}(100-150)% increased Energy Shield
+{variant:3}(100–150)% increased Energy Shield
 10% faster start of Energy Shield Recharge
 +(30-40)% to Lightning Resistance
 Reflects 1 to 250 Lightning Damage to Melee Attackers
@@ -619,16 +636,20 @@ Requires Level 69, 95 Str, 116 Dex
 Daresso's Defiance
 Full Dragonscale
 Variant: Pre 2.6.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Requires Level 63, 115 Str, 94 Dex
 (160-200)% increased Armour and Evasion
-+(40-60) to maximum Life
+{variant:1,2}+(40-60) to maximum Life
+{variant:3}+(60-90) to maximum Life
 (0.4-0.6)% of Physical Attack Damage Leeched as Life
 6% Chance to Dodge Attacks
 You lose all Endurance Charges when Hit
 You gain an Endurance Charge on Kill
 {variant:1}You gain Onslaught for 1 second per Endurance Charge when Hit
 {variant:2}You gain Onslaught for 2 second per Endurance Charge when Hit
+{variant:3}You gain Onslaught for 5 second per Endurance Charge when Hit
+{variant:3}(60-100)% increased Onslaught Effect
 ]],[[
 Farrul's Fur
 Triumphant Lamellar
@@ -644,11 +665,16 @@ You have Phasing while you have Cat's Stealth
 ]],[[
 Gruthkul's Pelt
 Wyrmscale Doublet
+Variant: Pre 3.5.0
+Variant: Current
 Requires Level 38, 57 Str, 57 Dex
-(60-100)% increased Physical Damage
-+(130-160) to maximum Life
+{variant:1}(60-100)% increased Physical Damage
+{variant:2}100% increased Physical Damage
+{variant:1}+(130-160) to maximum Life
+{variant:2}+(200-240) to maximum Life
 +(20-40)% to Cold Resistance
-2% of Life Regenerated per second
+{variant:1}2% of Life Regenerated per second
+{variant:2}5% of Life Regenerated per second
 15% increased Character Size
 Spell Skills deal no Damage
 Your Spells are disabled
@@ -661,7 +687,7 @@ Requires Level 60, 96 Str, 96 Dex
 Adds 1 to (20-30) Lightning Damage to Attacks
 (90-120)% increased Armour and Evasion
 +(60-80) to maximum Life
--60% to Lightning Resistance
+−60% to Lightning Resistance
 {variant:1}40% of Physical Damage taken as Lightning Damage
 {variant:2}30% of Physical Damage taken as Lightning Damage
 ]],[[
@@ -717,7 +743,7 @@ Requires Level 64, 90 Str, 105 Int
 (50-75)% increased Armour and Energy Shield
 +(50-70) to maximum Life
 {variant:1,2}+(70-80) to maximum Energy Shield
-{variant:3}+(30-40) to maximum Energy Shield
+{variant:3}+(30–40) to maximum Energy Shield
 +(14-18)% to all Elemental Resistances
 {variant:1}+1 maximum Energy Shield per 5 Strength
 {variant:2,3}+2 maximum Energy Shield per 5 Strength
@@ -747,7 +773,6 @@ Requires Level 49
 (140–160)% increased Armour and Energy Shield
 +(50–75)% to Cold Resistance
 Cannot be Chilled
-Cannot be Frozen
 20% of Physical Damage from Hits taken as Cold Damage
 30% of Fire Damage from Hits taken as Cold Damage
 (15–20)% increased Effect of Chill
@@ -832,29 +857,33 @@ Minions have (6–10)% chance to Dodge Attacks
 Carcass Jack
 Varnished Coat
 Variant: {2_6}Pre 3.0.0
+Variant: Pre 3.5.0
 Variant: Current
 Requires Level 62, 96 Dex, 96 Int
 (120-150)% increased Evasion and Energy Shield
 +(50-70) to maximum Life
 +(9-12)% to all Elemental Resistances
-20% increased Area of Effect of Area Skills
+{variant:1,2}20% increased Area of Effect of Area Skills
+{variant:3}(40-50)% increased Area of Effect of Area Skills
 {variant:1}12% increased Area Damage
-{variant:2}(40-50)% increased Area Damage
+{variant:2,3}(40–50)% increased Area Damage
 Extra gore
 ]],[[
 Cloak of Defiance
 Lacquered Garb
 Variant: Pre 1.3.0
 Variant: {2_6}Pre 3.0.0
+Variant: Pre 3.5.0
 Variant: Current
 Requires Level 52, 76 Dex, 76 Int
-(110-150)% increased Evasion and Energy Shield
+{variant:1,2,3}(110-150)% increased Evasion and Energy Shield
+{variant:4}(300-400)% increased Evasion and Energy Shield
 {variant:1,2}+(90-110) to maximum Mana
-{variant:3}+(100-150) to maximum Mana
+{variant:3,4}+(100-150) to maximum Mana
 {variant:1,2}(40-50)% increased Mana Regeneration Rate
 {variant:1}When hit, 10% of Damage is taken from Mana before Life
-{variant:3}10% of Damage is taken from Mana before Life
-{variant:3}1% of Mana Regenerated per second
+{variant:3,4}10% of Damage is taken from Mana before Life
+{variant:3,4}1% of Mana Regenerated per second
 Mind Over Matter
 ]],[[
 Dendrobate
@@ -869,12 +898,15 @@ Socketed Gems are Supported by Level 10 Lesser Poison
 ]],[[
 Inpulsa's Broken Heart
 Sadist Garb
+Variant: Pre 3.5.0
+Variant: Current
 Requires Level 68
 +(60–80) to maximum Life 
 (20–50)% increased Damage if you have Shocked an Enemy Recently 
 (25–40)% increased Effect of Shock 
 Unaffected by Shock 
-Shocked Enemies you Kill Explode, dealing (5–10)% of
+{variant:1}Shocked Enemies you Kill Explode, dealing (5–10)% of
+{variant:2}Shocked Enemies you Kill Explode, dealing 5% of
 their Maximum Life as Lightning Damage which cannot Shock
 ]],[[
 The Restless Ward
@@ -985,5 +1017,19 @@ Requires Level 75, 66 Str, 66 Dex, 66 Int
 +(20-24)% to all Elemental Resistances
 +100 Life Gained on Kill
 +100 Mana Gained on Kill
+]],[[
+Shadowstitch
+Sacrificial Garb
+League: Incursion
+Requires Level 72
+Implicits: 0
+Has an additional Implicit Mod
++(20–30) to all Attributes
+Recover (3–5)% of Maximum Life on Kill
+Recover (3–5)% of Maximum Energy Shield on Kill
+-(6-4)% to all Resistances for each Equipped Corrupted Item
+8% increased Maximum Energy Shield for each Equipped Corrupted Item
+6% increased Maximum Life for each Equipped Corrupted Item
+Corrupted
 ]],
 }

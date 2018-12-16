@@ -3,13 +3,43 @@
 return {
 -- Ring
 [[
+Ahkeli's Meadow
+Ruby Ring
+League: Delve
+Source: Drops from unique{Aul, the Crystal King}
+Requires Level 49
++(20-30)% to Fire Resistance
++20 to Strength
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
+Ahkeli's Mountain
+Ruby Ring
+League: Delve
+Source: Drops from unique{Ahuatotli, the Blind}
+Requires Level 49
++(20-30)% to Fire Resistance
++20 to Strength
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
+Ahkeli's Valley
+Ruby Ring
+League: Delve
+Source: Drops from unique{Kurgal, the Blackblooded}
+Requires Level 49
++(20-30)% to Fire Resistance
++20 to Strength
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
 Andvarius
 Gold Ring
 Requires Level 20
 (6-15)% increased Rarity of Items found
 +10 to Dexterity
 (50-70)% increased Rarity of Items found
--20% to all Elemental Resistances
+−20% to all Elemental Resistances
 ]],[[
 Berek's Grip
 Two-Stone Ring
@@ -190,7 +220,7 @@ Variant: Current
 Requires Level 16
 +(20-30)% to Fire Resistance
 {variant:1}(15-25)% increased Fire Damage
-{variant:2}(30-40)% increased Fire Damage
+{variant:2}(30–40)% increased Fire Damage
 (5-10)% increased Cast Speed
 {variant:1}5% chance to Ignite
 {variant:2}10% chance to Ignite
@@ -307,12 +337,13 @@ While on Low Life, Enemies are Unlucky when Damaging you
 Malachai's Artifice
 Unset Ring
 Variant: Pre 2.6.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Sockets: W
 Requires Level 5
 Has 1 Socket
-{variant:1}-25% to all Elemental Resistances
-{variant:2}-20% to all Elemental Resistances
+{variant:1}−25% to all Elemental Resistances
+{variant:2,3}−20% to all Elemental Resistances
 +(75-100)% to Fire Resistance when Socketed with a Red Gem
 +(75-100)% to Cold Resistance when Socketed with a Green Gem
 +(75-100)% to Lightning Resistance when Socketed with a Blue Gem
@@ -320,6 +351,12 @@ All Sockets are White
 Socketed Gems have Elemental Equilibrium
 {variant:1}Socketed Gems have 40% reduced Elemental Equilibrium effect
 {variant:2}Socketed Gems have 25% reduced Elemental Equilibrium effect
+]],[[
+Mark of Submission
+Unset Ring
+Requires Level 24
+Has 1 Socket
+Curse Enemies with Socketed Curse Gem on Hit
 ]],[[
 Mark of the Elder
 Steel Ring
@@ -356,10 +393,10 @@ Requires Level 69
 +(9-13)% to Chaos Resistance
 {variant:1}15% reduced maximum Life
 {variant:2}10% reduced maximum Life
-{variant:3}(5-10)% reduced maximum Life
+{variant:3}(5–10)% reduced maximum Life
 {variant:1}15% reduced maximum Energy Shield
 {variant:2}10% reduced maximum Energy Shield
-{variant:3}(5-10)% reduced maximum Energy Shield
+{variant:3}(5–10)% reduced maximum Energy Shield
 +(40-50)% to Chaos Resistance
 Gain 20% of Physical Damage as Extra Chaos Damage
 ]],[[
@@ -439,8 +476,38 @@ Requires Level 22
 +(20-25) to maximum Mana
 +(30-60) to maximum Mana
 (3-6) Mana Regenerated per second
--(4-8) to Mana Cost of Skills
+−(4-8) to Mana Cost of Skills
 8% of Damage taken gained as Mana over 4 seconds when Hit
+]],[[
+Putembo's Meadow
+Topaz Ring
+League: Delve
+Source: Drops from unique{Kurgal, the Blackblooded}
+Requires Level 49
++(20-30)% to Lightning Resistance
++20 to Intelligence
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
+Putembo's Mountain
+Topaz Ring
+League: Delve
+Source: Drops from unique{Aul, the Crystal King}
+Requires Level 49
++(20-30)% to Lightning Resistance
++20 to Intelligence
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
+Putembo's Valley
+Topaz Ring
+League: Delve
+Source: Drops from unique{Ahuatotli, the Blind}
+Requires Level 49
++(20-30)% to Lightning Resistance
++20 to Intelligence
+5% increased maximum Energy Shield
+5% increased maximum Life
 ]],[[
 Pyre
 Sapphire Ring
@@ -451,7 +518,7 @@ Requires Level 11
 +(20-30)% to Cold Resistance
 +(25-35)% to Fire Resistance
 {variant:1,2}(25-35)% increased Burning Damage
-{variant:3}(60-80)% increased Burning Damage
+{variant:3}(60–80)% increased Burning Damage
 {variant:1}100% of Cold Damage Converted to Fire Damage
 {variant:2,3}40% of Cold Damage Converted to Fire Damage
 10% increased Light Radius
@@ -484,7 +551,7 @@ Requires Level 49
 (20-30)% increased Fire Damage
 (20-30)% increased Cold Damage
 (20-30)% increased Mana Regeneration Rate
-5% Chance to summon a Spectral Wolf on Kill
+10% Chance to summon a Spectral Wolf on Kill
 ]],[[
 Romira's Banquet
 Diamond Ring
@@ -541,12 +608,19 @@ Adds (8-15) to (20-28) Fire Damage to Attacks
 ]],[[
 Snakepit 
 Sapphire Ring
+Variant: Pre {2_6}3.5.0
+Variant: Current
 Source: Drops from unique{Guardian of the Hydra}
 Requires Level 68
 +(20-30)% to Cold Resistance
 (20-40)% increased Cold Damage
 (5-10)% increased Cast Speed
-Spells have an additional Projectile
+{variant:1}Spells have an additional Projectile
+{variant:2}Left ring slot: Projectiles from Spells cannot Chain
+{variant:2}Left ring slot: Projectiles from Spells Fork
+{variant:2}Right ring slot: Projectiles from Spells Chain +1 times
+{variant:2}Right ring slot: Projectiles from Spells cannot Fork
+{variant:2}Projectiles from Spells cannot Pierce
 ]],[[
 Stormfire
 Opal Ring
@@ -569,7 +643,7 @@ Requires Level 30
 {variant:1}15% increased Elemental Damage with Weapons
 {variant:2}30% increased Elemental Damage with Attack Skills
 {variant:1}+(10-15)% to all Elemental Resistances
-{variant:2}+(20-30)% to all Elemental Resistances
+{variant:2}+(20–30)% to all Elemental Resistances
 {variant:1}15% increased Elemental Damage
 {variant:2}30% increased Elemental Damage
 {variant:1}5% chance to Freeze, Shock and Ignite
@@ -644,6 +718,36 @@ Requires Level 64
 (-10–10)% increased Skill Effect Duration
 Unaffected by Temporal Chains
 ]],[[
+Uzaza's Meadow
+Sapphire Ring
+League: Delve
+Source: Drops from unique{Ahuatotli, the Blind}
+Requires Level 49
++(20-30)% to Cold Resistance
++20 to Dexterity
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
+Uzaza's Mountain
+Sapphire Ring
+League: Delve
+Source: Drops from unique{Kurgal, the Blackblooded}
+Requires Level 49
++(20-30)% to Cold Resistance
++20 to Dexterity
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
+Uzaza's Valley
+Sapphire Ring
+League: Delve
+Source: Drops from unique{Aul, the Crystal King}
+Requires Level 49
++(20-30)% to Cold Resistance
++20 to Dexterity
+5% increased maximum Energy Shield
+5% increased maximum Life
+]],[[
 Valako's Sign
 Topaz Ring
 League: Bloodlines
@@ -667,7 +771,7 @@ Requires Level 38
 +(15-25) to maximum Energy Shield
 +(10-20) to maximum Energy Shield
 +(20-30)% to Fire Resistance
--40% to Cold Resistance
+−40% to Cold Resistance
 Stun Threshold is based on Energy Shield instead of Life
 ]],[[
 Ventor's Gamble
@@ -675,11 +779,11 @@ Gold Ring
 Requires Level 65
 (6-15)% increased Rarity of Items found
 +(0-60) to maximum Life
-(-10 to 10)% increased Quantity of Items found
-(-40 to 40)% increased Rarity of Items found
-+(-25 to 50)% to Fire Resistance
-+(-25 to 50)% to Cold Resistance
-+(-25 to 50)% to Lightning Resistance
+(−10 to 10)% increased Quantity of Items found
+(−40 to 40)% increased Rarity of Items found
++(−25 to 50)% to Fire Resistance
++(−25 to 50)% to Cold Resistance
++(−25 to 50)% to Lightning Resistance
 ]],[[
 Voideye
 Unset Ring
@@ -692,7 +796,7 @@ The Warden's Brand
 Iron Ring
 Requires Level 30
 Adds 1 to 4 Physical Damage to Attacks
-Adds (5-15) to (25-50) Physical Damage to Attacks
+Adds (5–15) to (25–50) Physical Damage to Attacks
 30% reduced Attack Speed
 15% chance to gain a Frenzy Charge when you Stun an Enemy
 ]],

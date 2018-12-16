@@ -143,8 +143,11 @@ Socketed Gems are Supported by Level 30 Cold to Fire
 Obscurantis 
 Lion Pelt
 Source: Drops from unique{Guardian of the Chimera}
+Variant: {2_6}Pre 3.5.0
+Variant: Current
 Requires Level 70, 150 Dex
-+(300-500) to Accuracy Rating
+{variant:1}+(300-500) to Accuracy Rating
+{variant:2}+(800-1000) to Accuracy Rating
 (100-120)% increased Evasion Rating
 +(50-80) to maximum Life
 1% increased Projectile Attack Damage per 200 Accuracy Rating
@@ -225,12 +228,16 @@ Requires Level 54, 112 Int
 ]],[[
 Crown of Eyes
 Hubris Circlet
+Variant: {2_6}Pre 3.5.0
+Variant: Current
 Requires Level 69, 154 Int
 +(200-250) to Accuracy Rating
 (120-150)% increased Energy Shield
--30% to Fire Resistance
-(0.4-0.8)% of Physical Attack Damage Leeched as Life
-(0.2-0.4)% of Physical Attack Damage Leeched as Mana
+−30% to Fire Resistance
+{variant:1}(0.4-0.8)% of Physical Attack Damage Leeched as Life
+{variant:2}(0.4-0.8)% of Attack Damage Leeched as Life
+{variant:1}(0.2-0.4)% of Physical Attack Damage Leeched as Mana
+{variant:2}(0.2-0.4)% of Attack Damage Leeched as Mana
 Increases and Reductions to Spell Damage also apply to Attacks
 ]],[[
 Crown of Thorns
@@ -294,16 +301,35 @@ Adds (16–21) to (31–36) Chaos Damage to Spells
 (15–20)% increased Damage with Poison per Power Charge
 Aspect of the Spider inflicts Spider's Webs and Hinder every 0.5 Seconds instead
 ]],[[
+Hale Negator
+Mind Cage
+League: Delve
+Source: Drops from unique{Kurgal, the Blackblooded}
+Variant: One Abyssal Socket
+Variant: Two Abyssal Sockets
+Requires Level 65
+{variant:1}Has 1 Abyssal Socket
+{variant:2}Has 2 Abyssal Sockets
+(6–8)% increased maximum Life
++1 to Maximum Spirit Charges per Abyss Jewel affecting you
+Gain a Spirit Charge every second
+You lose all Spirit Charges when taking a Savage Hit
+Recover (2–3)% of Life when you lose a Spirit Charge
+Recover (2–3)% of Energy Shield when you lose a Spirit Charge
+]],[[
 Indigon
 Hubris Circlet
 Source: Drops from unique{The Elder} (Uber)
+Variant: Pre 3.5.0
+Variant: Current
 Requires Level 69
 (150–180)% increased Energy Shield
 (6–10)% increased maximum Mana
 Recover (8–10)% of maximum Life when you use a Mana Flask
 Non-instant Mana recovery from Flasks is also recovered as Life
 (50–60)% increased Mana Cost of Skills for each 200 total Mana you have Spent Recently
-(50–60)% increased Spell Damage for each 200 total Mana you have Spent Recently
+{variant:1}(50–60)% increased Spell Damage for each 200 total Mana you have Spent Recently
+{variant:2}(20-25)% increased Spell Damage for each 200 total Mana you have Spent Recently, up to 2000%
 Shaper Item
 ]],[[
 Mark of the Red Covenant
@@ -319,16 +345,18 @@ Raging Spirits refresh their Duration when they Kill an Ignited Enemy
 Rime Gaze
 Mind Cage
 Variant: Pre 2.6.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Requires Level 65, 138 Int
 {variant:1}Socketed Gems are Supported by level 15 Concentrated Effect
-{variant:2}Socketed Gems are Supported by level 20 Concentrated Effect
+{variant:2,3}Socketed Gems are Supported by level 20 Concentrated Effect
 30% increased Cold Damage
 +(40-60) to maximum Mana
 {variant:1}(100-120)% increased Energy Shield
-{variant:2}(180-200)% increased Energy Shield
+{variant:2,3}(180-200)% increased Energy Shield
 {variant:1}50% slower start of Energy Shield Recharge
-{variant:2}50% reduced Energy Shield Recharge Rate
+{variant:2,3}50% reduced Energy Shield Recharge Rate
+{variant:3}+(16-22)% to Cold Damage over Time Multiplier
 ]],[[
 Scold's Bridle
 Mind Cage
@@ -377,19 +405,20 @@ The Bringer of Rain
 Nightmare Bascinet
 Variant: Pre 1.1.0
 Variant: Pre 1.3.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Requires Level 67, 62 Str, 85 Dex
 Socketed Gems are Supported by level 18 Melee Physical Damage
-{variant:1}Socketed Gems are Supported by level 18 Faster Attacks
+{variant:1,4}Socketed Gems are Supported by level 18 Faster Attacks
 {variant:2,3}Socketed Gems are Supported by level 12 Faster Attacks
-{variant:1}Socketed Gems are Supported by level 18 Blind
+{variant:1,4}Socketed Gems are Supported by level 18 Blind
 {variant:2,3}Socketed Gems are Supported by level 6 Blind
 Adds 20 to 30 Physical Damage to Attacks
 (200-300)% increased Armour and Evasion
-{variant:1}+(200-220) to maximum Life
+{variant:1,4}+(200-220) to maximum Life
 {variant:2,3}+(120-160) to maximum Life
 {variant:1,2}10% chance to gain an Endurance Charge when you Block
-{variant:3}20% chance to gain an Endurance Charge when you Block
+{variant:3,4}20% chance to gain an Endurance Charge when you Block
 Extra gore
 Can't use Chest armour
 {variant:1,2}15% Chance to Block
@@ -475,12 +504,18 @@ You take 50% reduced Extra Damage from Critical Strikes while you have no Power 
 ]],[[
 The Brine Crown
 Prophet Crown
+Variant: Pre 3.5.0
+Variant: Current
 Requires Level 63, 85 Str, 62 Int
-(100-120)% increased Armour and Energy Shield
-+(50-70) to maximum Life
+{variant:1}(100-120)% increased Armour and Energy Shield
+{variant:2}(240-300)% increased Armour and Energy Shield
+{variant:1}+(50-70) to maximum Life
+{variant:2}+(80-100) to maximum Life
 +(30-50)% to Cold Resistance
 Cannot be Frozen
-+800 Armour while stationary
+{variant:1}+800 Armour while stationary
+{variant:2}+1500 Armour while stationary
+{variant:2}5% reduced Cold Damage taken
 60% increased Mana Regeneration Rate while stationary
 15% chance to create Chilled Ground when Hit with an Attack
 ]],[[
@@ -515,6 +550,19 @@ Cannot lose Crab Barriers if you have lost Crab Barriers Recently
 3% additional Chance to Block while you have at least 5 Crab Barriers
 5% additional Chance to Block while you have at least 10 Crab Barriers
 ]],[[
+Crown of the Tyrant
+Magistrate Crown
+League: Delve
+Source: Drops from unique{Aul, the Crystal King}
+Requires Level 58
+Has 1 Socket
++(50–100) to maximum Life
+Nearby Enemies have -10% to all Resistances
+You and Nearby Allies have 64 to 96 added Fire Damage per Red Socket
+You and Nearby Allies have 56 to 88 added Cold Damage per Green Socket
+You and Nearby Allies have 16 to 144 added Lightning Damage per Blue Socket
+You and Nearby Allies have 47 to 61 added Chaos Damage per White Socket
+]],[[
 Geofri's Crest
 Great Crown
 Upgrade: Upgrades to unique{Geofri's Legacy} via prophecy{The Bishop's Legacy}
@@ -525,6 +573,19 @@ Requires Level 53, 59 Str, 59 Int
 +(15-20)% to Cold Resistance
 +(15-20)% to Lightning Resistance
 +(20-30)% to Chaos Resistance
+]],[[
+Geofri's Legacy
+Great Crown
+Source: Upgraded from unique{Geofri's Crest} via prophecy{The Bishop's Legacy}
+Requires Level 62
++1 to Level of Socketed Gems
+(60–80)% increased Armour and Energy Shield
++(15–20)% to Fire Resistance
++(15–20)% to Cold Resistance
++(15–20)% to Lightning Resistance
++(20–30)% to Chaos Resistance
++1 to maximum number of Summoned Holy Relics
+Summoned Holy Relics have (20–25)% reduced Cooldown Recovery Speed
 ]],[[
 Honourhome
 Soldier Helmet
@@ -572,6 +633,33 @@ Adds (13-17) to (29-37) Chaos Damage
 Regenerate 100 Energy Shield per second if all Equipped Items are Corrupted
 Regenerate 35 Mana per second if all Equipped Items are Corrupted
 Corrupted
+]],[[
+Mask of the Spirit Drinker
+Crusader Helmet
+League: Incursion
+Upgrade: Upgrades to unique{Mask of the Stitched Demon} via currency{Vial of Summoning}
+Requires Level 31
+(60-80)% increased Armour and Energy Shield
++(30-50) to maximum Life
+Your Energy Shield starts at zero
+Cannot gain Energy Shield
+50 Life Regenerated per second if you have at least 500 Maximum Energy Shield
+100 Life Regenerated per second if you have at least 1000 Maximum Energy Shield
+150 Life Regenerated per second if you have at least 1500 Maximum Energy Shield
+]],[[
+Mask of the Stitched Demon
+Magistrate Crown
+League: Incursion
+Source: Upgraded from unique{Mask of the Spirit Drinker} via currency{Vial of Summoning}
+Requires Level 58
++(40-50) to Intelligence
++(160-180) to maximum Energy Shield
+Strength provides no bonus to Maximum Life
+Intelligence provides no bonus to Maximum Mana
++1 to Maximum Life per 2 Intelligence
+Your Energy Shield starts at zero
+Cannot gain Energy Shield
+1% of Life Regenerated per second per 500 Maximum Energy Shield
 ]],[[
 Memory Vault
 Praetor Crown
@@ -642,6 +730,15 @@ Requires Level 52, 58 Dex, 58 Int
 (0.4-0.8)% of Physical Attack Damage Leeched as Life
 Reflects 100 to 150 Physical Damage to Melee Attackers
 30% of Damage you Reflect to enemies is gained as Life
+]],[[
+Curtain Call
+Plague Mask
+Requires Level 20
++23 to maximum Life
+(10–15)% reduced Mine Laying Speed
+(40–50)% increased Mine Arming Speed
+Skills which Place Mines place up to 1 additional Mine if you have at least 500 Dexterity
+Skills which Place Mines place up to 1 additional Mine if you have at least 500 Intelligence
 ]],[[
 Farrul's Bite
 Harlequin Mask

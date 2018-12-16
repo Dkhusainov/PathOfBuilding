@@ -33,13 +33,16 @@ your maximum number of Crab Barriers
 Doryani's Fist
 Vaal Gauntlets
 Variant: {2_6}Pre 3.0.0
+Variant: Pre 3.5.0
 Variant: Current
 Requires Level 63, 100 Str
-{variant:2}Grants level 20 Doryani's Touch Skill
+{variant:2,3}Grants level 20 Doryani's Touch Skill
 +30 to maximum Energy Shield
 10% chance to Shock
-Adds (225-335) to (785-900) Lightning Damage to Unarmed Attacks
-Adds (60-90) to (210-240) Lightning Damage to Spells while Unarmed
+{variant:1,2}Adds (225-335) to (785-900) Lightning Damage to Unarmed Attacks
+{variant:3}Adds (150-225) to (525-600) Lightning Damage to Unarmed Attacks
+{variant:1,2}Adds (60-90) to (210-240) Lightning Damage to Spells while Unarmed
+{variant:3}Adds (90-135) to (315-360) Lightning Damage to Spells while Unarmed
 +30 Energy Shield gained on Killing a Shocked Enemy
 ]],[[
 Empire's Grasp
@@ -199,6 +202,15 @@ Requires Level 25, 39 Int
 {variant:1}Curse Enemies with Temporal Chains on Hit
 {variant:2}Curse Enemies with level 10 Temporal Chains on Hit
 ]],[[
+Demon Stitcher
+Satin Gloves
+League: Delve
+Requires Level 41
+(15–20)% increased Cast Speed
++(50–70) to maximum Energy Shield
++(50–70) to maximum Life
+Sacrifice 5% of Life to gain that much Energy Shield when you Cast a Spell
+]],[[
 Doedre's Tenure
 Velvet Gloves
 Upgrade: Upgrades to unique{Doedre's Malevolence} via prophecy{The Malevolent Witch}
@@ -248,6 +260,7 @@ Gain +2% to Critical Strike Chance for 2 seconds when you Spend a total of 800 M
 Sadima's Touch
 Wool Gloves
 Variant: Pre 1.1.0
+Variant: {2_6}Pre 3.5.0
 Variant: Current
 Requires Level 11
 Adds 4 to 8 Fire Damage to Attacks
@@ -255,6 +268,7 @@ Adds 1 to 13 Lightning Damage to Attacks
 +18 to maximum Energy Shield
 {variant:1}(18-24)% increased Quantity of Items found
 {variant:2}(12-16)% increased Quantity of Items found
+{variant:3}(5-10)% increased Quantity of Items found
 ]],[[
 Voidbringer
 Conjurer Gloves
@@ -294,13 +308,16 @@ You have Crimson Dance while you have Cat's Stealth
 ]],[[
 Flesh and Spirit
 Ironscale Gauntlets
+Variant: {2_6}Pre 3.5.0
+Variant: Current
 League: Rampage
 Requires Level 15
 (6-9)% increased Attack Speed
 (80-120)% increased Armour and Evasion
 (3-4) Life Regenerated per second
 Recover 20% of your Maximum Life on Rampage
-Gain 5 Souls for Vaal Skills on Rampage
+{variant:1}Gain 5 Souls for Vaal Skills on Rampage
+{variant:2}Kills grant an additional Vaal Soul if you have Rampaged Recently
 Rampage
 ]],[[
 Haemophilia
@@ -378,6 +395,20 @@ Lose all Endurance Charges when Rampage ends
 ]],
 -- Gloves: Armour/Energy Shield
 [[
+Command of the Pit
+Riveted Gloves
+League: Delve
+Source: Drops from unique{Kurgal, the Blackblooded}
+Variant: One Abyssal Socket
+Variant: Two Abyssal Sockets
+Requires Level 37
+{variant:1}Has 1 Abyssal Socket
+{variant:2}Has 2 Abyssal Sockets
+(6–10)% increased Cast Speed
+(4–6)% increased maximum Life
+With a Ghastly Eye Jewel Socketed, Minions have +1000 to Accuracy Rating
+With a Hypnotic Eye Jewel Socketed, gain Arcane Surge on Hit with Spells
+]],[[
 Null and Void
 Legion Gloves
 League: Rampage
@@ -481,6 +512,30 @@ Requires Level 43, 34 Str, 34 Int
 ]],
 -- Gloves: Evasion/Energy Shield
 [[
+Architect's Hand
+Strapped Mitts
+League: Incursion
+Upgrade: Upgrades to unique{Slavedriver's Hand} via currency{Vial of Dominance}
+Requires Level 16
++(30–40) to Dexterity
+(100–125)% increased Evasion and Energy Shield
+(20–30)% reduced Trap Throwing Speed
+Skills used by Traps have (10–20)% increased Area of Effect
+Increases and Reductions to Cast Speed also Apply to Trap Throwing Speed
+]],[[
+Slavedriver's Hand
+Ambush Mitts
+League: Incursion
+Source: Upgraded from unique{Architect's Hand} via currency{Vial of Dominance}
+Requires Level 45
++(30-40) to Dexterity
+(200-250)% increased Evasion and Energy Shield
+(20-30)% reduced Trap Throwing Speed
+Skills which throw Traps have Blood Magic
+Skills used by Traps have (10-20)% increased Area of Effect
+Increases and Reductions to Cast Speed also Apply to Trap Throwing Speed
+10% chance to gain an Endurance, Frenzy or Power Charge when any of your Traps is Triggered by an Enemy
+]],[[
 The Embalmer
 Carnal Mitts
 Requires Level 50, 39 Dex, 39 Int
