@@ -150,7 +150,7 @@ end
 if (generator) then
     for type, typeList in pairs(data.uniques) do
         for _, raw in pairs(typeList) do
-            local newItem = common.New("Item", targetVersion, "Rarity: Unique\n"..raw)
+            local newItem = new("Item", targetVersion, "Rarity: Unique\n"..raw)
             if newItem then
                 newItem:NormaliseQuality()
                 main.uniqueDB[targetVersion].list[newItem.name] = newItem

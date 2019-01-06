@@ -7,8 +7,8 @@
 --
 
 local tree = main.tree[liveTargetVersion]
-local modList = getmetatable(common.New("ModList"))
-local modStore = getmetatable(common.New("ModStore"))
+local modList = getmetatable(new("ModList"))
+local modStore = getmetatable(new("ModStore"))
 for _, node in pairs(tree.nodes) do
     setmetatable(node.modList, modList)
     setmetatable(node.modList.ModStore, modStore)
