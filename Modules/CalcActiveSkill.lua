@@ -102,7 +102,7 @@ function calcs.mergeSkillInstanceMods(env, modList, skillEffect)
 	end
 	local stats = calcs.buildSkillInstanceStats(env, skillEffect)
 	for stat, statValue in pairs(stats) do
-		local map = grantedEffect.statMap[stat]
+		local map = grantedEffect.statMap and grantedEffect.statMap[stat]--NPE after Betreyal league update
 		if map then
 			for _, mod in ipairs(map) do
 				mergeLevelMod(modList, mod, statValue * (map.mult or 1) / (map.div or 1))
